@@ -1,0 +1,6 @@
+{
+  "name": "Extreme Moto Enduro Cross Championship 2027",
+  "description": "Nepal's premier off-road motorsport championship website in Pokhara, Nepal, featuring rider registration, sponsorship packages, interactive track arena map, media accreditation, and festival experience.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
