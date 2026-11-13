@@ -31,10 +31,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegisterModal }) => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 bg-[#C80815] text-white ${
           isScrolled
-            ? "bg-[#222224]/95 backdrop-blur-md border-b border-white/10 shadow-sm py-3"
-            : "bg-gradient-to-b from-black/80 to-transparent py-4 sm:py-5"
+            ? "border-b border-black/15 shadow-md py-3"
+            : "border-b border-white/10 py-3.5 sm:py-4"
         }`}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -70,7 +70,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegisterModal }) => {
             </a>
 
             {/* Zone 2: Clean Single-Line Nav Links */}
-            <nav className="hidden lg:flex items-center gap-7 text-xs font-medium tracking-wide text-zinc-200">
+            <nav className="hidden lg:flex items-center gap-8 text-base font-heading font-bold uppercase tracking-wider text-white/95">
               {navLinks.map((link) => (
                 <a
                   key={link.name}

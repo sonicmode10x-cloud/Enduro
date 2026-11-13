@@ -19,14 +19,6 @@ export const InfluencersSection: React.FC<InfluencersSectionProps> = ({ onOpenRe
               CREATORS & MEDIA
             </h2>
           </div>
-
-          <button
-            type="button"
-            onClick={() => onOpenRegisterModal("media")}
-            className="cursor-pointer bg-[#242426] hover:bg-zinc-900 text-white font-semibold text-xs px-5 py-2.5 rounded-full transition-colors self-start md:self-auto whitespace-nowrap"
-          >
-            Media Accreditation
-          </button>
         </div>
 
         {/* Clean 4-Metric Reach Strip */}
