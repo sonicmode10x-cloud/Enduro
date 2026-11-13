@@ -4,14 +4,15 @@
 @theme {
   --font-heading: 'Barlow Condensed', sans-serif;
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --color-racing-red: #E10600;
-  --color-racing-dark: #050507;
+  --color-racing-red: #D60A19;
+  --color-racing-dark: #222224;
+  --color-stone-canvas: #EAE8E3;
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: #050507;
-  color: #f4f4f5;
+  background-color: #EAE8E3;
+  color: #18181b;
   overflow-x: hidden;
 }
 
@@ -20,80 +21,17 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* Red Aerodynamic Glow Banner */
-.red-racing-ribbon {
-  background: linear-gradient(180deg, rgba(225, 6, 0, 0.95) 0%, rgba(160, 4, 0, 0.85) 35%, #050507 100%);
-  position: relative;
-}
-
-.red-racing-ribbon::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent 0%, #ffffff 50%, transparent 100%);
-  opacity: 0.6;
-}
-
-/* Sharp Motorsport Button */
-.btn-racing-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  background-color: #E10600;
-  color: #ffffff;
-  font-family: var(--font-heading);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-size: 0.8125rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: 2px;
-  transition: all 0.2s ease;
-}
-
-.btn-racing-primary:hover {
-  background-color: #b80500;
-  box-shadow: 0 0 20px rgba(225, 6, 0, 0.45);
-}
-
-.btn-racing-outline {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  background-color: transparent;
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  font-family: var(--font-heading);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-size: 0.8125rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: 2px;
-  transition: all 0.2s ease;
-}
-
-.btn-racing-outline:hover {
-  border-color: #ffffff;
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-/* Custom scrollbar */
+/* Custom clean scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #050507;
+  background: #EAE8E3;
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
-  border-radius: 2px;
+  background: #b8b5ae;
+  border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #E10600;
+  background: #D60A19;
 }

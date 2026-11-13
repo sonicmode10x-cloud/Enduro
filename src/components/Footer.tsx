@@ -1,6 +1,6 @@
 import React from "react";
 import { EVENT_CONFIG } from "../data/eventConfig";
-import { Youtube, Instagram, MessageCircle, ArrowUp, Upload } from "lucide-react";
+import { Youtube, Instagram, MessageCircle, ArrowUp } from "lucide-react";
 import { FormTab } from "./RegistrationModal";
 import { useBrandLogo } from "../context/LogoContext";
 
@@ -10,7 +10,7 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ onOpenRegisterModal, onOpenProposalModal }) => {
-  const { logoConfig, openUploadModal } = useBrandLogo();
+  const { logoConfig } = useBrandLogo();
   const { championship } = EVENT_CONFIG;
 
   const scrollToTop = () => {
@@ -18,129 +18,133 @@ export const Footer: React.FC<FooterProps> = ({ onOpenRegisterModal, onOpenPropo
   };
 
   const navLinks = [
-    { name: "HOME", href: "#hero" },
-    { name: "THE EVENT", href: "#experiences" },
-    { name: "RACE MAP", href: "#arena-layout" },
-    { name: "GALLERY", href: "#gallery" },
-    { name: "MEDIA", href: "#influencers" },
-    { name: "CONTACT", href: "#contact" }
+    { name: "Home", href: "#hero" },
+    { name: "The Event", href: "#experiences" },
+    { name: "Race Map", href: "#arena-layout" },
+    { name: "Gallery", href: "#gallery" },
+    { name: "Media", href: "#influencers" },
+    { name: "Contact", href: "#contact" }
   ];
 
   return (
-    <footer className="bg-[#050507] border-t border-zinc-800/80 text-zinc-400 text-xs py-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Main Single Row Bar (Direct Match to Reference) */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-zinc-800/60">
-          {/* Logo on Left */}
-          <button
-            type="button"
-            onClick={scrollToTop}
-            title="Return to top"
-            className={`px-2.5 py-1 rounded-[2px] border-l-3 border-l-[#E10600] flex items-center shadow-md cursor-pointer transition-all hover:brightness-110 ${
-              logoConfig.plateStyle === "white"
-                ? "bg-white"
-                : logoConfig.plateStyle === "dark"
-                ? "bg-zinc-900 border border-zinc-700"
-                : "bg-transparent"
-            }`}
-          >
-            <div className="h-[32px] sm:h-[36px] px-1 flex items-center justify-center relative">
-              <img
-                src={logoConfig.url}
-                alt="Moto Enduro Cross Championship"
-                style={{ transform: `scale(${logoConfig.zoom / 100})` }}
-                className="h-full w-auto max-w-[150px] sm:max-w-[180px] object-contain select-none pointer-events-none"
-              />
-            </div>
-          </button>
-
-          {/* Nav Links in Center */}
-          <nav className="flex flex-wrap items-center justify-center gap-6 text-[11px] font-semibold tracking-wider text-zinc-300 uppercase">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="hover:text-white transition-colors"
-              >
-                {link.name}
-              </a>
-            ))}
-          </nav>
-
-          {/* Social Icons on Right (Direct Match to Reference) */}
-          <div className="flex items-center gap-3">
-            <a
-              href={championship.socials.instagram}
-              target="_blank"
-              rel="noreferrer"
-              className="w-8 h-8 rounded-full border border-zinc-700/80 hover:border-[#E10600] text-zinc-400 hover:text-white flex items-center justify-center transition-colors"
-              aria-label="Instagram"
-            >
-              <Instagram size={14} />
-            </a>
-            <a
-              href={championship.socials.youtube}
-              target="_blank"
-              rel="noreferrer"
-              className="w-8 h-8 rounded-full border border-zinc-700/80 hover:border-[#E10600] text-zinc-400 hover:text-white flex items-center justify-center transition-colors"
-              aria-label="YouTube"
-            >
-              <Youtube size={14} />
-            </a>
-            <a
-              href={championship.socials.whatsapp}
-              target="_blank"
-              rel="noreferrer"
-              className="w-8 h-8 rounded-full border border-zinc-700/80 hover:border-emerald-500 text-zinc-400 hover:text-white flex items-center justify-center transition-colors"
-              aria-label="WhatsApp"
-            >
-              <MessageCircle size={14} />
-            </a>
-          </div>
-        </div>
-
-        {/* Sub-Footer Meta: Organizer Info & Copyright */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-500">
-          <div className="flex flex-wrap items-center gap-3">
-            <span>© 2027 Extreme Moto Enduro Cross Championship.</span>
-            <span>·</span>
-            <span>Powered by <a href={championship.organizer.referenceWebsite} target="_blank" rel="noreferrer" className="text-zinc-300 hover:text-white underline">{championship.organizer.name}</a></span>
-            <span>·</span>
-            <span>Pokhara, Nepal (+977 9867695261)</span>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <button
-              type="button"
-              onClick={openUploadModal}
-              className="hover:text-white flex items-center gap-1 cursor-pointer"
-            >
-              <Upload size={12} className="text-[#E10600]" />
-              <span>Upload Logo</span>
-            </button>
-            <button
-              type="button"
-              onClick={onOpenProposalModal}
-              className="hover:text-zinc-300 underline cursor-pointer"
-            >
-              Event Proposal
-            </button>
-            <button
-              type="button"
-              onClick={() => onOpenRegisterModal("rider")}
-              className="hover:text-[#E10600] font-semibold cursor-pointer"
-            >
-              Rider Portal
-            </button>
+    <footer className="bg-[#222224] text-zinc-300 text-xs pt-14 pb-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Main Row: Logo + 4 Minimal Columns (Direct Match to Reference Footer) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-10 border-b border-white/10">
+          {/* Column 1: Brand Mark */}
+          <div>
             <button
               type="button"
               onClick={scrollToTop}
-              className="hover:text-white flex items-center gap-1 cursor-pointer"
+              title="Return to top"
+              className={`px-3 py-1.5 rounded-lg inline-flex items-center cursor-pointer transition-opacity hover:opacity-90 ${
+                logoConfig.plateStyle === "white"
+                  ? "bg-white"
+                  : logoConfig.plateStyle === "dark"
+                  ? "bg-zinc-900 border border-white/15"
+                  : "bg-transparent"
+              }`}
             >
-              <span>Top</span>
-              <ArrowUp size={12} />
+              <div className="h-[32px] px-0.5 flex items-center justify-center">
+                <img
+                  src={logoConfig.url}
+                  alt="Moto Enduro Cross Championship"
+                  style={{ transform: `scale(${logoConfig.zoom / 100})` }}
+                  className="h-full w-auto max-w-[140px] object-contain select-none pointer-events-none"
+                />
+              </div>
+            </button>
+            <p className="text-zinc-400 mt-4 leading-relaxed">
+              Nepal&apos;s ultimate off-road motorsport championship in Pokhara.
+            </p>
+          </div>
+
+          {/* Column 2: Navigation */}
+          <div>
+            <h4 className="font-semibold text-white mb-3">Championship</h4>
+            <ul className="space-y-2 text-zinc-400">
+              {navLinks.map((link) => (
+                <li key={link.name}>
+                  <a href={link.href} className="hover:text-white transition-colors">
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 3: Organizer */}
+          <div>
+            <h4 className="font-semibold text-white mb-3">Organizer</h4>
+            <p className="text-zinc-400 leading-relaxed">
+              {championship.organizer.name}
+              <br />
+              {championship.organizer.address}
+              <br />
+              {championship.organizer.phoneDisplay}
+            </p>
+            <button
+              type="button"
+              onClick={onOpenProposalModal}
+              className="cursor-pointer text-white underline decoration-zinc-500 hover:decoration-white mt-3 inline-block"
+            >
+              Event Proposal
             </button>
           </div>
+
+          {/* Column 4: Connect */}
+          <div>
+            <h4 className="font-semibold text-white mb-3">Connect</h4>
+            <div className="flex items-center gap-2.5 mb-4">
+              <a
+                href={championship.socials.instagram}
+                target="_blank"
+                rel="noreferrer"
+                className="w-8 h-8 rounded-full border border-white/15 hover:border-white text-zinc-300 hover:text-white flex items-center justify-center transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram size={14} />
+              </a>
+              <a
+                href={championship.socials.youtube}
+                target="_blank"
+                rel="noreferrer"
+                className="w-8 h-8 rounded-full border border-white/15 hover:border-white text-zinc-300 hover:text-white flex items-center justify-center transition-colors"
+                aria-label="YouTube"
+              >
+                <Youtube size={14} />
+              </a>
+              <a
+                href={championship.socials.whatsapp}
+                target="_blank"
+                rel="noreferrer"
+                className="w-8 h-8 rounded-full border border-white/15 hover:border-white text-zinc-300 hover:text-white flex items-center justify-center transition-colors"
+                aria-label="WhatsApp"
+              >
+                <MessageCircle size={14} />
+              </a>
+            </div>
+            <button
+              type="button"
+              onClick={() => onOpenRegisterModal("rider")}
+              className="cursor-pointer text-xs font-semibold text-white bg-white/10 hover:bg-white/20 px-4 py-1.5 rounded-full transition-colors"
+            >
+              Rider Portal
+            </button>
+          </div>
+        </div>
+
+        {/* Bottom Copyright Row */}
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-400">
+          <span>© 2027 Extreme Moto Enduro Cross Championship · Adventure Sport Hub, Pokhara</span>
+          <button
+            type="button"
+            onClick={scrollToTop}
+            className="cursor-pointer hover:text-white inline-flex items-center gap-1 transition-colors"
+          >
+            <span>Back to top</span>
+            <ArrowUp size={12} />
+          </button>
         </div>
       </div>
     </footer>

@@ -1,142 +1,91 @@
 import React from "react";
-import { ChevronDown, MapPin, Calendar, Flag, Sparkles, ShieldCheck } from "lucide-react";
 import { EVENT_CONFIG } from "../data/eventConfig";
-import { MotocrossPhoto } from "./MotocrossPhoto";
 
 interface HeroProps {
   onOpenRegisterModal: (defaultTab?: "rider" | "sponsor" | "vendor" | "media" | "general") => void;
   onOpenProposalModal: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onOpenRegisterModal, onOpenProposalModal }) => {
+export const Hero: React.FC<HeroProps> = ({ onOpenProposalModal }) => {
   const { championship } = EVENT_CONFIG;
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden">
-      {/* Cinematic Background Layer */}
+    <section
+      id="hero"
+      className="relative bg-[#08080A] text-white pt-28 pb-32 sm:pt-32 sm:pb-40 overflow-hidden"
+    >
+      {/* Centered Backlit Motocross Hero Portrait */}
       <div className="absolute inset-0 z-0">
-        <MotocrossPhoto
-          src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1920&q=85"
-          alt="Extreme motocross rider jumping against mountainous sky"
-          fallbackType="hero-jump"
-          className="w-full h-full object-cover"
+        <img
+          src="/src/assets/images/hero_motocross_rider_1794590872372.jpg"
+          alt="Extreme Moto Enduro Cross Championship Rider"
+          referrerPolicy="no-referrer"
+          className="w-full h-full object-cover object-center opacity-85"
         />
-        {/* Deep layered gradient scrims ensuring > 4.5:1 WCAG contrast */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-black/50" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-transparent to-black/70" />
-        
-        {/* Subtle dynamic particle & grid overlay */}
-        <div 
-          className="absolute inset-0 opacity-15 pointer-events-none"
+        {/* Clean Crimson & Charcoal Contrast Scrims */}
+        <div
+          className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, #ffffff 1px, transparent 0)`,
-            backgroundSize: "40px 40px"
+            background:
+              "radial-gradient(circle at 50% 42%, rgba(214, 10, 25, 0.25) 0%, rgba(8, 8, 10, 0.65) 55%, #08080A 92%)"
           }}
         />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-transparent to-[#08080A]" />
       </div>
 
-      {/* Hero Content Container */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between">
-        <div className="max-w-2xl">
-          {/* Red Kicker with Dash (matching reference) */}
-          <div className="flex items-center gap-2 mb-3">
-            <span className="w-5 h-[2px] bg-[#E10600]" />
-            <span className="text-[11px] font-mono tracking-widest uppercase font-bold text-[#E10600]">
-              POKHARA MOTORSPORT · {championship.year} EDITION
-            </span>
-          </div>
+      {/* Balanced Editorial Hero Content */}
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
+          {/* Left Headline Block */}
+          <div className="max-w-xl">
+            <p className="text-xs font-medium tracking-wider uppercase text-zinc-300 mb-3">
+              Pokhara, Nepal <span aria-hidden="true">·</span> {championship.year} Championship
+            </p>
 
-          {/* Main Headline in Condensed Display Font (matching reference) */}
-          <h1 className="font-heading font-black text-6xl sm:text-7xl lg:text-8xl tracking-tighter uppercase text-white leading-[0.88] mb-4 text-balance">
-            EXTREME MOTO<br />
-            <span className="text-[#E10600]">ENDURO CROSS</span><br />
-            CHAMPIONSHIP
-          </h1>
+            <h1 className="font-heading font-black text-5xl sm:text-6xl lg:text-7xl uppercase tracking-tight text-white leading-[0.92] mb-4 text-balance">
+              WELCOME TO EXTREME MOTO ENDURO CROSS
+            </h1>
 
-          {/* Supporting Description (2 clean lines matching reference) */}
-          <p className="text-sm sm:text-base text-zinc-300 font-normal leading-relaxed max-w-lg mb-8">
-            Nepal's ultimate off-road motorsport experience. 80+ competing riders, brutal boulder matrix obstacles, and 10,000+ passionate spectators in Pokhara.
-          </p>
+            <p className="text-sm sm:text-base text-zinc-300 leading-relaxed max-w-md mb-7">
+              80+ competing riders, natural boulder trails, and 10,000+ spectators in the heart of Pokhara.
+            </p>
 
-          {/* Action Buttons (matching reference: red button with arrow + outline with play icon) */}
-          <div className="flex flex-wrap items-center gap-4 mb-10">
-            <a
-              href="#experiences"
-              className="cursor-pointer inline-flex items-center gap-2.5 bg-[#E10600] hover:bg-[#b80500] text-white font-heading font-black tracking-wider uppercase text-xs px-6 py-3.5 rounded-[2px] transition-all shadow-xl shadow-red-950/50 hover:shadow-red-600/30"
-            >
-              <span>EXPLORE RACE</span>
-              <span className="text-sm font-bold">→</span>
-            </a>
-
-            <a
-              href="#gallery"
-              className="cursor-pointer inline-flex items-center gap-2.5 bg-black/60 hover:bg-white/10 text-white font-heading font-bold tracking-wider uppercase text-xs px-6 py-3.5 rounded-[2px] border border-zinc-700/80 hover:border-zinc-400 transition-all backdrop-blur-sm"
-            >
-              <span className="w-4 h-4 rounded-full border border-zinc-400 flex items-center justify-center text-[9px] text-[#E10600]">
-                ▶
-              </span>
-              <span>WATCH AFTERMOVIE</span>
-            </a>
-          </div>
-
-          {/* Trust Marker Footer Bar */}
-          <div className="pt-4 border-t border-zinc-800/80 flex flex-wrap items-center gap-4 text-xs text-zinc-400">
-            <div className="flex items-center gap-1.5">
-              <span className="text-zinc-500 uppercase text-[10px] font-mono">Host:</span>
+            <div className="flex flex-wrap items-center gap-4">
               <a
-                href={championship.organizer.referenceWebsite}
-                target="_blank"
-                rel="noreferrer"
-                className="text-zinc-200 hover:text-white font-semibold underline decoration-zinc-600"
+                href="#experiences"
+                className="cursor-pointer inline-flex items-center justify-center bg-white hover:bg-stone-100 text-zinc-900 font-semibold text-xs sm:text-sm px-6 py-2.5 rounded-full transition-colors shadow-lg whitespace-nowrap"
               >
-                {championship.organizer.name}
+                Explore Race
+              </a>
+
+              <a
+                href="#gallery"
+                className="cursor-pointer inline-flex items-center gap-2 text-xs sm:text-sm font-medium text-zinc-200 hover:text-white transition-colors px-3 py-2"
+              >
+                <span>Watch Highlights</span>
+                <span aria-hidden="true">→</span>
               </a>
             </div>
-            <span className="text-zinc-700" aria-hidden="true">·</span>
-            <div className="flex items-center gap-1.5">
-              <ShieldCheck size={13} className="text-emerald-500" />
-              <span>FIM Marshal Standards</span>
-            </div>
-            <span className="text-zinc-700" aria-hidden="true">·</span>
-            <div className="flex items-center gap-1.5">
-              <Sparkles size={13} className="text-[#E10600]" />
-              <span>Sanctioned Pokhara Arena</span>
-            </div>
           </div>
-        </div>
 
-        {/* Vertical Pagination Indicator (matching right side of reference) */}
-        <div className="hidden md:flex flex-col items-end gap-3 text-xs font-mono select-none">
-          <div className="flex items-center gap-2 text-[#E10600] font-bold">
-            <span className="w-4 h-[2px] bg-[#E10600]" />
-            <span>01</span>
-          </div>
-          <div className="flex items-center gap-2 text-zinc-600 hover:text-zinc-400 cursor-pointer transition-colors">
-            <span className="w-1.5 h-1.5 rounded-full bg-zinc-700" />
-            <span>02</span>
-          </div>
-          <div className="flex items-center gap-2 text-zinc-600 hover:text-zinc-400 cursor-pointer transition-colors">
-            <span className="w-1.5 h-1.5 rounded-full bg-zinc-700" />
-            <span>03</span>
-          </div>
-          <div className="flex items-center gap-2 text-zinc-600 hover:text-zinc-400 cursor-pointer transition-colors">
-            <span className="w-1.5 h-1.5 rounded-full bg-zinc-700" />
-            <span>04</span>
+          {/* Right Quiet Editorial Metadata */}
+          <div className="flex flex-col md:items-end text-left md:text-right gap-1.5 text-xs text-zinc-300">
+            <span className="font-heading font-bold text-lg sm:text-xl uppercase tracking-wide text-white">
+              Adventure Sport Hub
+            </span>
+            <span className="text-zinc-400">
+              Official Off-Road Championship <span aria-hidden="true">·</span> FIM Standards
+            </span>
+            <button
+              type="button"
+              onClick={onOpenProposalModal}
+              className="cursor-pointer text-xs text-zinc-300 hover:text-white underline decoration-zinc-500 underline-offset-4 md:self-end mt-1"
+            >
+              View Sponsorship Prospectus
+            </button>
           </div>
         </div>
       </div>
-
-      {/* Animated Scroll Indicator (Double Chevron matching reference) */}
-      <a
-        href="#achievements"
-        aria-label="Scroll to event achievements"
-        className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center text-zinc-500 hover:text-[#E10600] transition-colors group cursor-pointer"
-      >
-        <span className="text-xs font-mono -space-y-1 flex flex-col items-center">
-          <ChevronDown size={16} className="text-zinc-500 group-hover:text-[#E10600] transition-colors" />
-          <ChevronDown size={16} className="-mt-2 text-[#E10600] animate-bounce" />
-        </span>
-      </a>
     </section>
   );
 };

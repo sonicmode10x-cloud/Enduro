@@ -53,7 +53,7 @@ export const LogoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return defaultState;
   });
 
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(true);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
   // Persist custom logo changes to localStorage
   const saveConfig = (newConfig: LogoConfig) => {

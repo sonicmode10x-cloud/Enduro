@@ -1,6 +1,5 @@
 import React from "react";
-import { INFLUENCERS, InfluencerProfile } from "../data/eventConfig";
-import { Youtube, Instagram, Share2, Quote, Sparkles, Send, TrendingUp } from "lucide-react";
+import { INFLUENCERS } from "../data/eventConfig";
 
 interface InfluencersSectionProps {
   onOpenRegisterModal: (defaultTab?: "rider" | "sponsor" | "vendor" | "media" | "general") => void;
@@ -8,166 +7,113 @@ interface InfluencersSectionProps {
 
 export const InfluencersSection: React.FC<InfluencersSectionProps> = ({ onOpenRegisterModal }) => {
   return (
-    <section id="influencers" className="py-24 bg-[#09090b] relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-[#E50920] mb-2">
-              <span>DIGITAL AMPLIFICATION</span>
-              <span className="text-zinc-600" aria-hidden="true">·</span>
-              <span className="text-zinc-400">50+ CREATORS</span>
-            </div>
-            <h2 className="font-heading font-black text-4xl sm:text-6xl uppercase tracking-tight text-white leading-[0.95] text-balance">
-              THE POWER OF MOTORSPORT.<br />
-              <span className="text-[#E50920]">THE REACH OF DIGITAL CULTURE.</span>
+    <section id="influencers" className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto">
+        {/* Clean Section Header (Matching Reference "MORE") */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+          <div>
+            <p className="text-xs font-medium text-[#D60A19] mb-1">
+              Digital Culture <span aria-hidden="true">·</span> 50+ Creators
+            </p>
+            <h2 className="font-heading font-black text-3xl sm:text-5xl uppercase tracking-tight text-zinc-900 leading-none">
+              CREATORS & MEDIA
             </h2>
           </div>
 
           <button
             type="button"
             onClick={() => onOpenRegisterModal("media")}
-            className="cursor-pointer inline-flex items-center gap-2 font-heading font-bold uppercase text-xs px-5 py-3 bg-[#E50920] hover:bg-[#c70719] text-white clip-slanted transition-all shadow-md whitespace-nowrap self-start md:self-auto"
+            className="cursor-pointer bg-[#242426] hover:bg-zinc-900 text-white font-semibold text-xs px-5 py-2.5 rounded-full transition-colors self-start md:self-auto whitespace-nowrap"
           >
-            <Send size={13} />
-            <span>MEDIA ACCREDITATION</span>
+            Media Accreditation
           </button>
         </div>
 
-        {/* Digital Reach KPI Bar */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4 bg-[#0d0d10] border border-zinc-800 mb-10">
-          <div className="p-3.5 bg-zinc-950 border border-zinc-800/80">
-            <span className="text-[10px] font-mono text-zinc-500 uppercase">Creator Roster</span>
-            <div className="font-heading font-black text-3xl text-white mt-0.5 tabular-nums">50+</div>
-            <p className="text-[11px] text-zinc-400 mt-0.5">Vloggers & action creators</p>
-          </div>
-          <div className="p-3.5 bg-zinc-950 border border-zinc-800/80">
-            <span className="text-[10px] font-mono text-zinc-500 uppercase">Combined Audience</span>
-            <div className="font-heading font-black text-3xl text-white mt-0.5 tabular-nums">2.5M - 4M+</div>
-            <p className="text-[11px] text-zinc-400 mt-0.5">Followers on YT, IG & TikTok</p>
-          </div>
-          <div className="p-3.5 bg-zinc-950 border border-zinc-800/80">
-            <span className="text-[10px] font-mono text-zinc-500 uppercase">Projected Impressions</span>
-            <div className="font-heading font-black text-3xl text-[#E50920] mt-0.5 tabular-nums">5M - 10M+</div>
-            <p className="text-[11px] text-zinc-400 mt-0.5">Total campaign impressions</p>
-          </div>
-          <div className="p-3.5 bg-zinc-950 border border-zinc-800/80">
-            <span className="text-[10px] font-mono text-zinc-500 uppercase">Channels</span>
-            <div className="font-heading font-bold text-xl text-white mt-1">
-              <span className="text-xs font-semibold text-zinc-300">YT · IG · FB · TT</span>
+        {/* Clean 4-Metric Reach Strip */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+          <div className="bg-white rounded-2xl border border-stone-200/80 p-4">
+            <div className="text-xs text-zinc-500">Creator Roster</div>
+            <div className="font-heading font-black text-2xl sm:text-3xl text-zinc-900 tabular-nums mt-0.5">
+              50+
             </div>
-            <p className="text-[11px] text-zinc-400 mt-1">Youth audience reach</p>
+            <p className="text-xs text-zinc-500 mt-0.5">Vloggers & creators</p>
+          </div>
+          <div className="bg-white rounded-2xl border border-stone-200/80 p-4">
+            <div className="text-xs text-zinc-500">Combined Audience</div>
+            <div className="font-heading font-black text-2xl sm:text-3xl text-zinc-900 tabular-nums mt-0.5">
+              2.5M - 4M+
+            </div>
+            <p className="text-xs text-zinc-500 mt-0.5">YT, IG & TikTok reach</p>
+          </div>
+          <div className="bg-white rounded-2xl border border-stone-200/80 p-4">
+            <div className="text-xs text-zinc-500">Projected Impressions</div>
+            <div className="font-heading font-black text-2xl sm:text-3xl text-[#D60A19] tabular-nums mt-0.5">
+              5M - 10M+
+            </div>
+            <p className="text-xs text-zinc-500 mt-0.5">Total campaign views</p>
+          </div>
+          <div className="bg-white rounded-2xl border border-stone-200/80 p-4">
+            <div className="text-xs text-zinc-500">Channels</div>
+            <div className="font-heading font-bold text-xl text-zinc-900 mt-1">
+              YT · IG · FB · TT
+            </div>
+            <p className="text-xs text-zinc-500 mt-1">Youth motorsport reach</p>
           </div>
         </div>
 
-        {/* Influencer Profile Grid (Featured in Proposal Brochure) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {INFLUENCERS.map((creator) => {
-            return (
-              <div
-                key={creator.name}
-                className="group relative bg-[#0d0d10] border border-zinc-800 p-6 flex flex-col justify-between transition-all hover:border-[#E50920] hover:bg-zinc-900/90 hover:shadow-xl"
-              >
-                {/* Hairline red accent top */}
-                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#E50920] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                <div>
-                  {/* Badge & Platforms Header */}
-                  <div className="flex items-center justify-between pb-4 border-b border-zinc-800/80 mb-4">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#E50920] font-bold">
-                      {creator.badge}
-                    </span>
-                    <div className="flex items-center gap-1.5 text-xs text-zinc-400">
-                      {creator.platforms.map((p) => (
-                        <span key={p} className="text-[11px] font-mono text-zinc-400">
-                          {p === "YouTube" ? "YT" : p === "Instagram" ? "IG" : p === "TikTok" ? "TT" : "FB"}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Profile Header */}
-                  <div className="flex items-start gap-4 mb-4">
-                    {/* Stylized Creator Avatar */}
-                    <div className="w-14 h-14 bg-zinc-800 border border-zinc-700 overflow-hidden flex items-center justify-center font-heading font-black text-2xl text-white shrink-0 group-hover:border-[#E50920] group-hover:text-[#E50920] transition-colors relative">
-                      {creator.photoUrl ? (
-                        <img
-                          src={creator.photoUrl}
-                          alt={creator.name}
-                          referrerPolicy="no-referrer"
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            (e.target as HTMLElement).style.display = "none";
-                          }}
-                        />
-                      ) : null}
-                      <span className="absolute inset-0 flex items-center justify-center -z-10 font-heading font-black text-xl text-zinc-500">
-                        {creator.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </span>
-                    </div>
-
-                    <div>
-                      <h3 className="font-heading font-black text-2xl uppercase text-white group-hover:text-zinc-100 transition-colors">
-                        {creator.name}
-                      </h3>
-                      <p className="text-xs font-semibold text-[#E50920] uppercase tracking-wide">
-                        {creator.role}
-                      </p>
-                      <p className="text-[11px] font-mono text-zinc-400 mt-0.5">
-                        {creator.reach}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Focus Area */}
-                  <div className="p-3 bg-zinc-950 border border-zinc-800/70 mb-4 text-xs">
-                    <span className="text-[10px] font-mono uppercase text-zinc-500 block mb-0.5">
-                      Content Focus
-                    </span>
-                    <p className="text-zinc-300 font-medium leading-relaxed">
-                      {creator.focus}
-                    </p>
-                  </div>
-
-                  {/* Quote */}
-                  <div className="relative pl-3 border-l-2 border-zinc-700 italic text-xs text-zinc-400 leading-relaxed mb-4">
-                    "{creator.quote}"
-                  </div>
+        {/* Clean 2-Column Horizontal Editorial Cards (Matching Reference "MORE" section) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {INFLUENCERS.map((creator, idx) => (
+            <div
+              key={creator.name}
+              className="bg-white rounded-2xl border border-stone-200/80 p-5 sm:p-6 flex flex-col justify-between shadow-xs"
+            >
+              <div className="flex items-start gap-4">
+                {/* Clean Rounded Thumbnail Block */}
+                <div className="w-20 h-20 rounded-2xl bg-[#242426] text-white flex flex-col items-center justify-center shrink-0">
+                  <span className="font-heading font-black text-2xl tracking-wide">
+                    {creator.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </span>
+                  <span className="text-[10px] text-zinc-400 uppercase mt-0.5">
+                    0{idx + 1}
+                  </span>
                 </div>
 
-                {/* Footer Action */}
-                <div className="pt-4 border-t border-zinc-800/80 flex items-center justify-between text-xs">
-                  <span className="text-zinc-500">Official Creator Roster</span>
-                  <button
-                    type="button"
-                    onClick={() => onOpenRegisterModal("media")}
-                    className="cursor-pointer text-[#E50920] hover:text-white font-semibold transition-colors"
-                  >
-                    Collaborate →
-                  </button>
+                {/* Clean Text Content */}
+                <div className="min-w-0 flex-1">
+                  <div className="text-xs font-medium text-[#D60A19]">
+                    {creator.badge} <span aria-hidden="true">·</span>{" "}
+                    {creator.platforms.map((p) => (p === "YouTube" ? "YT" : p === "Instagram" ? "IG" : p === "TikTok" ? "TT" : "FB")).join(" / ")}
+                  </div>
+                  <h3 className="font-heading font-black text-2xl uppercase text-zinc-900 mt-0.5 truncate">
+                    {creator.name}
+                  </h3>
+                  <p className="text-xs text-zinc-600 mt-0.5">
+                    {creator.role} <span aria-hidden="true">·</span> {creator.focus}
+                  </p>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
 
-        {/* Media Credentials Callout */}
-        <div className="mt-12 p-6 bg-zinc-900/40 border border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        {/* Clean Press Callout */}
+        <div className="mt-8 p-6 bg-white rounded-2xl border border-stone-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h4 className="font-heading font-bold text-lg uppercase text-white">
-              Are you a photographer, videographer, or moto-journalist?
+            <h4 className="font-heading font-bold text-xl uppercase text-zinc-900">
+              Photographer, Videographer, or Moto-Journalist?
             </h4>
-            <p className="text-xs text-zinc-400 mt-0.5">
-              Accredited press passes grant exclusive infield track access, media center workstations, high-speed WiFi, and direct rider interview availability.
+            <p className="text-xs text-zinc-600 mt-1">
+              Accredited press passes grant infield track access, media center workstations, and rider interviews.
             </p>
           </div>
           <button
             type="button"
             onClick={() => onOpenRegisterModal("media")}
-            className="cursor-pointer font-heading font-bold uppercase text-xs px-5 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-600 clip-slanted whitespace-nowrap shrink-0 transition-colors"
+            className="cursor-pointer bg-[#242426] hover:bg-zinc-900 text-white text-xs font-semibold px-5 py-2.5 rounded-full whitespace-nowrap shrink-0 transition-colors"
           >
             Apply for Media Pass
           </button>

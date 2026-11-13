@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState } from "react";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
@@ -37,68 +32,68 @@ export default function App() {
 
   return (
     <LogoProvider>
-      <div className="min-h-screen bg-[#050507] text-[#f4f4f5] selection:bg-[#E10600] selection:text-white font-sans">
-        {/* Sticky Navigation */}
+      <div className="min-h-screen bg-[#EAE8E3] text-zinc-900 selection:bg-[#D60A19] selection:text-white font-sans">
+        {/* Clean Minimal Sticky Navigation */}
         <Navbar onOpenRegisterModal={handleOpenRegisterModal} />
 
-      <main>
-        {/* Section 1 & 3: Hero Section */}
-        <Hero
+        <main>
+          {/* Hero Section */}
+          <Hero
+            onOpenRegisterModal={handleOpenRegisterModal}
+            onOpenProposalModal={handleOpenProposalModal}
+          />
+
+          {/* Floating Information & Benchmarks Overlap Card */}
+          <StatsCounter />
+
+          {/* Event Experiences Showcase Grid */}
+          <EventExperiences />
+
+          {/* Split Red & Charcoal Feature Banner: Creating Champions */}
+          <ChampionshipPillars onOpenRegisterModal={handleOpenRegisterModal} />
+
+          {/* Official Pokhara Circuit Map & Telemetry */}
+          <TrackArenaMap />
+
+          {/* Championship Visual Archive */}
+          <GallerySection />
+
+          {/* Influencers & Digital Media Reach */}
+          <InfluencersSection onOpenRegisterModal={handleOpenRegisterModal} />
+
+          {/* FIM Safety & Event Management Standards */}
+          <SafetySection />
+
+          {/* Contact & Rapid Registration Portals */}
+          <ContactSection onOpenRegisterModal={handleOpenRegisterModal} />
+
+          {/* Floating Pre-Footer Registration Banner overlapping Footer */}
+          <PreFooterCta onOpenRegisterModal={handleOpenRegisterModal} />
+        </main>
+
+        {/* Matte Charcoal Footer */}
+        <Footer
           onOpenRegisterModal={handleOpenRegisterModal}
           onOpenProposalModal={handleOpenProposalModal}
         />
 
-        {/* Section 4: Event Achievements & Aerodynamic Ribbon Numbers */}
-        <StatsCounter />
+        {/* Registration Modal */}
+        <RegistrationModal
+          isOpen={registerModalOpen}
+          onClose={() => setRegisterModalOpen(false)}
+          initialTab={activeFormTab}
+        />
 
-        {/* Section 6: The Event Experience / Disciplines */}
-        <EventExperiences />
+        {/* Sponsorship Proposal Modal */}
+        <ProposalModal
+          isOpen={proposalModalOpen}
+          onClose={() => setProposalModalOpen(false)}
+          onRequestMeeting={() => handleOpenRegisterModal("sponsor")}
+        />
 
-        {/* Section 5: Creating Champions Pillars (matching reference) */}
-        <ChampionshipPillars onOpenRegisterModal={handleOpenRegisterModal} />
-
-        {/* Section 7: Race Arena and Event Layout */}
-        <TrackArenaMap />
-
-        {/* Section 8: Previous Championship Gallery */}
-        <GallerySection />
-
-        {/* Section 9: Influencers and Media */}
-        <InfluencersSection onOpenRegisterModal={handleOpenRegisterModal} />
-
-        {/* Section 12: Safety and Event Management */}
-        <SafetySection />
-
-        {/* Pre-Footer Action Banner (matching reference) */}
-        <PreFooterCta onOpenRegisterModal={handleOpenRegisterModal} />
-
-        {/* Section 15: Contact and Registration */}
-        <ContactSection onOpenRegisterModal={handleOpenRegisterModal} />
-      </main>
-
-      {/* Section 16: Footer */}
-      <Footer
-        onOpenRegisterModal={handleOpenRegisterModal}
-        onOpenProposalModal={handleOpenProposalModal}
-      />
-
-      {/* Multi-Form Registration Modal (Rider, Sponsor, Vendor, Media, General) */}
-      <RegistrationModal
-        isOpen={registerModalOpen}
-        onClose={() => setRegisterModalOpen(false)}
-        initialTab={activeFormTab}
-      />
-
-      {/* Sponsorship Proposal PDF / Presentation Deck Modal */}
-      <ProposalModal
-        isOpen={proposalModalOpen}
-        onClose={() => setProposalModalOpen(false)}
-        onRequestMeeting={() => handleOpenRegisterModal("sponsor")}
-      />
-
-      {/* Championship Brand Logo Upload & Customization Modal */}
-      <LogoUploadModal />
-    </div>
+        {/* Championship Logo Modal */}
+        <LogoUploadModal />
+      </div>
     </LogoProvider>
   );
 }

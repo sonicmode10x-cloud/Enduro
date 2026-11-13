@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { X, Send, Phone, CheckCircle2, AlertCircle, Trophy, Building2, Store, Camera, MessageSquare } from "lucide-react";
 import { EVENT_CONFIG } from "../data/eventConfig";
 
@@ -19,6 +19,13 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submittedData, setSubmittedData] = useState<Record<string, string> | null>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setActiveTab(initialTab);
+      setSubmitSuccess(false);
+    }
+  }, [isOpen, initialTab]);
 
   // Rider Form State
   const [riderForm, setRiderForm] = useState({
