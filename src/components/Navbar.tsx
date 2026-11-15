@@ -23,6 +23,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegisterModal }) => {
   const navLinks = [
     { name: "Moto Enduro", href: "#experiences" },
     { name: "Himalayan Enduro", href: "#himalayan-enduro" },
+    { name: "2026 Edition", href: "#moto-enduro-2026" },
+    { name: "2024 Edition", href: "#moto-enduro-2024" },
     { name: "Race Map", href: "#arena-layout" },
     { name: "Gallery", href: "#gallery" },
     { name: "Media", href: "#influencers" },
@@ -71,7 +73,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegisterModal }) => {
             </a>
 
             {/* Zone 2: Clean Single-Line Nav Links */}
-            <nav className="hidden lg:flex items-center gap-6 text-[15px] font-heading font-bold uppercase tracking-wider text-white/95">
+            <nav className="hidden lg:flex items-center gap-5 text-[15px] font-heading font-bold uppercase tracking-wider text-white/95">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
