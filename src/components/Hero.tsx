@@ -1,18 +1,42 @@
 import React from "react";
+import { Calendar, ArrowUpRight, MapPin } from "lucide-react";
 import { EVENT_CONFIG } from "../data/eventConfig";
+import { FormTab } from "./RegistrationModal";
 
 interface HeroProps {
-  onOpenRegisterModal: (defaultTab?: "rider" | "sponsor" | "vendor" | "media" | "general") => void;
+  onOpenRegisterModal: (defaultTab?: FormTab, eventName?: string) => void;
   onOpenProposalModal: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onOpenProposalModal }) => {
+const UPCOMING_EVENTS = [
+  {
+    id: "pokhara-2027",
+    title: "Himalayan Enduro 2027 Pokhara",
+    date: "April 5 & 6, 2027",
+    location: "Pokhara, Nepal",
+    status: "Registration Open",
+    modalValue: "Himalayan Enduro 2027 Pokhara (April 5 & 6)"
+  },
+  {
+    id: "everest-2027",
+    title: "Himalayan Enduro 2027 Everest",
+    date: "November 2027",
+    location: "Everest Corridor · Route TBA",
+    status: "Registration Open",
+    modalValue: "Himalayan Enduro 2027 Everest (Nov 2027)"
+  }
+];
+
+export const Hero: React.FC<HeroProps> = ({
+  onOpenRegisterModal,
+  onOpenProposalModal
+}) => {
   const { championship } = EVENT_CONFIG;
 
   return (
     <section
       id="hero"
-      className="relative bg-[#08080A] text-white pt-28 pb-16 sm:pt-32 sm:pb-24 overflow-hidden"
+      className="relative bg-[#08080A] text-white pt-28 pb-12 sm:pt-32 sm:pb-16 overflow-hidden"
     >
       {/* Pokhara Motocross Action Hero Photo */}
       <div className="absolute inset-0 z-0 overflow-hidden">
@@ -83,6 +107,54 @@ export const Hero: React.FC<HeroProps> = ({ onOpenProposalModal }) => {
             >
               View Sponsorship Prospectus
             </button>
+          </div>
+        </div>
+
+        {/* Upcoming Events Bar Overlaid Cleanly on Hero Canvas */}
+        <div className="mt-10 sm:mt-12 pt-6 border-t border-white/15">
+          <div className="flex items-center justify-between gap-4 mb-3.5">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-zinc-200">
+              <Calendar size={14} className="text-[#E50920]" />
+              <span>Upcoming Events 2027</span>
+            </div>
+            <a
+              href="#himalayan-enduro"
+              className="text-xs font-medium text-zinc-300 hover:text-white transition-colors"
+            >
+              Full Schedule <span aria-hidden="true">→</span>
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {UPCOMING_EVENTS.map((ev) => (
+              <button
+                key={ev.id}
+                type="button"
+                onClick={() => onOpenRegisterModal("rider", ev.modalValue)}
+                className="group cursor-pointer text-left rounded-2xl bg-black/55 hover:bg-black/75 backdrop-blur-md border border-white/15 hover:border-white/35 p-4 transition-all flex flex-col justify-between gap-3"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2 text-[11px] font-semibold">
+                    <span className="text-emerald-400">{ev.status}</span>
+                    <span className="text-zinc-300 tabular-nums">{ev.date}</span>
+                  </div>
+                  <h2 className="font-heading font-bold text-lg sm:text-xl uppercase tracking-tight text-white mt-1 group-hover:text-stone-100 leading-tight">
+                    {ev.title}
+                  </h2>
+                </div>
+
+                <div className="flex items-center justify-between gap-2 text-xs text-zinc-300 pt-2 border-t border-white/10">
+                  <span className="inline-flex items-center gap-1.5 truncate">
+                    <MapPin size={12} className="text-[#E50920] shrink-0" />
+                    <span className="truncate">{ev.location}</span>
+                  </span>
+                  <span className="inline-flex items-center gap-1 font-semibold text-white group-hover:translate-x-0.5 transition-transform shrink-0">
+                    <span>Register</span>
+                    <ArrowUpRight size={13} />
+                  </span>
+                </div>
+              </button>
+            ))}
           </div>
         </div>
       </div>

@@ -24,8 +24,8 @@ export const Footer: React.FC<FooterProps> = ({
 
   const navLinks = [
     { name: "Home", href: "#hero" },
+    { name: "Upcoming Events", href: "#upcoming-events" },
     { name: "Moto Enduro", href: "#experiences" },
-    { name: "Himalayan Enduro", href: "#himalayan-enduro" },
     { name: "2026 Edition", href: "#moto-enduro-2026" },
     { name: "2024 Edition", href: "#moto-enduro-2024" },
     { name: "Race Map", href: "#arena-layout" },
