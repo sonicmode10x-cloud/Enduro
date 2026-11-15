@@ -4,6 +4,8 @@
  * All dates, venues, contacts, metrics, and packages are maintained here.
  */
 
+import { LOCAL_IMAGES } from "../lib/localImages";
+
 export interface EventConfig {
   championship: {
     name: string;
@@ -117,7 +119,7 @@ export const TRACK_ZONES: TrackZone[] = [
     capacityOrLength: "450m technical loop",
     difficulty: "Extreme",
     viewingTip: "Hillside amphitheater with direct sightlines of rider traction battles.",
-    photoUrl: "/src/assets/images/hard_enduro_river_boulders_1794590872498.jpg",
+    photoUrl: LOCAL_IMAGES.hardEnduroRiverBoulders,
     coordinates: { x: 18, y: 22, width: 28, height: 26 }
   },
   {
@@ -130,7 +132,7 @@ export const TRACK_ZONES: TrackZone[] = [
     capacityOrLength: "1,200m sprint track",
     difficulty: "Pro / Advanced",
     viewingTip: "Grandstand A overlooks the holeshot and premier airborne jump.",
-    photoUrl: "/src/assets/images/motocross_mx_jump_1794590871773.jpg",
+    photoUrl: LOCAL_IMAGES.motocrossMxJump,
     coordinates: { x: 50, y: 15, width: 34, height: 32 }
   },
   {
@@ -143,7 +145,7 @@ export const TRACK_ZONES: TrackZone[] = [
     capacityOrLength: "180m mud zone",
     difficulty: "Extreme",
     viewingTip: "Standing rail area right at the water crossing for action shots.",
-    photoUrl: "/src/assets/images/hard_enduro_river_boulders_1794590872498.jpg",
+    photoUrl: LOCAL_IMAGES.hardEnduroRiverBoulders,
     coordinates: { x: 26, y: 52, width: 22, height: 24 }
   },
   {
@@ -156,7 +158,7 @@ export const TRACK_ZONES: TrackZone[] = [
     capacityOrLength: "100+ Team Bays",
     difficulty: "All Classes",
     viewingTip: "Paddock pass holders get direct autograph access.",
-    photoUrl: "/src/assets/images/hero_motocross_rider_1794590872372.jpg",
+    photoUrl: LOCAL_IMAGES.heroMotocrossRider,
     coordinates: { x: 4, y: 56, width: 20, height: 36 }
   },
   {
@@ -169,7 +171,7 @@ export const TRACK_ZONES: TrackZone[] = [
     capacityOrLength: "65-foot launch gap",
     difficulty: "Pro / Advanced",
     viewingTip: "Central arena provides 360-degree aerial views.",
-    photoUrl: "/src/assets/images/freestyle_stunt_fmx_1794590874480.jpg",
+    photoUrl: LOCAL_IMAGES.freestyleStuntFmx,
     coordinates: { x: 52, y: 52, width: 20, height: 22 }
   },
   {
@@ -182,7 +184,7 @@ export const TRACK_ZONES: TrackZone[] = [
     capacityOrLength: "400 VIP Guests",
     difficulty: "Public Access",
     viewingTip: "Highest vantage point over entire track with Annapurna view.",
-    photoUrl: "/src/assets/images/motocross_mx_jump_1794590871773.jpg",
+    photoUrl: LOCAL_IMAGES.motocrossMxJump,
     coordinates: { x: 74, y: 48, width: 22, height: 24 }
   },
   {
@@ -195,7 +197,7 @@ export const TRACK_ZONES: TrackZone[] = [
     capacityOrLength: "40+ Brand Booths",
     difficulty: "Public Access",
     viewingTip: "South gate boulevard with exclusive discounts.",
-    photoUrl: "/src/assets/images/enduro_helmet_studio_1794590872056.jpg",
+    photoUrl: LOCAL_IMAGES.enduroHelmetStudio,
     coordinates: { x: 30, y: 78, width: 36, height: 18 }
   },
   {
@@ -208,7 +210,7 @@ export const TRACK_ZONES: TrackZone[] = [
     capacityOrLength: "3,500 Festival Visitors",
     difficulty: "Public Access",
     viewingTip: "Central hub connecting moto action and evening afterparty.",
-    photoUrl: "/src/assets/images/freestyle_stunt_fmx_1794590874480.jpg",
+    photoUrl: LOCAL_IMAGES.freestyleStuntFmx,
     coordinates: { x: 68, y: 74, width: 28, height: 22 }
   }
 ];
@@ -629,7 +631,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     summary: "Following 80+ riders and 20M+ views, the 2027 edition expands with international heats in Pokhara.",
     readTime: "2 min read",
     author: "Race Committee",
-    photoUrl: "/src/assets/images/hero_motocross_rider_1794590872372.jpg"
+    photoUrl: LOCAL_IMAGES.heroMotocrossRider
   },
   {
     id: "pokhara-adventure-capital",
@@ -639,7 +641,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     summary: "Himalayan elevation and lakeside hospitality create the ultimate natural arena for motorsports.",
     readTime: "2 min read",
     author: "Editorial Desk",
-    photoUrl: "/src/assets/images/hard_enduro_river_boulders_1794590872498.jpg"
+    photoUrl: LOCAL_IMAGES.hardEnduroRiverBoulders
   },
   {
     id: "rider-registration-open",
@@ -649,7 +651,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     summary: "Classes open for Pro Open, Expert, Novice, and Veterans with international transport support.",
     readTime: "3 min read",
     author: "Scrutineering Bureau",
-    photoUrl: "/src/assets/images/motocross_mx_jump_1794590871773.jpg"
+    photoUrl: LOCAL_IMAGES.motocrossMxJump
   },
   {
     id: "corporate-partnerships-rolling",
@@ -659,7 +661,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
     summary: "Title sponsorship, category rights, and experiential booths open for 10,000+ attendee reach.",
     readTime: "2 min read",
     author: "Commercial Team",
-    photoUrl: "/src/assets/images/freestyle_stunt_fmx_1794590874480.jpg"
+    photoUrl: LOCAL_IMAGES.freestyleStuntFmx
   }
 ];
 
@@ -683,7 +685,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     caption: "20 riders launching simultaneously into the first high-banked clay corner under cloudless Pokhara skies.",
     tag: "Pro Open Heat 1",
     gradientColors: "from-red-950/80 via-neutral-900 to-black",
-    customUrl: "/src/assets/images/motocross_mx_jump_1794590871773.jpg"
+    customUrl: LOCAL_IMAGES.motocrossMxJump
   },
   {
     id: "g2",
@@ -693,7 +695,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     caption: "Hard enduro machine balancing across massive granite rocks on the steep mountain technical trail.",
     tag: "Technical Stage",
     gradientColors: "from-zinc-900 via-neutral-900 to-black",
-    customUrl: "/src/assets/images/hard_enduro_river_boulders_1794590872498.jpg"
+    customUrl: LOCAL_IMAGES.hardEnduroRiverBoulders
   },
   {
     id: "g3",
@@ -703,7 +705,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     caption: "A freestyle stunt rider sending a massive 25-meter leap with the majestic Himalayas reflected on the horizon.",
     tag: "Freestyle Stunt Show",
     gradientColors: "from-red-900/60 via-zinc-900 to-black",
-    customUrl: "/src/assets/images/freestyle_stunt_fmx_1794590874480.jpg"
+    customUrl: LOCAL_IMAGES.freestyleStuntFmx
   },
   {
     id: "g4",
@@ -713,7 +715,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     caption: "Riders and mechanics fine-tuning 250cc race machines before the opening drop.",
     tag: "Paddock Bay",
     gradientColors: "from-neutral-900 via-zinc-900 to-black",
-    customUrl: "/src/assets/images/hero_motocross_rider_1794590872372.jpg"
+    customUrl: LOCAL_IMAGES.heroMotocrossRider
   },
   {
     id: "g5",
@@ -723,7 +725,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     caption: "Passionate motorsport enthusiasts and adventure travelers lining the natural hills surrounding the race arena.",
     tag: "Hillside Arena",
     gradientColors: "from-red-950/70 via-neutral-950 to-black",
-    customUrl: "/src/assets/images/motocross_mx_jump_1794590871773.jpg"
+    customUrl: LOCAL_IMAGES.motocrossMxJump
   },
   {
     id: "g6",
@@ -733,7 +735,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     caption: "Leading travel vloggers and action film crews recording 4K slow-motion passes on the water trench obstacle.",
     tag: "Media Corridor",
     gradientColors: "from-zinc-900 via-neutral-950 to-black",
-    customUrl: "/src/assets/images/hard_enduro_river_boulders_1794590872498.jpg"
+    customUrl: LOCAL_IMAGES.hardEnduroRiverBoulders
   },
   {
     id: "g7",
@@ -743,7 +745,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     caption: "Official safety-spec motocross helmets and championship hardware inspected prior to main event finals.",
     tag: "Main Stage",
     gradientColors: "from-amber-950/70 via-neutral-900 to-black",
-    customUrl: "/src/assets/images/enduro_helmet_studio_1794590872056.jpg"
+    customUrl: LOCAL_IMAGES.enduroHelmetStudio
   },
   {
     id: "g8",
@@ -753,6 +755,6 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     caption: "Evening arena floodlights framing high-flying motorcycle stunts for thousands of Pokhara spectators.",
     tag: "FMX Class",
     gradientColors: "from-red-950/90 via-zinc-950 to-black",
-    customUrl: "/src/assets/images/freestyle_stunt_fmx_1794590874480.jpg"
+    customUrl: LOCAL_IMAGES.freestyleStuntFmx
   }
 ];

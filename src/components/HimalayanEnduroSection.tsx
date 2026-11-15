@@ -1,6 +1,7 @@
 import React from "react";
 import { Calendar, Map, CheckCircle2, ArrowRight, MapPin } from "lucide-react";
 import { FormTab } from "./RegistrationModal";
+import { LOCAL_IMAGES } from "../lib/localImages";
 
 interface HimalayanEnduroSectionProps {
   onOpenRegisterModal: (defaultTab?: FormTab, eventName?: string) => void;
@@ -17,9 +18,8 @@ export const HimalayanEnduroSection: React.FC<HimalayanEnduroSectionProps> = ({
           {/* Left Action Image Panel */}
           <div className="lg:col-span-5 relative min-h-[260px] lg:min-h-[360px] bg-zinc-950">
             <img
-              src="/src/assets/images/himalayan_enduro_pokhara_1794600531049.jpg"
+              src={LOCAL_IMAGES.himalayanEnduroPokhara}
               alt="Himalayan Enduro Pokhara Off-Road Mountain Trail Racing"
-              referrerPolicy="no-referrer"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
@@ -108,9 +108,8 @@ export const HimalayanEnduroSection: React.FC<HimalayanEnduroSectionProps> = ({
           {/* Left Action Image Panel */}
           <div className="lg:col-span-5 relative min-h-[260px] lg:min-h-[360px] bg-zinc-950">
             <img
-              src="/src/assets/images/hard_enduro_river_boulders_1794590872498.jpg"
+              src={LOCAL_IMAGES.hardEnduroRiverBoulders}
               alt="Himalayan Enduro 2027 Off-Road Mountain Racing"
-              referrerPolicy="no-referrer"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />

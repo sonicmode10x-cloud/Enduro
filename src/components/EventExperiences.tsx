@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { CheckCircle2, X } from "lucide-react";
 import { MotocrossPhoto } from "./MotocrossPhoto";
+import { LOCAL_IMAGES } from "../lib/localImages";
 
 interface ExperienceItem {
   id: string;
@@ -30,7 +31,7 @@ export const EventExperiences: React.FC = () => {
         "25m tabletop jumps and rhythm lines"
       ],
       graphicType: "hero-jump",
-      photoUrl: "/src/assets/images/motocross_mx_jump_1794590871773.jpg"
+      photoUrl: LOCAL_IMAGES.motocrossMxJump
     },
     {
       id: "enduro-challenge",
@@ -44,7 +45,7 @@ export const EventExperiences: React.FC = () => {
         "Elimination format racing"
       ],
       graphicType: "rock-matrix",
-      photoUrl: "/src/assets/images/hard_enduro_river_boulders_1794590872498.jpg"
+      photoUrl: LOCAL_IMAGES.hardEnduroRiverBoulders
     },
     {
       id: "freestyle-stunts",
@@ -58,7 +59,7 @@ export const EventExperiences: React.FC = () => {
         "Street burnout and wheelie shows"
       ],
       graphicType: "stunt-whip",
-      photoUrl: "/src/assets/images/freestyle_stunt_fmx_1794590874480.jpg"
+      photoUrl: LOCAL_IMAGES.freestyleStuntFmx
     },
     {
       id: "biker-parade",
@@ -72,7 +73,7 @@ export const EventExperiences: React.FC = () => {
         "Promoting helmet safety"
       ],
       graphicType: "pokhara-himalayas",
-      photoUrl: "/src/assets/images/hero_motocross_rider_1794590872372.jpg"
+      photoUrl: LOCAL_IMAGES.heroMotocrossRider
     },
     {
       id: "music-entertainment",
@@ -86,7 +87,7 @@ export const EventExperiences: React.FC = () => {
         "Evening acoustic sunset lounge"
       ],
       graphicType: "crowd",
-      photoUrl: "/src/assets/images/freestyle_stunt_fmx_1794590874480.jpg"
+      photoUrl: LOCAL_IMAGES.freestyleStuntFmx
     },
     {
       id: "food-lifestyle",
@@ -100,7 +101,7 @@ export const EventExperiences: React.FC = () => {
         "Artisanal coffee and juice bars"
       ],
       graphicType: "paddock",
-      photoUrl: "/src/assets/images/motocross_mx_jump_1794590871773.jpg"
+      photoUrl: LOCAL_IMAGES.motocrossMxJump
     },
     {
       id: "brand-expo",
@@ -114,7 +115,7 @@ export const EventExperiences: React.FC = () => {
         "Discounts on helmets and jackets"
       ],
       graphicType: "paddock",
-      photoUrl: "/src/assets/images/enduro_helmet_studio_1794590872056.jpg"
+      photoUrl: LOCAL_IMAGES.enduroHelmetStudio
     },
     {
       id: "afterparty-meetup",
@@ -128,7 +129,7 @@ export const EventExperiences: React.FC = () => {
         "Signature closing DJ party"
       ],
       graphicType: "crowd",
-      photoUrl: "/src/assets/images/hero_motocross_rider_1794590872372.jpg"
+      photoUrl: LOCAL_IMAGES.heroMotocrossRider
     }
   ];
 

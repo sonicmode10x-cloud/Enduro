@@ -1,4 +1,5 @@
 import React from "react";
+import { LOCAL_IMAGES } from "../lib/localImages";
 
 interface ChampionshipPillarsProps {
   onOpenRegisterModal: (defaultTab?: "rider" | "sponsor" | "vendor" | "media" | "general") => void;
@@ -32,9 +33,8 @@ export const ChampionshipPillars: React.FC<ChampionshipPillarsProps> = ({ onOpen
           {/* Left Panel: Bold Racing Red Photography */}
           <div className="lg:col-span-6 relative min-h-[260px] lg:min-h-[360px] bg-[#C80815]">
             <img
-              src="/src/assets/images/motocross_mx_jump_1794590871773.jpg"
+              src={LOCAL_IMAGES.motocrossMxJump}
               alt="Pokhara Motocross Action"
-              referrerPolicy="no-referrer"
               className="w-full h-full object-cover mix-blend-luminosity opacity-85"
             />
             <div className="absolute inset-0 bg-gradient-to-tr from-[#99050F]/80 via-[#C80815]/45 to-transparent" />

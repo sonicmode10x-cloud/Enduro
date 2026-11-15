@@ -5,7 +5,6 @@ import { PartnerStrip } from "./components/PartnerStrip";
 import { StatsCounter } from "./components/StatsCounter";
 import { EventExperiences } from "./components/EventExperiences";
 import { HimalayanEnduroSection } from "./components/HimalayanEnduroSection";
-import { RiderTrackerSection } from "./components/RiderTrackerSection";
 import { TrackArenaMap } from "./components/TrackArenaMap";
 import { GallerySection } from "./components/GallerySection";
 import { InfluencersSection } from "./components/InfluencersSection";
@@ -99,12 +98,6 @@ export default function App() {
 
           {/* New Events: Himalayan Enduro 2027 Pokhara & Everest */}
           <HimalayanEnduroSection onOpenRegisterModal={handleOpenRegisterModal} />
-
-          {/* Live Registered Riders Backend Tracker & Admin Console */}
-          <RiderTrackerSection
-            onOpenRegisterModal={handleOpenRegisterModal}
-            onOpenAdminConsole={openAdminView}
-          />
 
           {/* Official Pokhara Circuit Map & Telemetry */}
           <TrackArenaMap />

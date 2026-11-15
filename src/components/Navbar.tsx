@@ -23,7 +23,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegisterModal }) => {
   const navLinks = [
     { name: "Moto Enduro", href: "#experiences" },
     { name: "Himalayan Enduro", href: "#himalayan-enduro" },
-    { name: "Riders", href: "#rider-tracker" },
     { name: "Race Map", href: "#arena-layout" },
     { name: "Gallery", href: "#gallery" },
     { name: "Media", href: "#influencers" },

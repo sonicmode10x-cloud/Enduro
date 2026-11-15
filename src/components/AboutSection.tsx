@@ -2,6 +2,7 @@ import React from "react";
 import { Mountain, Compass, Shield, Award, Users2, ArrowUpRight } from "lucide-react";
 import { EVENT_CONFIG } from "../data/eventConfig";
 import { MotocrossPhoto } from "./MotocrossPhoto";
+import { LOCAL_IMAGES } from "../lib/localImages";
 
 interface AboutSectionProps {
   onOpenProposalModal: () => void;
@@ -33,7 +34,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenProposalModal 
           <div className="lg:col-span-5 flex flex-col gap-5">
             <div className="relative rounded-sm overflow-hidden border border-zinc-800 bg-zinc-900 aspect-[4/3] group">
               <MotocrossPhoto
-                src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80"
+                src={LOCAL_IMAGES.hardEnduroRiverBoulders}
                 alt="Technical hard enduro motorcycle on rocky mountain terrain"
                 fallbackType="rock-matrix"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

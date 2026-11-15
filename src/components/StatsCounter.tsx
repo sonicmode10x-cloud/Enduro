@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { EVENT_CONFIG } from "../data/eventConfig";
+import { LOCAL_IMAGES } from "../lib/localImages";
 
 export const StatsCounter: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -110,9 +111,8 @@ export const StatsCounter: React.FC = () => {
           <div className="md:col-span-4 flex items-center justify-center">
             <div className="w-44 h-44 sm:w-52 sm:h-52 flex items-center justify-center">
               <img
-                src="/src/assets/images/enduro_helmet_studio_1794590872056.jpg"
+                src={LOCAL_IMAGES.enduroHelmetStudio}
                 alt="Official Racing Carbon Motocross Helmet"
-                referrerPolicy="no-referrer"
                 className="w-full h-full object-contain mix-blend-multiply"
               />
             </div>

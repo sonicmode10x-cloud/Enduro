@@ -1,4 +1,5 @@
 import React from "react";
+import { LOCAL_IMAGES } from "../lib/localImages";
 
 interface PreFooterCtaProps {
   onOpenRegisterModal: (defaultTab?: "rider" | "sponsor" | "vendor" | "media" | "general") => void;
@@ -19,9 +20,8 @@ export const PreFooterCta: React.FC<PreFooterCtaProps> = ({ onOpenRegisterModal 
           {/* Left Visual Portrait */}
           <div className="md:col-span-5 h-56 md:h-64 bg-zinc-950 overflow-hidden">
             <img
-              src="/src/assets/images/hero_motocross_rider_1794590872372.jpg"
+              src={LOCAL_IMAGES.heroMotocrossRider}
               alt="Extreme Moto Enduro Rider 2027"
-              referrerPolicy="no-referrer"
               className="w-full h-full object-cover object-top"
             />
           </div>
