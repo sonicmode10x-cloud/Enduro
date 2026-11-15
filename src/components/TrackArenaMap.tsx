@@ -127,7 +127,7 @@ export const TrackArenaMap: React.FC = () => {
               Official Circuit Blueprint <span aria-hidden="true">·</span> Pokhara, Nepal
             </p>
             <h2 className="font-heading font-black text-3xl sm:text-5xl uppercase tracking-tight text-zinc-900 leading-none">
-              RACE TRACK & ARENA LAYOUT
+              POKHARA RACE TRACK &amp; ARENA LAYOUT
             </h2>
           </div>
 

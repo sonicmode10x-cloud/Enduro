@@ -56,7 +56,7 @@ export const StatsCounter: React.FC = () => {
     <section
       id="achievements"
       ref={containerRef}
-      className="relative z-20 -mt-20 sm:-mt-24 px-4 sm:px-6 lg:px-8 pb-12"
+      className="relative z-20 pt-10 sm:pt-12 px-4 sm:px-6 lg:px-8 pb-12"
     >
       <div className="max-w-5xl mx-auto bg-white rounded-[28px] shadow-[0_20px_50px_rgba(0,0,0,0.08)] border border-stone-200/70 p-8 sm:p-10 lg:p-12">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">

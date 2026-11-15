@@ -1,0 +1,315 @@
+{
+  "entities": {
+    "RiderRegistration": {
+      "title": "RiderRegistration",
+      "description": "A rider registration record for a Moto Enduro or Himalayan Enduro championship event.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the user who submitted this rider registration.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "userEmail": {
+          "type": "string",
+          "format": "email",
+          "description": "Verified account email of the user who submitted the registration.",
+          "minLength": 3,
+          "maxLength": 160
+        },
+        "eventSelection": {
+          "type": "string",
+          "description": "The championship event the rider is registering for.",
+          "enum": [
+            "Extreme Moto Enduro Cross 2027",
+            "Himalayan Enduro 2027 Pokhara (April 5 & 6)",
+            "Himalayan Enduro 2027 Everest (Nov 2027)"
+          ],
+          "minLength": 3,
+          "maxLength": 120
+        },
+        "fullName": {
+          "type": "string",
+          "description": "Full legal name of the competing rider.",
+          "minLength": 2,
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Contact email address of the rider.",
+          "minLength": 3,
+          "maxLength": 160
+        },
+        "phone": {
+          "type": "string",
+          "description": "Mobile or WhatsApp phone number of the rider.",
+          "minLength": 5,
+          "maxLength": 40
+        },
+        "cityCountry": {
+          "type": "string",
+          "description": "City and country of the rider.",
+          "minLength": 2,
+          "maxLength": 100
+        },
+        "bikeMakeModel": {
+          "type": "string",
+          "description": "Motorcycle make and model entered for the championship.",
+          "minLength": 2,
+          "maxLength": 100
+        },
+        "engineDisplacement": {
+          "type": "string",
+          "description": "Engine displacement category of the motorcycle.",
+          "minLength": 2,
+          "maxLength": 50
+        },
+        "raceCategory": {
+          "type": "string",
+          "description": "Competition class category.",
+          "enum": [
+            "Pro Open",
+            "National Expert",
+            "Novice Grassroots",
+            "Veterans (40+)"
+          ],
+          "minLength": 2,
+          "maxLength": 60
+        },
+        "racingExperienceYears": {
+          "type": "string",
+          "description": "Years of off-road racing experience.",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "bloodGroup": {
+          "type": "string",
+          "description": "Rider blood group for medical rescue team.",
+          "enum": ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"],
+          "minLength": 2,
+          "maxLength": 5
+        },
+        "emergencyContactName": {
+          "type": "string",
+          "description": "Emergency contact person name.",
+          "minLength": 2,
+          "maxLength": 100
+        },
+        "emergencyContactPhone": {
+          "type": "string",
+          "description": "Emergency contact phone number.",
+          "minLength": 5,
+          "maxLength": 40
+        },
+        "acceptsSafetyRules": {
+          "type": "boolean",
+          "description": "Confirmation of FIM safety gear and personal accident insurance."
+        },
+        "status": {
+          "type": "string",
+          "description": "Verification status managed by the championship organizer.",
+          "enum": ["pending", "scrutineered", "confirmed", "withdrawn"],
+          "minLength": 5,
+          "maxLength": 20
+        },
+        "raceNumber": {
+          "type": "string",
+          "description": "Assigned race bib/plate number.",
+          "minLength": 0,
+          "maxLength": 15
+        },
+        "adminNotes": {
+          "type": "string",
+          "description": "Organizer notes regarding scrutineering or entry fee verification.",
+          "minLength": 0,
+          "maxLength": 500
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the registration was submitted."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the registration was last updated."
+        }
+      },
+      "required": [
+        "userId",
+        "userEmail",
+        "eventSelection",
+        "fullName",
+        "email",
+        "phone",
+        "cityCountry",
+        "bikeMakeModel",
+        "engineDisplacement",
+        "raceCategory",
+        "racingExperienceYears",
+        "bloodGroup",
+        "emergencyContactName",
+        "emergencyContactPhone",
+        "acceptsSafetyRules",
+        "status",
+        "raceNumber",
+        "adminNotes",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "PartnerRegistration": {
+      "title": "PartnerRegistration",
+      "description": "A sponsor, vendor booth, media accreditation, or general registration record.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the user who submitted this registration.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "userEmail": {
+          "type": "string",
+          "format": "email",
+          "description": "Verified account email of the user who submitted the registration.",
+          "minLength": 3,
+          "maxLength": 160
+        },
+        "registrationType": {
+          "type": "string",
+          "description": "Type of registration or enquiry submitted.",
+          "enum": ["sponsor", "vendor", "media", "general"],
+          "minLength": 5,
+          "maxLength": 15
+        },
+        "contactName": {
+          "type": "string",
+          "description": "Full name of the registrant or contact person.",
+          "minLength": 2,
+          "maxLength": 100
+        },
+        "organization": {
+          "type": "string",
+          "description": "Company, business, or media house name.",
+          "minLength": 0,
+          "maxLength": 120
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Contact email address.",
+          "minLength": 3,
+          "maxLength": 160
+        },
+        "phone": {
+          "type": "string",
+          "description": "Contact phone or WhatsApp number.",
+          "minLength": 0,
+          "maxLength": 40
+        },
+        "categoryOrTier": {
+          "type": "string",
+          "description": "Sponsorship tier, vendor category, media role, or enquiry subject.",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "details": {
+          "type": "string",
+          "description": "Secondary structured details such as stall size, industry, or portfolio URL.",
+          "minLength": 0,
+          "maxLength": 500
+        },
+        "notes": {
+          "type": "string",
+          "description": "Objectives, product details, coverage plan, or message submitted by the registrant.",
+          "minLength": 0,
+          "maxLength": 1000
+        },
+        "status": {
+          "type": "string",
+          "description": "Approval status managed by the championship organizer.",
+          "enum": ["pending", "approved", "declined", "withdrawn"],
+          "minLength": 5,
+          "maxLength": 20
+        },
+        "adminNotes": {
+          "type": "string",
+          "description": "Organizer review notes.",
+          "minLength": 0,
+          "maxLength": 500
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the registration was submitted."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the registration was last updated."
+        }
+      },
+      "required": [
+        "userId",
+        "userEmail",
+        "registrationType",
+        "contactName",
+        "organization",
+        "email",
+        "phone",
+        "categoryOrTier",
+        "details",
+        "notes",
+        "status",
+        "adminNotes",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "AdminUser": {
+      "title": "AdminUser",
+      "description": "Authorized championship administrator record.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Verified administrator email address.",
+          "minLength": 3,
+          "maxLength": 160
+        },
+        "role": {
+          "type": "string",
+          "enum": ["admin"],
+          "minLength": 5,
+          "maxLength": 10
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when admin record was created."
+        }
+      },
+      "required": ["email", "role", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/riderRegistrations/{registrationId}": {
+      "schema": { "$ref": "#/entities/RiderRegistration" },
+      "description": "Stores all rider registrations across Moto Enduro and Himalayan Enduro events."
+    },
+    "/partnerRegistrations/{registrationId}": {
+      "schema": { "$ref": "#/entities/PartnerRegistration" },
+      "description": "Stores sponsor, vendor booth, media pass, and general registration records."
+    },
+    "/admins/{adminUid}": {
+      "schema": { "$ref": "#/entities/AdminUser" },
+      "description": "Lookup collection of authorized championship administrators."
+    }
+  }
+}

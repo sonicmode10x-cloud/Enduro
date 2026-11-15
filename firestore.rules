@@ -1,0 +1,321 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Global Default-Deny Catch-All
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // 1. Hardened Global Primitives
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedUser() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isBootstrappedAdmin() {
+      return isVerifiedUser() && request.auth.token.email == 'motoenduronp@gmail.com';
+    }
+
+    function isAdmin() {
+      return isVerifiedUser() && (
+        isBootstrappedAdmin() ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    // 2. Schema Validation Blueprints
+    function isValidAdminUser(data) {
+      return data.keys().hasAll(['email', 'role', 'createdAt']) &&
+        data.keys().hasOnly(['email', 'role', 'createdAt']) &&
+        data.email is string && data.email.size() >= 3 && data.email.size() <= 160 &&
+        data.role is string && data.role.size() == 5 && data.role == 'admin' &&
+        data.createdAt is timestamp;
+    }
+
+    function isValidRiderRegistration(data) {
+      return data.keys().hasAll([
+          'userId',
+          'userEmail',
+          'eventSelection',
+          'fullName',
+          'email',
+          'phone',
+          'cityCountry',
+          'bikeMakeModel',
+          'engineDisplacement',
+          'raceCategory',
+          'racingExperienceYears',
+          'bloodGroup',
+          'emergencyContactName',
+          'emergencyContactPhone',
+          'acceptsSafetyRules',
+          'status',
+          'raceNumber',
+          'adminNotes',
+          'createdAt',
+          'updatedAt'
+        ]) &&
+        data.keys().hasOnly([
+          'userId',
+          'userEmail',
+          'eventSelection',
+          'fullName',
+          'email',
+          'phone',
+          'cityCountry',
+          'bikeMakeModel',
+          'engineDisplacement',
+          'raceCategory',
+          'racingExperienceYears',
+          'bloodGroup',
+          'emergencyContactName',
+          'emergencyContactPhone',
+          'acceptsSafetyRules',
+          'status',
+          'raceNumber',
+          'adminNotes',
+          'createdAt',
+          'updatedAt'
+        ]) &&
+        data.userId is string && data.userId.size() >= 1 && data.userId.size() <= 128 && data.userId.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.userEmail is string && data.userEmail.size() >= 3 && data.userEmail.size() <= 160 &&
+        data.eventSelection is string && data.eventSelection.size() >= 3 && data.eventSelection.size() <= 120 &&
+        (
+          data.eventSelection == 'Extreme Moto Enduro Cross 2027' ||
+          data.eventSelection == 'Himalayan Enduro 2027 Pokhara (April 5 & 6)' ||
+          data.eventSelection == 'Himalayan Enduro 2027 Everest (Nov 2027)'
+        ) &&
+        data.fullName is string && data.fullName.size() >= 2 && data.fullName.size() <= 100 &&
+        data.email is string && data.email.size() >= 3 && data.email.size() <= 160 &&
+        data.phone is string && data.phone.size() >= 5 && data.phone.size() <= 40 &&
+        data.cityCountry is string && data.cityCountry.size() >= 2 && data.cityCountry.size() <= 100 &&
+        data.bikeMakeModel is string && data.bikeMakeModel.size() >= 2 && data.bikeMakeModel.size() <= 100 &&
+        data.engineDisplacement is string && data.engineDisplacement.size() >= 2 && data.engineDisplacement.size() <= 50 &&
+        data.raceCategory is string && data.raceCategory.size() >= 2 && data.raceCategory.size() <= 60 &&
+        (
+          data.raceCategory == 'Pro Open' ||
+          data.raceCategory == 'National Expert' ||
+          data.raceCategory == 'Novice Grassroots' ||
+          data.raceCategory == 'Veterans (40+)'
+        ) &&
+        data.racingExperienceYears is string && data.racingExperienceYears.size() >= 1 && data.racingExperienceYears.size() <= 40 &&
+        data.bloodGroup is string && data.bloodGroup.size() >= 2 && data.bloodGroup.size() <= 5 &&
+        (
+          data.bloodGroup == 'A+' ||
+          data.bloodGroup == 'A-' ||
+          data.bloodGroup == 'B+' ||
+          data.bloodGroup == 'B-' ||
+          data.bloodGroup == 'O+' ||
+          data.bloodGroup == 'O-' ||
+          data.bloodGroup == 'AB+' ||
+          data.bloodGroup == 'AB-'
+        ) &&
+        data.emergencyContactName is string && data.emergencyContactName.size() >= 2 && data.emergencyContactName.size() <= 100 &&
+        data.emergencyContactPhone is string && data.emergencyContactPhone.size() >= 5 && data.emergencyContactPhone.size() <= 40 &&
+        data.acceptsSafetyRules is bool && data.acceptsSafetyRules == true &&
+        data.status is string && data.status.size() >= 5 && data.status.size() <= 20 &&
+        (
+          data.status == 'pending' ||
+          data.status == 'scrutineered' ||
+          data.status == 'confirmed' ||
+          data.status == 'withdrawn'
+        ) &&
+        data.raceNumber is string && data.raceNumber.size() <= 15 &&
+        data.adminNotes is string && data.adminNotes.size() <= 500 &&
+        data.createdAt is timestamp &&
+        data.updatedAt is timestamp;
+    }
+
+    function isValidPartnerRegistration(data) {
+      return data.keys().hasAll([
+          'userId',
+          'userEmail',
+          'registrationType',
+          'contactName',
+          'organization',
+          'email',
+          'phone',
+          'categoryOrTier',
+          'details',
+          'notes',
+          'status',
+          'adminNotes',
+          'createdAt',
+          'updatedAt'
+        ]) &&
+        data.keys().hasOnly([
+          'userId',
+          'userEmail',
+          'registrationType',
+          'contactName',
+          'organization',
+          'email',
+          'phone',
+          'categoryOrTier',
+          'details',
+          'notes',
+          'status',
+          'adminNotes',
+          'createdAt',
+          'updatedAt'
+        ]) &&
+        data.userId is string && data.userId.size() >= 1 && data.userId.size() <= 128 && data.userId.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.userEmail is string && data.userEmail.size() >= 3 && data.userEmail.size() <= 160 &&
+        data.registrationType is string && data.registrationType.size() >= 5 && data.registrationType.size() <= 15 &&
+        (
+          data.registrationType == 'sponsor' ||
+          data.registrationType == 'vendor' ||
+          data.registrationType == 'media' ||
+          data.registrationType == 'general'
+        ) &&
+        data.contactName is string && data.contactName.size() >= 2 && data.contactName.size() <= 100 &&
+        data.organization is string && data.organization.size() <= 120 &&
+        data.email is string && data.email.size() >= 3 && data.email.size() <= 160 &&
+        data.phone is string && data.phone.size() <= 40 &&
+        data.categoryOrTier is string && data.categoryOrTier.size() >= 1 && data.categoryOrTier.size() <= 120 &&
+        data.details is string && data.details.size() <= 500 &&
+        data.notes is string && data.notes.size() <= 1000 &&
+        data.status is string && data.status.size() >= 5 && data.status.size() <= 20 &&
+        (
+          data.status == 'pending' ||
+          data.status == 'approved' ||
+          data.status == 'declined' ||
+          data.status == 'withdrawn'
+        ) &&
+        data.adminNotes is string && data.adminNotes.size() <= 500 &&
+        data.createdAt is timestamp &&
+        data.updatedAt is timestamp;
+    }
+
+    function isImmutableRegistrationMetadata() {
+      return incoming().userId == existing().userId &&
+        incoming().userEmail == existing().userEmail &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().updatedAt == request.time;
+    }
+
+    function isRiderWithdrawAction() {
+      return existing().userId == request.auth.uid &&
+        existing().status != 'withdrawn' &&
+        incoming().status == 'withdrawn' &&
+        incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt']);
+    }
+
+    function isAdminManageRiderAction() {
+      return isAdmin() &&
+        incoming().diff(existing()).affectedKeys().hasOnly([
+          'status',
+          'raceNumber',
+          'adminNotes',
+          'raceCategory',
+          'bikeMakeModel',
+          'engineDisplacement',
+          'updatedAt'
+        ]);
+    }
+
+    function isPartnerWithdrawAction() {
+      return existing().userId == request.auth.uid &&
+        existing().status == 'pending' &&
+        incoming().status == 'withdrawn' &&
+        incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt']);
+    }
+
+    function isAdminManagePartnerAction() {
+      return isAdmin() &&
+        incoming().diff(existing()).affectedKeys().hasOnly([
+          'status',
+          'adminNotes',
+          'updatedAt'
+        ]);
+    }
+
+    // 3. Admins Collection
+    match /admins/{adminUid} {
+      allow get: if isVerifiedUser() && isValidId(adminUid) && (request.auth.uid == adminUid || isBootstrappedAdmin());
+      allow list: if isBootstrappedAdmin() && resource.data.role == 'admin';
+      allow create: if isBootstrappedAdmin() && isValidId(adminUid) && isValidAdminUser(incoming()) && incoming().createdAt == request.time;
+      allow update: if isValidAdminUser(incoming()) && isBootstrappedAdmin() && isValidId(adminUid) && incoming().createdAt == existing().createdAt && incoming().diff(existing()).affectedKeys().hasOnly(['email', 'role']);
+      allow delete: if isBootstrappedAdmin() && isValidId(adminUid);
+    }
+
+    // 4. Rider Registrations Collection
+    match /riderRegistrations/{registrationId} {
+      allow get: if isVerifiedUser() && isValidId(registrationId) && (
+        existing().userId == request.auth.uid || isAdmin()
+      );
+
+      allow list: if isVerifiedUser() && (
+        resource.data.userId == request.auth.uid || isBootstrappedAdmin()
+      );
+
+      allow create: if isVerifiedUser() &&
+        isValidId(registrationId) &&
+        isValidRiderRegistration(incoming()) &&
+        incoming().userId == request.auth.uid &&
+        incoming().userEmail == request.auth.token.email &&
+        incoming().status == 'pending' &&
+        incoming().raceNumber == '' &&
+        incoming().adminNotes == '' &&
+        incoming().createdAt == request.time &&
+        incoming().updatedAt == request.time;
+
+      allow update: if isVerifiedUser() &&
+        isValidId(registrationId) &&
+        isValidRiderRegistration(incoming()) &&
+        isImmutableRegistrationMetadata() && (
+          isRiderWithdrawAction() ||
+          isAdminManageRiderAction()
+        );
+
+      allow delete: if isVerifiedUser() && isValidId(registrationId) && isAdmin();
+    }
+
+    // 5. Partner, Vendor, Media & General Registrations Collection
+    match /partnerRegistrations/{registrationId} {
+      allow get: if isVerifiedUser() && isValidId(registrationId) && (
+        existing().userId == request.auth.uid || isAdmin()
+      );
+
+      allow list: if isVerifiedUser() && (
+        resource.data.userId == request.auth.uid || isBootstrappedAdmin()
+      );
+
+      allow create: if isVerifiedUser() &&
+        isValidId(registrationId) &&
+        isValidPartnerRegistration(incoming()) &&
+        incoming().userId == request.auth.uid &&
+        incoming().userEmail == request.auth.token.email &&
+        incoming().status == 'pending' &&
+        incoming().adminNotes == '' &&
+        incoming().createdAt == request.time &&
+        incoming().updatedAt == request.time;
+
+      allow update: if isVerifiedUser() &&
+        isValidId(registrationId) &&
+        isValidPartnerRegistration(incoming()) &&
+        isImmutableRegistrationMetadata() && (
+          isPartnerWithdrawAction() ||
+          isAdminManagePartnerAction()
+        );
+
+      allow delete: if isVerifiedUser() && isValidId(registrationId) && isAdmin();
+    }
+  }
+}

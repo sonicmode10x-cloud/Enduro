@@ -1,11 +1,7 @@
 import React from "react";
 import { INFLUENCERS } from "../data/eventConfig";
 
-interface InfluencersSectionProps {
-  onOpenRegisterModal: (defaultTab?: "rider" | "sponsor" | "vendor" | "media" | "general") => void;
-}
-
-export const InfluencersSection: React.FC<InfluencersSectionProps> = ({ onOpenRegisterModal }) => {
+export const InfluencersSection: React.FC = () => {
   return (
     <section id="influencers" className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto">
@@ -90,25 +86,6 @@ export const InfluencersSection: React.FC<InfluencersSectionProps> = ({ onOpenRe
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Clean Press Callout */}
-        <div className="mt-8 p-6 bg-white rounded-2xl border border-stone-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h4 className="font-heading font-bold text-xl uppercase text-zinc-900">
-              Photographer, Videographer, or Moto-Journalist?
-            </h4>
-            <p className="text-xs text-zinc-600 mt-1">
-              Accredited press passes grant infield track access, media center workstations, and rider interviews.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => onOpenRegisterModal("media")}
-            className="cursor-pointer bg-[#242426] hover:bg-zinc-900 text-white text-xs font-semibold px-5 py-2.5 rounded-full whitespace-nowrap shrink-0 transition-colors"
-          >
-            Apply for Media Pass
-          </button>
         </div>
       </div>
     </section>

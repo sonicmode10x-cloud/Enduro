@@ -12,25 +12,25 @@ export const Hero: React.FC<HeroProps> = ({ onOpenProposalModal }) => {
   return (
     <section
       id="hero"
-      className="relative bg-[#08080A] text-white pt-28 pb-32 sm:pt-32 sm:pb-40 overflow-hidden"
+      className="relative bg-[#08080A] text-white pt-28 pb-16 sm:pt-32 sm:pb-24 overflow-hidden"
     >
-      {/* Centered Backlit Motocross Hero Portrait */}
-      <div className="absolute inset-0 z-0">
+      {/* Pokhara Motocross Action Hero Photo */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
         <img
-          src="/src/assets/images/hero_motocross_rider_1794590872372.jpg"
-          alt="Extreme Moto Enduro Cross Championship Rider"
-          referrerPolicy="no-referrer"
-          className="w-full h-full object-cover object-center opacity-85"
+          src="/assets/aistudio/Moto_Enduro_Master_Proposal__2__b75a4b04.png"
+          alt="Extreme Moto Enduro Cross Championship Rider and Spectators in Pokhara"
+          className="w-full h-full object-cover object-[center_28%] scale-[1.03] opacity-90"
         />
-        {/* Clean Crimson & Charcoal Contrast Scrims */}
+        {/* Measured Dark & Crimson Scrims for High Text Contrast */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(circle at 50% 42%, rgba(214, 10, 25, 0.25) 0%, rgba(8, 8, 10, 0.65) 55%, #08080A 92%)"
+              "radial-gradient(circle at 60% 35%, rgba(200, 8, 21, 0.22) 0%, rgba(8, 8, 10, 0.65) 55%, rgba(8, 8, 10, 0.92) 95%)"
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-transparent to-[#08080A]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#08080A]/85 via-[#08080A]/45 to-[#08080A]/70 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-[#08080A] pointer-events-none" />
       </div>
 
       {/* Balanced Editorial Hero Content */}
@@ -59,10 +59,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenProposalModal }) => {
               </a>
 
               <a
-                href="#gallery"
+                href="#arena-layout"
                 className="cursor-pointer inline-flex items-center gap-2 text-xs sm:text-sm font-medium text-zinc-200 hover:text-white transition-colors px-3 py-2"
               >
-                <span>Watch Highlights</span>
+                <span>View Race Map</span>
                 <span aria-hidden="true">→</span>
               </a>
             </div>

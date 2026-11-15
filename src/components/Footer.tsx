@@ -7,9 +7,14 @@ import { useBrandLogo } from "../context/LogoContext";
 interface FooterProps {
   onOpenRegisterModal: (defaultTab?: FormTab) => void;
   onOpenProposalModal: () => void;
+  onOpenAdminConsole?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenRegisterModal, onOpenProposalModal }) => {
+export const Footer: React.FC<FooterProps> = ({
+  onOpenRegisterModal,
+  onOpenProposalModal,
+  onOpenAdminConsole
+}) => {
   const { logoConfig } = useBrandLogo();
   const { championship } = EVENT_CONFIG;
 
@@ -19,7 +24,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenRegisterModal, onOpenPropo
 
   const navLinks = [
     { name: "Home", href: "#hero" },
-    { name: "The Event", href: "#experiences" },
+    { name: "Moto Enduro", href: "#experiences" },
+    { name: "Himalayan Enduro", href: "#himalayan-enduro" },
+    { name: "Riders", href: "#rider-tracker" },
     { name: "Race Map", href: "#arena-layout" },
     { name: "Gallery", href: "#gallery" },
     { name: "Media", href: "#influencers" },
@@ -83,13 +90,24 @@ export const Footer: React.FC<FooterProps> = ({ onOpenRegisterModal, onOpenPropo
               <br />
               {championship.organizer.phoneDisplay}
             </p>
-            <button
-              type="button"
-              onClick={onOpenProposalModal}
-              className="cursor-pointer text-white underline decoration-zinc-500 hover:decoration-white mt-3 inline-block"
-            >
-              Event Proposal
-            </button>
+            <div className="flex flex-wrap items-center gap-4 mt-3">
+              <button
+                type="button"
+                onClick={onOpenProposalModal}
+                className="cursor-pointer text-white underline decoration-zinc-500 hover:decoration-white inline-block"
+              >
+                Event Proposal
+              </button>
+              {onOpenAdminConsole && (
+                <button
+                  type="button"
+                  onClick={onOpenAdminConsole}
+                  className="cursor-pointer text-white underline decoration-zinc-500 hover:decoration-white inline-block"
+                >
+                  Admin Console
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Column 4: Connect */}

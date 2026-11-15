@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { X, Send, Phone, CheckCircle2, AlertCircle, Trophy, Building2, Store, Camera, MessageSquare } from "lucide-react";
+import { X, Phone, CheckCircle2, Trophy, Building2, Store, Camera, MessageSquare, LogIn } from "lucide-react";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { EVENT_CONFIG } from "../data/eventConfig";
+import { auth, db, signInWithGoogle, handleFirestoreError, OperationType } from "../lib/firebase";
 
 export type FormTab = "rider" | "sponsor" | "vendor" | "media" | "general";
 
@@ -8,27 +11,38 @@ interface RegistrationModalProps {
   isOpen: boolean;
   onClose: () => void;
   initialTab?: FormTab;
+  initialEvent?: string;
 }
 
 export const RegistrationModal: React.FC<RegistrationModalProps> = ({
   isOpen,
   onClose,
-  initialTab = "rider"
+  initialTab = "rider",
+  initialEvent = "Extreme Moto Enduro Cross 2027"
 }) => {
   const [activeTab, setActiveTab] = useState<FormTab>(initialTab);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submittedData, setSubmittedData] = useState<Record<string, string> | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(auth.currentUser);
+  const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isOpen) {
-      setActiveTab(initialTab);
-      setSubmitSuccess(false);
-    }
-  }, [isOpen, initialTab]);
+    const unsub = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      if (user?.email) {
+        setRiderForm((prev) => ({
+          ...prev,
+          email: prev.email || user.email || ""
+        }));
+      }
+    });
+    return () => unsub();
+  }, []);
 
   // Rider Form State
   const [riderForm, setRiderForm] = useState({
+    eventSelection: initialEvent,
     fullName: "",
     email: "",
     phone: "",
@@ -42,6 +56,16 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
     emergencyContactPhone: "",
     acceptsSafetyRules: false
   });
+
+  useEffect(() => {
+    if (isOpen) {
+      setActiveTab(initialTab);
+      setSubmitSuccess(false);
+      if (initialEvent) {
+        setRiderForm((prev) => ({ ...prev, eventSelection: initialEvent }));
+      }
+    }
+  }, [isOpen, initialTab, initialEvent]);
 
   // Sponsor Form State
   const [sponsorForm, setSponsorForm] = useState({
@@ -93,57 +117,204 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
   const handleTabChange = (tab: FormTab) => {
     setActiveTab(tab);
     setSubmitSuccess(false);
+    setFormError(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError(null);
     setIsSubmitting(true);
 
-    // Realistic form processing
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitSuccess(true);
+    if (activeTab === "rider") {
+      try {
+        let user = auth.currentUser;
+        if (!user) {
+          const cred = await signInWithGoogle();
+          user = cred.user;
+        }
+        if (!user || !user.email) {
+          setFormError("Please sign in with a verified Google account to register a rider.");
+          setIsSubmitting(false);
+          return;
+        }
+
+        const regId = `reg_${user.uid.slice(0, 12)}_${Date.now()}`;
+        const path = `riderRegistrations/${regId}`;
+
+        const payload = {
+          userId: user.uid.slice(0, 128),
+          userEmail: user.email.trim().slice(0, 160),
+          eventSelection: riderForm.eventSelection,
+          fullName: riderForm.fullName.trim().slice(0, 100),
+          email: (riderForm.email.trim() || user.email.trim()).slice(0, 160),
+          phone: riderForm.phone.trim().slice(0, 40),
+          cityCountry: riderForm.cityCountry.trim().slice(0, 100),
+          bikeMakeModel: riderForm.bikeMakeModel.trim().slice(0, 100),
+          engineDisplacement: riderForm.engineDisplacement.trim().slice(0, 50),
+          raceCategory: riderForm.raceCategory,
+          racingExperienceYears: riderForm.racingExperienceYears.trim().slice(0, 40),
+          bloodGroup: riderForm.bloodGroup,
+          emergencyContactName: riderForm.emergencyContactName.trim().slice(0, 100),
+          emergencyContactPhone: riderForm.emergencyContactPhone.trim().slice(0, 40),
+          acceptsSafetyRules: true,
+          status: "pending",
+          raceNumber: "",
+          adminNotes: "",
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        };
+
+        try {
+          await setDoc(doc(db, "riderRegistrations", regId), payload);
+        } catch (firestoreErr) {
+          handleFirestoreError(firestoreErr, OperationType.CREATE, path);
+        }
+
+        setSubmittedData({
+          Type: "Rider Registration (Saved to Live Tracker)",
+          RegistrationID: regId,
+          Event: payload.eventSelection,
+          Name: payload.fullName,
+          Phone: payload.phone,
+          Category: payload.raceCategory,
+          Machine: payload.bikeMakeModel,
+          Status: "PENDING SCRUTINEERING"
+        });
+        setIsSubmitting(false);
+        setSubmitSuccess(true);
+      } catch (err) {
+        setIsSubmitting(false);
+        setFormError(
+          err instanceof Error
+            ? err.message
+            : "Could not save rider registration. Please check your fields and try again."
+        );
+      }
+      return;
+    }
+
+    // Save Sponsor, Vendor, Media, or General registrations to Firestore partnerRegistrations
+    try {
+      let user = auth.currentUser;
+      if (!user) {
+        const cred = await signInWithGoogle();
+        user = cred.user;
+      }
+      if (!user || !user.email) {
+        setFormError("Please sign in with a verified Google account to submit your registration.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      const regId = `partner_${user.uid.slice(0, 12)}_${Date.now()}`;
+      const path = `partnerRegistrations/${regId}`;
+
+      let contactName = "";
+      let organization = "";
+      let email = user.email.trim();
+      let phone = "";
+      let categoryOrTier = "";
+      let details = "";
+      let notes = "";
       let dataSummary: Record<string, string> = {};
 
-      if (activeTab === "rider") {
+      if (activeTab === "sponsor") {
+        contactName = sponsorForm.contactPerson.trim();
+        organization = sponsorForm.companyName.trim();
+        email = (sponsorForm.email.trim() || user.email.trim());
+        phone = sponsorForm.phone.trim();
+        categoryOrTier = sponsorForm.tierInterest;
+        details = `${sponsorForm.industry} · ${sponsorForm.marketingBudget}`;
+        notes = sponsorForm.keyObjectives.trim();
         dataSummary = {
-          Type: "Rider Registration",
-          Name: riderForm.fullName,
-          Phone: riderForm.phone,
-          Category: riderForm.raceCategory,
-          Machine: riderForm.bikeMakeModel
-        };
-      } else if (activeTab === "sponsor") {
-        dataSummary = {
-          Type: "Sponsorship Inquiry",
-          Company: sponsorForm.companyName,
-          Contact: sponsorForm.contactPerson,
-          Phone: sponsorForm.phone,
-          Tier: sponsorForm.tierInterest
+          Type: "Sponsorship Inquiry (Saved to Live Tracker)",
+          RegistrationID: regId,
+          Company: organization,
+          Contact: contactName,
+          Phone: phone,
+          Tier: categoryOrTier
         };
       } else if (activeTab === "vendor") {
+        contactName = vendorForm.contactName.trim();
+        organization = vendorForm.businessName.trim();
+        email = (vendorForm.email.trim() || user.email.trim());
+        phone = vendorForm.phone.trim();
+        categoryOrTier = vendorForm.vendorCategory;
+        details = `${vendorForm.stallSizeNeeded}${vendorForm.requiresPower ? " · Power Required" : ""}`;
+        notes = vendorForm.productDetails.trim();
         dataSummary = {
-          Type: "Vendor Booth Booking",
-          Business: vendorForm.businessName,
-          Category: vendorForm.vendorCategory,
+          Type: "Vendor Booth Booking (Saved to Live Tracker)",
+          RegistrationID: regId,
+          Business: organization,
+          Contact: contactName,
+          Category: categoryOrTier,
           Size: vendorForm.stallSizeNeeded
         };
       } else if (activeTab === "media") {
+        contactName = mediaForm.fullName.trim();
+        organization = mediaForm.organization.trim();
+        email = (mediaForm.email.trim() || user.email.trim());
+        phone = mediaForm.phone.trim();
+        categoryOrTier = mediaForm.mediaType;
+        details = mediaForm.portfolioUrl.trim() || mediaForm.equipmentPlanned;
+        notes = mediaForm.coveragePlan.trim();
         dataSummary = {
-          Type: "Media Accreditation",
-          Name: mediaForm.fullName,
-          Organization: mediaForm.organization,
-          Role: mediaForm.mediaType
+          Type: "Media Accreditation (Saved to Live Tracker)",
+          RegistrationID: regId,
+          Name: contactName,
+          Organization: organization,
+          Role: categoryOrTier
         };
       } else {
+        contactName = generalForm.fullName.trim();
+        organization = "General Registrant";
+        email = (generalForm.email.trim() || user.email.trim());
+        phone = generalForm.phone.trim();
+        categoryOrTier = generalForm.subject.trim() || "General Inquiry";
+        details = "Website Enquiry";
+        notes = generalForm.message.trim();
         dataSummary = {
-          Type: "General Enquiry",
-          Name: generalForm.fullName,
-          Subject: generalForm.subject
+          Type: "General Enquiry (Saved to Live Tracker)",
+          RegistrationID: regId,
+          Name: contactName,
+          Subject: categoryOrTier
         };
       }
+
+      const payload = {
+        userId: user.uid.slice(0, 128),
+        userEmail: user.email.trim().slice(0, 160),
+        registrationType: activeTab,
+        contactName: contactName.slice(0, 100),
+        organization: organization.slice(0, 120),
+        email: email.slice(0, 160),
+        phone: phone.slice(0, 40),
+        categoryOrTier: categoryOrTier.slice(0, 120),
+        details: details.slice(0, 500),
+        notes: notes.slice(0, 1000),
+        status: "pending",
+        adminNotes: "",
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      };
+
+      try {
+        await setDoc(doc(db, "partnerRegistrations", regId), payload);
+      } catch (firestoreErr) {
+        handleFirestoreError(firestoreErr, OperationType.CREATE, path);
+      }
+
       setSubmittedData(dataSummary);
-    }, 600);
+      setIsSubmitting(false);
+      setSubmitSuccess(true);
+    } catch (err) {
+      setIsSubmitting(false);
+      setFormError(
+        err instanceof Error
+          ? err.message
+          : "Could not save registration. Please verify your fields and try again."
+      );
+    }
   };
 
   const getWhatsAppMessageUrl = () => {
@@ -317,11 +488,77 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="py-6 space-y-4">
+            {formError && (
+              <div className="p-3 bg-red-950/60 border border-red-500/60 text-xs text-red-200">
+                {formError}
+              </div>
+            )}
+
+            {/* Global Auth Status Bar for All Registration Tabs */}
+            {activeTab !== "rider" && (
+              <div className="p-3 bg-zinc-900/90 border border-zinc-800 text-xs text-zinc-300 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <span>
+                  All submissions are stored in the Championship Backend Tracker for verification.
+                </span>
+                {currentUser ? (
+                  <span className="text-emerald-400 font-mono text-[11px] shrink-0">
+                    Signed in: {currentUser.email}
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => signInWithGoogle()}
+                    className="cursor-pointer inline-flex items-center gap-1.5 bg-white text-zinc-900 font-semibold px-3 py-1.5 rounded text-xs shrink-0 hover:bg-stone-200 transition-colors"
+                  >
+                    <LogIn size={12} />
+                    <span>Sign in with Google</span>
+                  </button>
+                )}
+              </div>
+            )}
+
             {/* 1. RIDER FORM */}
             {activeTab === "rider" && (
               <div className="space-y-4">
-                <div className="p-3 bg-red-950/30 border border-red-900/40 text-xs text-zinc-300">
-                  <strong className="text-white">Rider Requirements:</strong> All competitors must wear FIM/DOT certified helmets, knee braces, and back armor. Mandatory mechanical scrutineering takes place before free practice.
+                <div className="p-3 bg-red-950/30 border border-red-900/40 text-xs text-zinc-300 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <strong className="text-white">Rider Requirements:</strong> All competitors must wear FIM/DOT certified helmets, knee braces, and back armor.
+                  </div>
+                  {currentUser ? (
+                    <span className="text-emerald-400 font-mono text-[11px] shrink-0">
+                      Signed in: {currentUser.email}
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => signInWithGoogle()}
+                      className="cursor-pointer inline-flex items-center gap-1.5 bg-white text-zinc-900 font-semibold px-3 py-1.5 rounded text-xs shrink-0 hover:bg-stone-200 transition-colors"
+                    >
+                      <LogIn size={12} />
+                      <span>Sign in with Google</span>
+                    </button>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-1">
+                    Select Championship Event *
+                  </label>
+                  <select
+                    value={riderForm.eventSelection}
+                    onChange={(e) => setRiderForm({ ...riderForm, eventSelection: e.target.value })}
+                    className="w-full bg-zinc-900 border border-zinc-700 p-2.5 text-xs text-white focus:outline-none focus:border-[#E50920]"
+                  >
+                    <option value="Extreme Moto Enduro Cross 2027">
+                      Extreme Moto Enduro Cross 2027 (Pokhara Arena)
+                    </option>
+                    <option value="Himalayan Enduro 2027 Pokhara (April 5 & 6)">
+                      Himalayan Enduro 2027 Pokhara (April 5 &amp; 6 — Registration Open)
+                    </option>
+                    <option value="Himalayan Enduro 2027 Everest (Nov 2027)">
+                      Himalayan Enduro 2027 Everest (Nov 2027 — Registration Open, Route TBA)
+                    </option>
+                  </select>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
