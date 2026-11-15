@@ -4,7 +4,7 @@ import { Hero } from "./components/Hero";
 import { PartnerStrip } from "./components/PartnerStrip";
 import { StatsCounter } from "./components/StatsCounter";
 import { EventExperiences } from "./components/EventExperiences";
-import { UpcomingEventsSection } from "./components/UpcomingEventsSection";
+import { HimalayanEnduroSection } from "./components/HimalayanEnduroSection";
 import { PastEvent2026Section } from "./components/PastEvent2026Section";
 import { PastEvent2024Section } from "./components/PastEvent2024Section";
 import { TrackArenaMap } from "./components/TrackArenaMap";
@@ -92,14 +92,14 @@ export default function App() {
           {/* Official Organizers & Sanctioning Partner Strip */}
           <PartnerStrip />
 
-          {/* Upcoming Events Calendar (2027 Season) */}
-          <UpcomingEventsSection onOpenRegisterModal={handleOpenRegisterModal} />
-
           {/* Information & Benchmarks Card */}
           <StatsCounter />
 
           {/* Event Experiences Showcase Grid */}
           <EventExperiences />
+
+          {/* Upcoming Events 2027: Himalayan Enduro Pokhara & Everest */}
+          <HimalayanEnduroSection onOpenRegisterModal={handleOpenRegisterModal} />
 
           {/* Past Event Archive: Moto Enduro 2026 */}
           <PastEvent2026Section />

@@ -92,7 +92,22 @@ export const HimalayanEnduroSection: React.FC<HimalayanEnduroSectionProps> = ({
 
   return (
     <section id="himalayan-enduro" className="py-10 sm:py-14 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto space-y-8">
+      <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8">
+        {/* Section Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold text-[#D60A19] mb-1">
+              2027 Championship Calendar <span aria-hidden="true">·</span> Nepal
+            </p>
+            <h2 className="font-heading font-black text-3xl sm:text-5xl uppercase tracking-tight text-zinc-900 leading-none">
+              UPCOMING EVENTS
+            </h2>
+          </div>
+          <p className="text-xs sm:text-sm text-zinc-600 max-w-md">
+            Official 2027 off-road championship events open for rider registration across Pokhara and the Everest corridor.
+          </p>
+        </div>
+
         {/* Event 1: Himalayan Enduro Pokhara (April 5 & 6) */}
         <div className="bg-white rounded-[28px] border border-stone-200/80 shadow-sm overflow-hidden grid grid-cols-1 lg:grid-cols-12 items-stretch">
           {/* Left Action Image Panel */}

@@ -36,7 +36,7 @@ export const Hero: React.FC<HeroProps> = ({
   return (
     <section
       id="hero"
-      className="relative bg-[#08080A] text-white pt-28 pb-12 sm:pt-32 sm:pb-16 overflow-hidden"
+      className="relative bg-[#08080A] text-white min-h-[680px] sm:min-h-[760px] lg:min-h-[840px] flex items-end pt-36 pb-16 sm:pt-44 sm:pb-20 overflow-hidden"
     >
       {/* Pokhara Motocross Action Hero Photo */}
       <div className="absolute inset-0 z-0 overflow-hidden">
@@ -58,7 +58,7 @@ export const Hero: React.FC<HeroProps> = ({
       </div>
 
       {/* Balanced Editorial Hero Content */}
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10">
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
           {/* Left Headline Block */}
           <div className="max-w-xl">
