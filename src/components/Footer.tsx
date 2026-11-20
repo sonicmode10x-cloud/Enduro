@@ -11,7 +11,6 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({
-  onOpenRegisterModal,
   onOpenProposalModal,
   onOpenAdminConsole
 }) => {
@@ -143,13 +142,6 @@ export const Footer: React.FC<FooterProps> = ({
                 <MessageCircle size={14} />
               </a>
             </div>
-            <button
-              type="button"
-              onClick={() => onOpenRegisterModal("rider")}
-              className="cursor-pointer text-xs font-semibold text-white bg-white/10 hover:bg-white/20 px-4 py-1.5 rounded-full transition-colors"
-            >
-              Rider Portal
-            </button>
           </div>
         </div>
 
