@@ -108,17 +108,17 @@ export const BrochureSection: React.FC<BrochureSectionProps> = ({
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-stone-200">
             <div className="max-w-2xl">
               <p className="text-xs font-semibold text-[#D60A19] mb-1">
-                03. Official Brochures <span aria-hidden="true">·</span> Read Online or Download PDF
+                03. Complete 10-Page Proposals <span aria-hidden="true">·</span> Read Online or Download PDF
               </p>
               <h2 className="font-heading font-black text-3xl sm:text-5xl uppercase tracking-tight text-zinc-900 leading-none text-balance">
                 {activeEdition === "xtreme"
-                  ? "XTREME ENERGY DRINK TITLE BROCHURE"
-                  : "HIMALAYAN MOTO ENDURO BROCHURE"}
+                  ? "XTREME ENERGY DRINK TITLE PROPOSAL"
+                  : "GENERAL CHAMPIONSHIP PROPOSAL"}
               </h2>
               <p className="text-sm text-zinc-600 leading-relaxed mt-2.5">
                 {activeEdition === "xtreme"
-                  ? "Browse every page of the complete 8-page Himalayan Moto Enduro 2027 master dossier prepared exclusively for Xtreme Energy Drink right here, or download the print-ready PDF."
-                  : "Browse all 4 pages of the general Himalayan Moto Enduro 2027 event brochure covering Pokhara, Everest, the 2KM circuit map, and FIM safety standards."}
+                  ? "Complete 10-page master proposal prepared exclusively for Xtreme Energy Drink — including all homepage championship sections, 2027 Pokhara & Everest calendar, 2026 & 2024 archives, 2KM circuit map, 8 track sectors, 8 arena zones, photo gallery, 50+ creators, FIM safety standards, and Title Sponsor deliverables."
+                  : "Complete 10-page general proposal & brochure featuring every section from the homepage — 2027 Pokhara & Everest events, all 8 experiences, 2026 & 2024 archives, 2KM circuit map, 8 track sectors, photo gallery, sponsorship & vendor tiers, 50+ creators, and FIM safety standards."}
               </p>
             </div>
 
@@ -141,15 +141,15 @@ export const BrochureSection: React.FC<BrochureSectionProps> = ({
                 ) : isDownloadedActive ? (
                   <>
                     <CheckCircle2 size={15} />
-                    <span>Brochure Downloaded</span>
+                    <span>Proposal Downloaded</span>
                   </>
                 ) : (
                   <>
                     <Download size={15} />
                     <span>
                       {activeEdition === "xtreme"
-                        ? "Download Xtreme PDF (8 Pages)"
-                        : "Download General PDF (4 Pages)"}
+                        ? "Download Xtreme PDF (10 Pages)"
+                        : "Download General PDF (10 Pages)"}
                     </span>
                   </>
                 )}
@@ -169,7 +169,6 @@ export const BrochureSection: React.FC<BrochureSectionProps> = ({
 
           {/* Interactive Reader Toolbar: Edition Switcher + View Mode */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            {/* Edition Switcher */}
             <div className="inline-flex items-center gap-1 p-1 bg-[#F2F0EB] rounded-xl self-start">
               <button
                 type="button"
@@ -180,7 +179,7 @@ export const BrochureSection: React.FC<BrochureSectionProps> = ({
                     : "text-zinc-600 hover:text-zinc-900"
                 }`}
               >
-                Xtreme Energy Drink (8 Pages)
+                Xtreme Energy Drink (10 Pages)
               </button>
               <button
                 type="button"
@@ -191,11 +190,10 @@ export const BrochureSection: React.FC<BrochureSectionProps> = ({
                     : "text-zinc-600 hover:text-zinc-900"
                 }`}
               >
-                General Event Brochure (4 Pages)
+                General Proposal (10 Pages)
               </button>
             </div>
 
-            {/* Single Page vs All Pages Toggle */}
             <div className="flex items-center gap-3 self-start md:self-auto">
               <div className="inline-flex items-center gap-1 p-1 bg-[#F2F0EB] rounded-xl">
                 <button
@@ -220,7 +218,7 @@ export const BrochureSection: React.FC<BrochureSectionProps> = ({
                   }`}
                 >
                   <Layers size={13} />
-                  <span>View All Pages</span>
+                  <span>View All 10 Pages</span>
                 </button>
               </div>
             </div>
@@ -256,7 +254,7 @@ export const BrochureSection: React.FC<BrochureSectionProps> = ({
                 >
                   <ChevronLeft size={16} />
                 </button>
-                <span className="text-xs font-semibold text-zinc-700 tabular-nums min-w-[74px] text-center">
+                <span className="text-xs font-semibold text-zinc-700 tabular-nums min-w-[78px] text-center">
                   Page {activePage} / {totalPages}
                 </span>
                 <button
@@ -278,7 +276,6 @@ export const BrochureSection: React.FC<BrochureSectionProps> = ({
               <div className="max-w-4xl mx-auto space-y-4">
                 <BrochurePageSheet edition={activeEdition} pageNumber={activePage} />
 
-                {/* Bottom Prev / Next Pagination Controls */}
                 <div className="flex items-center justify-between pt-2">
                   <button
                     type="button"
@@ -332,7 +329,7 @@ export const BrochureSection: React.FC<BrochureSectionProps> = ({
                 className="cursor-pointer inline-flex items-center gap-1.5 text-xs font-semibold text-[#D60A19] hover:text-[#a80814] transition-colors whitespace-nowrap"
               >
                 <Download size={13} />
-                <span>Download Xtreme Energy Drink PDF</span>
+                <span>Download Xtreme Energy Drink PDF (10 Pages)</span>
               </button>
               <span aria-hidden="true" className="text-stone-300">
                 ·
@@ -344,7 +341,7 @@ export const BrochureSection: React.FC<BrochureSectionProps> = ({
                 className="cursor-pointer inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-700 hover:text-zinc-950 transition-colors whitespace-nowrap"
               >
                 <Download size={13} />
-                <span>Download General Brochure PDF</span>
+                <span>Download General Proposal PDF (10 Pages)</span>
               </button>
             </div>
 

@@ -1,6 +1,18 @@
 import React from "react";
-import { X, Printer, Download, Calendar, Mail, Phone, MapPin, CheckCircle2, Trophy, Shield, Sparkles } from "lucide-react";
-import { EVENT_CONFIG, SPONSOR_PACKAGES, INFLUENCERS } from "../data/eventConfig";
+import { X, Printer, Calendar, CheckCircle2 } from "lucide-react";
+import {
+  EVENT_CONFIG,
+  SPONSOR_PACKAGES,
+  INFLUENCERS,
+  SAFETY_PROTOCOLS,
+  VENDOR_OPPORTUNITIES
+} from "../data/eventConfig";
+import {
+  CHAMPIONSHIP_EXPERIENCES,
+  CIRCUIT_SECTORS,
+  STRICT_TRACK_RULE,
+  SURFACE_MIX_SUMMARY
+} from "../data/brochureData";
 
 interface ProposalModalProps {
   isOpen: boolean;
@@ -19,7 +31,7 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
     window.print();
   };
 
-  const { championship, previousAchievements } = EVENT_CONFIG;
+  const { championship } = EVENT_CONFIG;
 
   return (
     <div
@@ -39,7 +51,7 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
             </span>
             <span className="text-zinc-600">·</span>
             <span className="text-xs font-mono text-zinc-400">
-              Sponsorship Prospectus 2027
+              Complete Sponsorship Prospectus 2027
             </span>
           </div>
 
@@ -69,7 +81,7 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="p-1.5 text-zinc-400 hover:text-white rounded hover:bg-zinc-800 ml-2"
+              className="cursor-pointer p-1.5 text-zinc-400 hover:text-white rounded hover:bg-zinc-800 ml-2"
               aria-label="Close"
             >
               <X size={18} />
@@ -78,83 +90,146 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
         </div>
 
         {/* PROPOSAL DOCUMENT BODY */}
-        <div className="space-y-12">
+        <div className="space-y-10">
           {/* Cover Header */}
           <div className="border-b-2 border-[#E50920] pb-8">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
               <div>
                 <span className="text-xs font-mono tracking-widest uppercase text-zinc-400 block mb-1">
-                  OFFICIAL SPONSORSHIP & PARTNERSHIP PROPOSAL
+                  OFFICIAL SPONSORSHIP &amp; PARTNERSHIP PROPOSAL
                 </span>
                 <h1 className="font-heading font-black text-4xl sm:text-5xl uppercase tracking-tight text-white leading-none">
-                  EXTREME MOTO ENDURO CROSS
+                  THE HIMALAYAN MOTO SERIES
                 </h1>
                 <h2 className="font-heading font-black text-2xl sm:text-3xl uppercase tracking-tight text-[#E50920] mt-1">
-                  CHAMPIONSHIP 2027 · POKHARA, NEPAL
+                  EXTREME MOTO ENDURO CROSS 2027 · POKHARA &amp; EVEREST
                 </h2>
               </div>
               <div className="p-4 bg-zinc-950 border border-zinc-800 text-left sm:text-right shrink-0">
                 <span className="text-[10px] font-mono uppercase text-zinc-500 block">Host Entity</span>
                 <span className="text-sm font-bold text-white block">{championship.organizer.name}</span>
-                <span className="text-xs text-zinc-400">{championship.organizer.referenceWebsite}</span>
+                <span className="text-xs text-zinc-400">www.sporthubnepal.com</span>
               </div>
             </div>
 
             <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-normal">
-              <strong>Executive Summary:</strong> Nepal's premier off-road motorsport championship combining hard enduro racing, motocross, freestyle stunts, and creator culture in Pokhara. Outlines commercial tiers, exposure metrics, and partnership deliverables.
+              <strong>Executive Summary:</strong> Nepal&apos;s premier off-road motorsport festival in Pokhara and the Everest corridor — uniting hard enduro river boulder battles, high-speed motocross racing, freestyle stunts (FMX), Pokhara Street Parade, Live Music, Food &amp; Lifestyle Village, Brand Expo, and 50+ digital creators under FIM-grade safety governance.
             </p>
           </div>
 
-          {/* Section 1: Previous Edition Achievements */}
-          <div>
-            <h3 className="font-heading font-bold text-xl uppercase text-white mb-3 flex items-center gap-2">
+          {/* Section 1: Proven Historical Benchmarks & 2027 Calendar */}
+          <div className="space-y-5">
+            <h3 className="font-heading font-bold text-xl uppercase text-white flex items-center gap-2">
               <span className="w-2 h-2 bg-[#E50920]" />
-              <span>1. Proven Historical Benchmarks</span>
+              <span>1. Proven Benchmarks &amp; 2027 Championship Calendar</span>
             </h3>
-            <p className="text-xs text-zinc-400 mb-3 leading-relaxed">
-              Audited previous edition metrics verifying attendance and digital engagement:
-            </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
               <div className="p-4 bg-zinc-950 border border-zinc-800">
-                <div className="font-heading font-black text-3xl text-white">80+</div>
+                <div className="font-heading font-black text-3xl text-white tabular-nums">80+</div>
                 <div className="text-[11px] font-mono uppercase text-zinc-400 mt-1">Competing Riders</div>
               </div>
               <div className="p-4 bg-zinc-950 border border-zinc-800">
-                <div className="font-heading font-black text-3xl text-white">10,000+</div>
+                <div className="font-heading font-black text-3xl text-white tabular-nums">10,000+</div>
                 <div className="text-[11px] font-mono uppercase text-zinc-400 mt-1">Live Spectators</div>
               </div>
               <div className="p-4 bg-zinc-950 border border-zinc-800">
-                <div className="font-heading font-black text-3xl text-[#E50920]">20M+</div>
+                <div className="font-heading font-black text-3xl text-[#E50920] tabular-nums">20M+</div>
                 <div className="text-[11px] font-mono uppercase text-zinc-400 mt-1">Online Video Views</div>
               </div>
               <div className="p-4 bg-zinc-950 border border-zinc-800">
-                <div className="font-heading font-black text-3xl text-white">50+</div>
-                <div className="text-[11px] font-mono uppercase text-zinc-400 mt-1">Influencers & Creators</div>
+                <div className="font-heading font-black text-3xl text-white tabular-nums">50+</div>
+                <div className="text-[11px] font-mono uppercase text-zinc-400 mt-1">Influencers &amp; Creators</div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div className="p-4 bg-zinc-950 border border-zinc-800 space-y-1">
+                <div className="text-[10px] font-mono uppercase text-[#E50920]">
+                  Stage 01 · April 5 &amp; 6, 2027 · Pokhara, Nepal
+                </div>
+                <div className="font-heading font-bold text-lg text-white uppercase">
+                  Himalayan Enduro 2027 Pokhara
+                </div>
+                <p className="text-zinc-400 leading-relaxed">
+                  Two action-packed days across Pokhara&apos;s Annapurna foothills (822m–1,400m) with the official 2.0 KM 55-corner circuit, Brand Expo, FMX stunts, and 10,000+ spectators.
+                </p>
+              </div>
+              <div className="p-4 bg-zinc-950 border border-zinc-800 space-y-1">
+                <div className="text-[10px] font-mono uppercase text-[#E50920]">
+                  Stage 02 · November 2027 · Everest Corridor, Nepal
+                </div>
+                <div className="font-heading font-bold text-lg text-white uppercase">
+                  Himalayan Enduro 2027 Everest
+                </div>
+                <p className="text-zinc-400 leading-relaxed">
+                  All-new high-altitude hard enduro expedition stage entering the iconic Everest corridor. Early rider entries are open; GPS routes to be confirmed ahead of race week.
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Section 2: Sponsorship Tiers Overview */}
+          {/* Section 2: All 8 Championship Experiences */}
           <div>
             <h3 className="font-heading font-bold text-xl uppercase text-white mb-4 flex items-center gap-2">
               <span className="w-2 h-2 bg-[#E50920]" />
-              <span>2. Championship Sponsorship Packages</span>
+              <span>2. All 8 Championship Sections &amp; Experiences</span>
             </h3>
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              {CHAMPIONSHIP_EXPERIENCES.map((exp) => (
+                <div key={exp.title} className="p-3.5 bg-zinc-950 border border-zinc-800 space-y-1">
+                  <div className="text-[10px] font-mono uppercase text-[#E50920]">{exp.category}</div>
+                  <div className="font-heading font-bold text-sm text-white uppercase">{exp.title}</div>
+                  <p className="text-zinc-400 leading-relaxed">{exp.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 3: 2KM Pokhara Circuit Telemetry & 8 Track Sectors */}
+          <div className="space-y-4">
+            <h3 className="font-heading font-bold text-xl uppercase text-white flex items-center gap-2">
+              <span className="w-2 h-2 bg-[#E50920]" />
+              <span>3. Official 2.0 KM Pokhara Circuit &amp; 8 Track Sectors</span>
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+              {SURFACE_MIX_SUMMARY.map((sm) => (
+                <div key={sm.terrain} className="p-3 bg-zinc-950 border border-zinc-800">
+                  <div className="font-bold text-[#E50920]">{sm.terrain}</div>
+                  <div className="text-zinc-400 mt-0.5">{sm.pace}</div>
+                </div>
+              ))}
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+              {CIRCUIT_SECTORS.map((sec) => (
+                <div key={sec.id} className="p-3 bg-zinc-950 border border-zinc-800">
+                  <div className="font-bold text-white">
+                    {sec.name}{" "}
+                    <span className="text-[10px] font-mono text-[#E50920]">({sec.difficulty})</span>
+                  </div>
+                  <div className="text-zinc-400 mt-0.5">{sec.surface} · {sec.pace}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 4: Sponsorship Tiers & Vendor Marketplace (Zero Prices) */}
+          <div className="space-y-4">
+            <h3 className="font-heading font-bold text-xl uppercase text-white flex items-center gap-2">
+              <span className="w-2 h-2 bg-[#E50920]" />
+              <span>4. Championship Sponsorship Packages &amp; Vendor Zones</span>
+            </h3>
+            <div className="space-y-3">
               {SPONSOR_PACKAGES.map((pkg) => (
                 <div key={pkg.id} className="p-4 bg-zinc-950 border border-zinc-800">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-                    <div className="flex items-center gap-2">
-                      <span className="font-heading font-black text-lg uppercase text-white">
-                        {pkg.tier}
-                      </span>
-                      <span className="text-[10px] font-mono px-2 py-0.5 bg-red-950 text-[#E50920] border border-red-900">
-                        {pkg.badge}
-                      </span>
-                    </div>
+                  <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                    <span className="font-heading font-black text-lg uppercase text-white">
+                      {pkg.tier}
+                    </span>
+                    <span className="text-[10px] font-mono text-[#E50920]">
+                      · {pkg.badge} · Commercial Terms Upon Request
+                    </span>
                   </div>
-                  <p className="text-xs text-zinc-300 font-medium mb-3">{pkg.headline}</p>
-                  
+                  <p className="text-xs text-zinc-300 font-medium mb-2.5">{pkg.headline}</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-zinc-400">
                     {pkg.keyHighlights.map((hl, i) => (
                       <div key={i} className="flex items-start gap-1.5">
@@ -166,13 +241,25 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
                 </div>
               ))}
             </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-2">
+              {VENDOR_OPPORTUNITIES.map((v) => (
+                <div key={v.id} className="p-3.5 bg-zinc-950 border border-zinc-800 space-y-1">
+                  <div className="text-[10px] font-mono uppercase text-[#E50920]">
+                    {v.category} · {v.stallSizes}
+                  </div>
+                  <div className="font-bold text-white">{v.title}</div>
+                  <p className="text-zinc-400">{v.description}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Section 3: Digital Reach & Creator Ecosystem */}
+          {/* Section 5: Digital Reach & Creator Ecosystem */}
           <div>
             <h3 className="font-heading font-bold text-xl uppercase text-white mb-4 flex items-center gap-2">
               <span className="w-2 h-2 bg-[#E50920]" />
-              <span>3. Digital Creator Ecosystem & Media Reach</span>
+              <span>5. Digital Creator Ecosystem &amp; Media Reach</span>
             </h3>
             <p className="text-xs text-zinc-300 leading-relaxed mb-4">
               The 2027 championship partners with over 50 leading adventure, travel, and moto vloggers across Nepal and South Asia, generating an estimated combined reach of <strong>2.5M - 4M+ followers</strong> and a projected <strong>5M - 10M+ impressions</strong> across YouTube, Instagram, Facebook, and TikTok.
@@ -188,32 +275,29 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
             </div>
           </div>
 
-          {/* Section 4: Operational Safety & Venue */}
+          {/* Section 6: All 6 FIM Safety Protocols */}
           <div>
             <h3 className="font-heading font-bold text-xl uppercase text-white mb-4 flex items-center gap-2">
               <span className="w-2 h-2 bg-[#E50920]" />
-              <span>4. Safety Protocols & Venue Management</span>
+              <span>6. FIM Safety Governance &amp; Venue Management</span>
             </h3>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-zinc-300">
-              <li className="p-2.5 bg-zinc-950 border border-zinc-800">
-                <strong>FIM-Standard Race Marshals:</strong> Every obstacle and high-speed corner monitored with standardized flags and instant radio comms.
-              </li>
-              <li className="p-2.5 bg-zinc-950 border border-zinc-800">
-                <strong>Medical Emergency Squad:</strong> On-site trauma doctors, 4x4 off-road ambulances, and pre-cleared hospital corridor.
-              </li>
-              <li className="p-2.5 bg-zinc-950 border border-zinc-800">
-                <strong>District Police & Traffic Alignment:</strong> Coordinated security with District Police Office Kaski and Gandaki Traffic Police.
-              </li>
-              <li className="p-2.5 bg-zinc-950 border border-zinc-800">
-                <strong>Barricaded Spectator Perimeters:</strong> High-tensile steel fences and 6-meter buffer zones separating crowd from track.
-              </li>
-            </ul>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-zinc-300">
+              {SAFETY_PROTOCOLS.map((proto) => (
+                <div key={proto.title} className="p-3 bg-zinc-950 border border-zinc-800">
+                  <strong className="text-white block">{proto.title}</strong>
+                  <span className="text-zinc-400">{proto.description}</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-[11px] text-zinc-400 mt-3 p-3 bg-zinc-950 border border-red-900/50">
+              {STRICT_TRACK_RULE}
+            </p>
           </div>
 
-          {/* Section 5: Official Contact & Verification */}
+          {/* Section 7: Official Contact & Verification */}
           <div className="pt-6 border-t-2 border-zinc-800">
             <h3 className="font-heading font-bold text-xl uppercase text-white mb-4">
-              5. Commercial Contacts & Meeting Coordination
+              7. Commercial Contacts &amp; Meeting Coordination
             </h3>
             <div className="p-5 bg-zinc-950 border border-zinc-800 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div>
@@ -224,7 +308,7 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
               </div>
               <div className="space-y-1">
                 <div>
-                  <span className="text-zinc-500 font-mono">Direct Phone: </span>
+                  <span className="text-zinc-500 font-mono">Direct Phone / WhatsApp: </span>
                   <a href={`tel:${championship.organizer.phone}`} className="text-white font-bold hover:text-[#E50920]">
                     {championship.organizer.phoneDisplay}
                   </a>
@@ -236,9 +320,9 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
                   </a>
                 </div>
                 <div>
-                  <span className="text-zinc-500 font-mono">Official Site: </span>
-                  <a href={championship.organizer.referenceWebsite} target="_blank" rel="noreferrer" className="text-[#E50920] underline">
-                    sportshubnepal.com
+                  <span className="text-zinc-500 font-mono">Official Website: </span>
+                  <a href="https://www.sporthubnepal.com" target="_blank" rel="noreferrer" className="text-[#E50920] underline">
+                    www.sporthubnepal.com
                   </a>
                 </div>
               </div>
