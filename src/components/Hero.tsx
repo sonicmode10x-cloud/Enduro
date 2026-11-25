@@ -67,7 +67,7 @@ export const Hero: React.FC<HeroProps> = ({
             </p>
 
             <h1 className="font-heading font-black text-5xl sm:text-6xl lg:text-7xl uppercase tracking-tight text-white leading-[0.92] mb-4 text-balance">
-              WELCOME TO EXTREME MOTO ENDURO CROSS
+              THE HIMALAYAN MOTO SERIES OF ADVENTURES
             </h1>
 
             <p className="text-sm sm:text-base text-zinc-300 leading-relaxed max-w-md mb-7">

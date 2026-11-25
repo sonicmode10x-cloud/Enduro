@@ -5,9 +5,17 @@ import { useBrandLogo } from "../context/LogoContext";
 
 interface NavbarProps {
   onOpenRegisterModal: (defaultTab?: "rider" | "sponsor" | "vendor" | "media" | "general") => void;
+  activeView?: "home" | "proposal";
+  onNavigateHome?: (sectionHash?: string) => void;
+  onNavigateProposal?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenRegisterModal }) => {
+export const Navbar: React.FC<NavbarProps> = ({
+  onOpenRegisterModal,
+  activeView = "home",
+  onNavigateHome,
+  onNavigateProposal
+}) => {
   const { logoConfig } = useBrandLogo();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -21,23 +29,47 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegisterModal }) => {
   }, []);
 
   const navLinks = [
-    { name: "Upcoming Events", href: "#upcoming-events" },
-    { name: "Moto Enduro", href: "#experiences" },
-    { name: "2026 Edition", href: "#moto-enduro-2026" },
-    { name: "2024 Edition", href: "#moto-enduro-2024" },
-    { name: "Race Map", href: "#arena-layout" },
-    { name: "Gallery", href: "#gallery" },
-    { name: "Media", href: "#influencers" },
-    { name: "Contact", href: "#contact" }
+    { name: "Upcoming Events", href: "#himalayan-enduro", isPage: false },
+    { name: "Moto Enduro", href: "#experiences", isPage: false },
+    { name: "2026 Edition", href: "#moto-enduro-2026", isPage: false },
+    { name: "2024 Edition", href: "#moto-enduro-2024", isPage: false },
+    { name: "Race Map", href: "#arena-layout", isPage: false },
+    { name: "Proposal", href: "#proposal", isPage: true },
+    { name: "Gallery", href: "#gallery", isPage: false },
+    { name: "Contact", href: "#contact", isPage: false }
   ];
+
+  const handleLinkClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    link: { href: string; isPage: boolean }
+  ) => {
+    setMobileMenuOpen(false);
+    if (link.isPage && onNavigateProposal) {
+      e.preventDefault();
+      onNavigateProposal();
+      return;
+    }
+    if (!link.isPage && activeView !== "home" && onNavigateHome) {
+      e.preventDefault();
+      onNavigateHome(link.href);
+    }
+  };
+
+  const handleBrandClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    setMobileMenuOpen(false);
+    if (activeView !== "home" && onNavigateHome) {
+      e.preventDefault();
+      onNavigateHome();
+    }
+  };
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 bg-[#C80815] text-white ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 bg-black text-white ${
           isScrolled
-            ? "border-b border-black/15 shadow-md py-3"
-            : "border-b border-white/10 py-3.5 sm:py-4"
+            ? "border-b border-white/15 shadow-md py-2.5"
+            : "border-b border-white/10 py-3"
         }`}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -45,44 +77,60 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegisterModal }) => {
             {/* Zone 1: Brand Logo */}
             <a
               href="#hero"
+              onClick={handleBrandClick}
               className="group flex items-center whitespace-nowrap shrink-0 focus-visible:outline-none"
-              title="Extreme Moto Enduro Cross Championship"
-              aria-label="Extreme Moto Enduro Cross Championship"
+              title="Himalayan Moto Enduro 2027"
+              aria-label="Himalayan Moto Enduro 2027"
             >
               <div
-                className={`px-3 py-1.5 rounded-lg transition-all flex items-center justify-center ${
+                className={`rounded-lg transition-all flex items-center justify-center ${
                   logoConfig.plateStyle === "white"
-                    ? "bg-white hover:bg-stone-100 shadow-sm"
+                    ? "px-3 py-1.5 bg-white hover:bg-stone-100 shadow-sm"
                     : logoConfig.plateStyle === "dark"
-                    ? "bg-zinc-900 border border-white/15"
+                    ? "px-3 py-1.5 bg-zinc-900 border border-white/15"
                     : "bg-transparent"
                 }`}
               >
-                <div className="h-[34px] sm:h-[38px] px-0.5 flex items-center justify-center">
+                <div
+                  className={`flex items-center justify-center ${
+                    logoConfig.plateStyle === "transparent"
+                      ? "h-[76px] sm:h-[92px] -my-3.5 sm:-my-5"
+                      : "h-[42px] sm:h-[48px] px-0.5"
+                  }`}
+                >
                   <img
                     src={logoConfig.url}
-                    alt="Moto Enduro Cross Championship"
+                    alt="Himalayan Moto Enduro 2027"
                     style={{
                       transform: `scale(${logoConfig.zoom / 100})`,
                       transition: "transform 0.15s ease-out"
                     }}
-                    className="h-full w-auto max-w-[150px] sm:max-w-[175px] object-contain select-none pointer-events-none"
+                    className="h-full w-auto max-w-[220px] sm:max-w-[260px] object-contain select-none pointer-events-none"
                   />
                 </div>
               </div>
             </a>
 
             {/* Zone 2: Clean Single-Line Nav Links */}
-            <nav className="hidden lg:flex items-center gap-5 text-[15px] font-heading font-bold uppercase tracking-wider text-white/95">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="whitespace-nowrap shrink-0 hover:text-white transition-colors relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-white after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left"
-                >
-                  {link.name}
-                </a>
-              ))}
+            <nav className="hidden lg:flex items-center gap-4 xl:gap-5 text-[15px] font-heading font-bold uppercase tracking-wider text-white/95">
+              {navLinks.map((link) => {
+                const isActive = link.isPage && activeView === "proposal";
+                return (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    onClick={(e) => handleLinkClick(e, link)}
+                    aria-current={isActive ? "page" : undefined}
+                    className={`whitespace-nowrap shrink-0 hover:text-white transition-colors relative py-1 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-white after:transition-transform after:origin-left ${
+                      isActive
+                        ? "text-white after:scale-x-100"
+                        : "after:scale-x-0 hover:after:scale-x-100"
+                    }`}
+                  >
+                    {link.name}
+                  </a>
+                );
+              })}
             </nav>
 
             {/* Zone 3: Single Primary Action */}
@@ -121,21 +169,27 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegisterModal }) => {
               <div className="flex items-center justify-between pb-5 border-b border-white/10">
                 <a
                   href="#hero"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`px-2.5 py-1 rounded-lg block ${
+                  onClick={handleBrandClick}
+                  className={`rounded-lg block ${
                     logoConfig.plateStyle === "white"
-                      ? "bg-white"
+                      ? "px-2.5 py-1 bg-white"
                       : logoConfig.plateStyle === "dark"
-                      ? "bg-zinc-900 border border-white/15"
+                      ? "px-2.5 py-1 bg-zinc-900 border border-white/15"
                       : "bg-transparent"
                   }`}
                 >
-                  <div className="h-[30px] px-0.5 flex items-center justify-center">
+                  <div
+                    className={`flex items-center justify-center ${
+                      logoConfig.plateStyle === "transparent"
+                        ? "h-[48px] -my-1.5"
+                        : "h-[30px] px-0.5"
+                    }`}
+                  >
                     <img
                       src={logoConfig.url}
-                      alt="Moto Enduro Cross Championship"
+                      alt="Himalayan Moto Enduro 2027"
                       style={{ transform: `scale(${logoConfig.zoom / 100})` }}
-                      className="h-full w-auto max-w-[130px] object-contain select-none pointer-events-none"
+                      className="h-full w-auto max-w-[165px] object-contain select-none pointer-events-none"
                     />
                   </div>
                 </a>
@@ -150,17 +204,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegisterModal }) => {
               </div>
 
               <div className="py-6 flex flex-col gap-1.5">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-between py-2.5 px-3 rounded-xl text-sm font-medium text-zinc-200 hover:text-white hover:bg-white/10 transition-colors"
-                  >
-                    <span>{link.name}</span>
-                    <ChevronRight size={14} className="text-zinc-500" />
-                  </a>
-                ))}
+                {navLinks.map((link) => {
+                  const isActive = link.isPage && activeView === "proposal";
+                  return (
+                    <a
+                      key={link.name}
+                      href={link.href}
+                      onClick={(e) => handleLinkClick(e, link)}
+                      aria-current={isActive ? "page" : undefined}
+                      className={`flex items-center justify-between py-2.5 px-3 rounded-xl text-sm font-medium transition-colors ${
+                        isActive
+                          ? "text-white bg-white/15"
+                          : "text-zinc-200 hover:text-white hover:bg-white/10"
+                      }`}
+                    >
+                      <span>{link.isPage ? "Sponsorship Proposals" : link.name}</span>
+                      <ChevronRight size={14} className="text-zinc-500" />
+                    </a>
+                  );
+                })}
               </div>
             </div>
 

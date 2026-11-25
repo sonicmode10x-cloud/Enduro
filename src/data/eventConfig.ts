@@ -303,190 +303,126 @@ export const SPONSOR_PACKAGES: SponsorPackage[] = [
   {
     id: "title-sponsor",
     tier: "TITLE SPONSOR",
-    headline: "Championship Naming Rights & Maximum Exposure",
-    badge: "Exclusive (1 Brand)",
+    headline: '"Powered By" Partner — Exclusive Face of the Championship',
+    badge: "1 Slot",
     priceNote: "Custom Partnership",
     keyHighlights: [
-      "'[Your Brand] Extreme Moto Enduro Cross 2027' across all media",
-      "Prime logo on rider bibs, medals, and champion trophy",
-      "Full digital, broadcast, and print campaign ownership",
-      "100 VIP Passes + Private Hospitality Sky Lounge"
+      'Event named as "Pokhara Motocross Enduro Championship 2027 — Powered by YOUR BRAND"',
+      "Largest logo on all digital + physical assets & co-branded official T-shirts",
+      "Mention in every press release, media coverage, mic shout-outs & influencer interviews",
+      "Premium Brand Expo booth, giveaways/samples & exclusive category lock"
     ],
     entitlements: {
       branding: [
-        "Championship naming rights across all marketing channels",
-        "Start gate banner, finish arch, and podium backdrop billing",
-        "Logo on official rider jerseys and champion trophy",
-        "100+ high-visibility trackside perimeter hoardings"
+        'Event named as "Pokhara Motocross Enduro Championship 2027 — Powered by YOUR BRAND"',
+        "Largest logo on all assets (digital + physical)",
+        "Co-branded official T-shirts, banners, and creator backdrops",
+        "Exclusive category lock (no competitor allowed)"
       ],
       media: [
-        "Guaranteed 5M+ social impressions via creator roster",
-        "Dedicated brand documentary feature video",
-        "Top-tier banner on official site and ticketing"
+        "Mention in every press release, media coverage & influencer content",
+        "Title sponsor shout-outs on mic during all major moments",
+        "Interview features with top influencers"
       ],
       hospitality: [
-        "100 VIP Championship All-Access Passes",
-        "Private 40-seat Sky Lounge with gourmet hospitality",
-        "Trophy presentation during the awards ceremony"
+        "VIP Championship All-Access & stage recognition",
+        "Official press meet & awards ceremony billing"
       ],
       activation: [
-        "1,000 sq.ft. experiential brand pavilion at main entrance",
-        "Exclusive vehicle or product launch on main arena stage"
+        "Premium booth in the Brand Expo",
+        "Right to distribute merchandise, giveaways, and brand samples"
       ]
     },
     recommendedFor: "Automotive OEMs, Telecom, Energy Drinks, National Banks"
   },
   {
-    id: "presenting-sponsor",
-    tier: "PRESENTING SPONSOR",
-    headline: "High-Visibility Co-Branding Across Touchpoints",
-    badge: "Limited (2 Brands)",
-    priceNote: "Premium Co-Sponsorship",
+    id: "gold-sponsor",
+    tier: "GOLD SPONSOR",
+    headline: "High Visibility Brand Partner Across Key Race Zones",
+    badge: "2 Slots",
+    priceNote: "Upon Request",
     keyHighlights: [
-      "'Championship Presented by [Your Brand]'",
-      "Podium and starting gate perimeter branding",
-      "Custom creator campaign with 3M+ impressions",
-      "50 VIP Passes with Sky Lounge Access"
+      "Logo displayed prominently on key race zones & on-track branding",
+      "Shoutouts during race & stunt moments",
+      "Inclusion in social media reels, posters, recap videos & Creator Zone content",
+      "Premium booth in the expo + optional logo on rider bibs or paddock boards"
     ],
     entitlements: {
       branding: [
-        "Co-branding on stage backdrops and starting gate sides",
-        "60+ trackside banners along high-action jumps",
-        "Logo on spectator wristbands and official posters"
+        "Logo displayed prominently on key race zones",
+        "On-track branding for maximum eyeballs",
+        "Logo on rider bibs or paddock boards (optional)"
       ],
       media: [
-        "3M+ digital impressions across Instagram & YouTube",
-        "Feature integration in official video aftermovie"
+        "Shoutouts during race & stunt moments",
+        "Inclusion in social media reels, posters & recap videos",
+        "Co-branded influencer content at the Creator Zone"
       ],
       hospitality: [
-        "50 VIP Championship Passes with lounge access",
-        "Category awards stage presentation rights"
+        "VIP event passes & hospitality access"
       ],
       activation: [
-        "600 sq.ft. exhibition space in Brand Expo boulevard"
+        "Premium booth in the Brand Expo"
       ]
     },
     recommendedFor: "Lubricants, Tires, Electronics, FinTech & Digital Wallets"
   },
   {
-    id: "category-partners",
-    tier: "CATEGORY PARTNER",
-    headline: "Exclusive Industry Sector Dominance",
-    badge: "Category Exclusive",
-    priceNote: "Strategic Category Tier",
+    id: "silver-sponsor",
+    tier: "SILVER SPONSOR",
+    headline: "Core Event Supporter with Solid Brand Integration",
+    badge: "3 Slots",
+    priceNote: "Upon Request",
     keyHighlights: [
-      "Official Partner status in your exclusive sector",
-      "Obstacle naming rights (e.g., '[Brand] Matrix Wall')",
-      "30 Trackside banners & digital spotlight",
-      "25 VIP Passes + 400 sq.ft. display booth"
+      "Logo on event banners & standees",
+      "Mention in selected reels & stories",
+      "On-site product display & Food & Lifestyle Zone visibility",
+      "Official invitation to press meet"
     ],
     entitlements: {
       branding: [
-        "Exclusive title: 'Official [Category] Partner'",
-        "Naming rights for one signature track obstacle",
-        "30 High-impact trackside banners"
+        "Logo on event banners & standees",
+        "Brand visibility inside the Food & Lifestyle Zone"
       ],
       media: [
-        "1.5M+ digital impressions via sponsored reels",
-        "Logo on partners wall and official program"
+        "Mention in selected reels & stories"
       ],
       hospitality: [
-        "25 VIP All-Access passes with Hospitality access"
+        "Invitation to official press meet"
       ],
       activation: [
-        "400 sq.ft. Brand Expo display space"
+        "On-site product display"
       ]
     },
-    recommendedFor: "Riding Gear, Helmets, Dealerships, Energy Beverages"
+    recommendedFor: "Riding Gear, Helmets, Dealerships, Lifestyle & Beverage Brands"
   },
   {
-    id: "automotive-mobility",
-    tier: "AUTOMOTIVE PARTNER",
-    headline: "Test-Rides, Dealership Leads & Vehicle Unveils",
-    badge: "Automotive / EV",
-    priceNote: "High ROI Commercial",
+    id: "supporting-partner",
+    tier: "SUPPORTING PARTNER",
+    headline: "Community Builder — Visual Presence as Supporting Partner",
+    badge: "10 Slots",
+    priceNote: "Upon Request",
     keyHighlights: [
-      "Dedicated consumer test-ride track area",
-      "New 2027 vehicle reveal on the podium stage",
-      "Direct leads from 10,000+ motorsport fans",
-      "20 VIP Passes + 800 sq.ft. Pavilion"
+      "Logo on selected event banners",
+      "Social media acknowledgment",
+      "2 general championship passes",
+      "Opportunity to place small product samples or flyers"
     ],
     entitlements: {
       branding: [
-        "Official Motorcycle / EV Mobility Partner",
-        "Paddock and track perimeter signage"
+        "Logo on selected banners"
       ],
       media: [
-        "Dedicated bike walkthrough by top moto-vlogger",
-        "Spotlight social campaign promoting test rides"
+        "Social media acknowledgment"
       ],
       hospitality: [
-        "20 VIP passes for executive dealership clients"
+        "2 general passes"
       ],
       activation: [
-        "800 sq.ft. pavilion with consumer test-ride registration"
+        "Opportunity to place small product samples or flyers"
       ]
     },
-    recommendedFor: "Motorcycle Manufacturers, EV Dirtbikes, ATV Importers"
-  },
-  {
-    id: "digital-media",
-    tier: "DIGITAL & MEDIA PARTNER",
-    headline: "Broadcast Overlays & Creator Amplification",
-    badge: "Media & Tech",
-    priceNote: "Content Distribution",
-    keyHighlights: [
-      "Live stream graphics overlay and stream branding",
-      "Creator lounge naming rights ('[Brand] Media Hub')",
-      "Co-branded viral clip series",
-      "15 VIP Passes + Media Accreditation"
-    ],
-    entitlements: {
-      branding: [
-        "Branding inside Media & Press Lounge",
-        "Overlay logo on live broadcast streams and reels"
-      ],
-      media: [
-        "Co-branded video highlights across YouTube channels",
-        "Exclusive champion rider interviews"
-      ],
-      hospitality: [
-        "15 VIP passes + priority media pit passes"
-      ],
-      activation: [
-        "Interactive photo/video streaming booth"
-      ]
-    },
-    recommendedFor: "Broadcasters, Action Cameras, Tech Brands, ISPs"
-  },
-  {
-    id: "food-lifestyle",
-    tier: "FOOD & LIFESTYLE PARTNER",
-    headline: "Festival Dining & Afterparty Co-Hosting",
-    badge: "Food & Beverage",
-    priceNote: "Hospitality & Retail",
-    keyHighlights: [
-      "Exclusive pouring or dining village rights",
-      "Branding across picnic zones and afterparty",
-      "Direct cash flow from 10,000+ festival goers",
-      "10 VIP Passes + Food Village Stalls"
-    ],
-    entitlements: {
-      branding: [
-        "Branding on dining tables, umbrellas, and banners",
-        "Official Afterparty co-host branding"
-      ],
-      media: [
-        "Social media shout-outs as official Food Partner"
-      ],
-      hospitality: [
-        "10 VIP passes + catering vouchers"
-      ],
-      activation: [
-        "Prime location food stalls with utility power"
-      ]
-    },
-    recommendedFor: "Breweries, Coffee Brands, Restaurants, Lifestyle Apparel"
+    recommendedFor: "Local Businesses, Gear Shops, Adventure Clubs & Hospitality Partners"
   }
 ];
 

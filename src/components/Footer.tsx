@@ -8,11 +8,16 @@ interface FooterProps {
   onOpenRegisterModal: (defaultTab?: FormTab) => void;
   onOpenProposalModal: () => void;
   onOpenAdminConsole?: () => void;
+  onNavigateHome?: (sectionHash?: string) => void;
+  onNavigateProposal?: (sectionId?: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
+  onOpenRegisterModal,
   onOpenProposalModal,
-  onOpenAdminConsole
+  onOpenAdminConsole,
+  onNavigateHome,
+  onNavigateProposal
 }) => {
   const { logoConfig } = useBrandLogo();
   const { championship } = EVENT_CONFIG;
@@ -22,16 +27,33 @@ export const Footer: React.FC<FooterProps> = ({
   };
 
   const navLinks = [
-    { name: "Home", href: "#hero" },
-    { name: "Upcoming Events", href: "#upcoming-events" },
-    { name: "Moto Enduro", href: "#experiences" },
-    { name: "2026 Edition", href: "#moto-enduro-2026" },
-    { name: "2024 Edition", href: "#moto-enduro-2024" },
-    { name: "Race Map", href: "#arena-layout" },
-    { name: "Gallery", href: "#gallery" },
-    { name: "Media", href: "#influencers" },
-    { name: "Contact", href: "#contact" }
+    { name: "Home", href: "#hero", isPage: false },
+    { name: "Upcoming Events", href: "#himalayan-enduro", isPage: false },
+    { name: "Moto Enduro", href: "#experiences", isPage: false },
+    { name: "2026 Edition", href: "#moto-enduro-2026", isPage: false },
+    { name: "2024 Edition", href: "#moto-enduro-2024", isPage: false },
+    { name: "Race Map", href: "#arena-layout", isPage: false },
+    { name: "Brochure", href: "#proposal", isPage: true, sectionId: "brochure" },
+    { name: "Sponsorship Proposals", href: "#proposal", isPage: true },
+    { name: "Gallery", href: "#gallery", isPage: false },
+    { name: "Media", href: "#influencers", isPage: false },
+    { name: "Contact", href: "#contact", isPage: false }
   ];
+
+  const handleFooterLinkClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    link: { href: string; isPage: boolean; sectionId?: string }
+  ) => {
+    if (link.isPage && onNavigateProposal) {
+      e.preventDefault();
+      onNavigateProposal(link.sectionId);
+      return;
+    }
+    if (!link.isPage && onNavigateHome) {
+      e.preventDefault();
+      onNavigateHome(link.href);
+    }
+  };
 
   return (
     <footer className="bg-[#222224] text-zinc-300 text-xs pt-14 pb-10">
@@ -44,20 +66,26 @@ export const Footer: React.FC<FooterProps> = ({
               type="button"
               onClick={scrollToTop}
               title="Return to top"
-              className={`px-3 py-1.5 rounded-lg inline-flex items-center cursor-pointer transition-opacity hover:opacity-90 ${
+              className={`rounded-lg inline-flex items-center cursor-pointer transition-opacity hover:opacity-90 ${
                 logoConfig.plateStyle === "white"
-                  ? "bg-white"
+                  ? "px-3 py-1.5 bg-white"
                   : logoConfig.plateStyle === "dark"
-                  ? "bg-zinc-900 border border-white/15"
+                  ? "px-3 py-1.5 bg-zinc-900 border border-white/15"
                   : "bg-transparent"
               }`}
             >
-              <div className="h-[32px] px-0.5 flex items-center justify-center">
+              <div
+                className={`flex items-center justify-center ${
+                  logoConfig.plateStyle === "transparent"
+                    ? "h-[54px] -my-1.5"
+                    : "h-[32px] px-0.5"
+                }`}
+              >
                 <img
                   src={logoConfig.url}
-                  alt="Moto Enduro Cross Championship"
+                  alt="Himalayan Moto Enduro 2027"
                   style={{ transform: `scale(${logoConfig.zoom / 100})` }}
-                  className="h-full w-auto max-w-[140px] object-contain select-none pointer-events-none"
+                  className="h-full w-auto max-w-[180px] object-contain select-none pointer-events-none"
                 />
               </div>
             </button>
@@ -72,7 +100,11 @@ export const Footer: React.FC<FooterProps> = ({
             <ul className="space-y-2 text-zinc-400">
               {navLinks.map((link) => (
                 <li key={link.name}>
-                  <a href={link.href} className="hover:text-white transition-colors">
+                  <a
+                    href={link.href}
+                    onClick={(e) => handleFooterLinkClick(e, link)}
+                    className="hover:text-white transition-colors"
+                  >
                     {link.name}
                   </a>
                 </li>
@@ -142,6 +174,13 @@ export const Footer: React.FC<FooterProps> = ({
                 <MessageCircle size={14} />
               </a>
             </div>
+            <button
+              type="button"
+              onClick={() => onOpenRegisterModal("rider")}
+              className="cursor-pointer text-xs font-semibold text-white bg-white/10 hover:bg-white/20 px-4 py-1.5 rounded-full transition-colors"
+            >
+              Rider Portal
+            </button>
           </div>
         </div>
 

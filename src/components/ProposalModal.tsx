@@ -152,7 +152,6 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
                         {pkg.badge}
                       </span>
                     </div>
-                    <span className="text-xs font-mono text-zinc-400">{pkg.priceNote}</span>
                   </div>
                   <p className="text-xs text-zinc-300 font-medium mb-3">{pkg.headline}</p>
                   

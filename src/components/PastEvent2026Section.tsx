@@ -90,9 +90,6 @@ export const PastEvent2026Section: React.FC = () => {
           {/* Header Row */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div className="max-w-2xl">
-              <p className="text-xs font-semibold text-[#D60A19] mb-1">
-                Past Event Archive <span aria-hidden="true">·</span> Pokhara Riders Club
-              </p>
               <h2 className="font-heading font-black text-3xl sm:text-5xl uppercase tracking-tight text-zinc-900 leading-none text-balance">
                 MOTO ENDURO 2026
               </h2>

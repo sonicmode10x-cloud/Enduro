@@ -80,12 +80,12 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenRegisterMo
                 <div>
                   <span className="text-zinc-500 block">Official Website</span>
                   <a
-                    href={organizer.referenceWebsite}
+                    href="https://www.sporthubnepal.com"
                     target="_blank"
                     rel="noreferrer"
                     className="text-sm font-semibold text-[#D60A19] hover:underline"
                   >
-                    sportshubnepal.com
+                    www.sporthubnepal.com
                   </a>
                 </div>
               </div>

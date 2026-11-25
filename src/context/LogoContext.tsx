@@ -9,8 +9,8 @@ export interface LogoConfig {
   zoom: number; // percentage, e.g. 100 for normal, 120 for zoomed
 }
 
-const DEFAULT_LOGO_URL = "/assets/aistudio/Moto_Enduro_cropped.png";
-const STORAGE_KEY = "moto_enduro_logo_config_v2";
+const DEFAULT_LOGO_URL = "/assets/aistudio/MOTO_175fdec7.png";
+const STORAGE_KEY = "moto_enduro_logo_config_v3";
 
 interface LogoContextType {
   logoConfig: LogoConfig;
@@ -26,7 +26,7 @@ interface LogoContextType {
 const defaultState: LogoConfig = {
   url: DEFAULT_LOGO_URL,
   isCustom: false,
-  plateStyle: "white",
+  plateStyle: "transparent",
   zoom: 100
 };
 
@@ -42,7 +42,7 @@ export const LogoProvider: React.FC<{ children: React.ReactNode }> = ({ children
           return {
             url: parsed.url,
             isCustom: true,
-            plateStyle: parsed.plateStyle || "white",
+            plateStyle: parsed.plateStyle || "transparent",
             zoom: parsed.zoom || 100
           };
         }
@@ -69,7 +69,7 @@ export const LogoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const uploadLogo = (dataUrl: string, plateStyle: PlateStyle = "white") => {
+  const uploadLogo = (dataUrl: string, plateStyle: PlateStyle = "transparent") => {
     saveConfig({
       url: dataUrl,
       isCustom: true,

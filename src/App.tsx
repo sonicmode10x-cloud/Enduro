@@ -10,6 +10,7 @@ import { PastEvent2024Section } from "./components/PastEvent2024Section";
 import { TrackArenaMap } from "./components/TrackArenaMap";
 import { GallerySection } from "./components/GallerySection";
 import { InfluencersSection } from "./components/InfluencersSection";
+import { ProposalPage } from "./components/ProposalPage";
 import { SafetySection } from "./components/SafetySection";
 import { PreFooterCta } from "./components/PreFooterCta";
 import { ContactSection } from "./components/ContactSection";
@@ -20,38 +21,80 @@ import { LogoProvider } from "./context/LogoContext";
 import { LogoUploadModal } from "./components/LogoUploadModal";
 import { AdminDashboard } from "./components/AdminDashboard";
 
+type AppView = "home" | "proposal" | "admin";
+
+function resolveAppView(): AppView {
+  if (typeof window === "undefined") return "home";
+  const hash = window.location.hash.toLowerCase();
+  const params = new URLSearchParams(window.location.search);
+  if (hash === "#admin" || params.has("admin")) return "admin";
+  if (hash === "#proposal" || hash === "#sponsorship-proposal" || params.has("proposal")) {
+    return "proposal";
+  }
+  return "home";
+}
+
 export default function App() {
-  const [isAdminView, setIsAdminView] = useState<boolean>(() => {
-    if (typeof window === "undefined") return false;
-    return (
-      window.location.hash === "#admin" ||
-      new URLSearchParams(window.location.search).has("admin")
-    );
-  });
+  const [activeView, setActiveView] = useState<AppView>(resolveAppView);
 
   React.useEffect(() => {
-    const syncHash = () => {
-      setIsAdminView(
-        window.location.hash === "#admin" ||
-          new URLSearchParams(window.location.search).has("admin")
-      );
+    const syncView = () => {
+      setActiveView(resolveAppView());
     };
-    window.addEventListener("hashchange", syncHash);
-    return () => window.removeEventListener("hashchange", syncHash);
+    window.addEventListener("hashchange", syncView);
+    return () => window.removeEventListener("hashchange", syncView);
   }, []);
 
   const openAdminView = () => {
     window.location.hash = "admin";
-    setIsAdminView(true);
+    setActiveView("admin");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const exitAdminView = () => {
-    if (window.location.hash === "#admin") {
+  const openProposalPage = (sectionId?: string) => {
+    window.location.hash = "proposal";
+    setActiveView("proposal");
+    window.setTimeout(() => {
+      if (sectionId) {
+        const target = document.getElementById(sectionId);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+          return;
+        }
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 60);
+  };
+
+  const navigateHome = (sectionHash?: string) => {
+    const cleanId = sectionHash ? sectionHash.replace(/^#/, "") : "";
+    if (cleanId && cleanId !== "hero") {
+      window.history.replaceState(
+        null,
+        "",
+        `${window.location.pathname}${window.location.search}#${cleanId}`
+      );
+    } else {
       window.history.replaceState(null, "", window.location.pathname + window.location.search);
     }
-    setIsAdminView(false);
+    setActiveView("home");
+
+    window.setTimeout(() => {
+      if (cleanId) {
+        const target = document.getElementById(cleanId);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+          return;
+        }
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 60);
   };
+
+  const exitAdminView = () => {
+    navigateHome();
+  };
+
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const [activeFormTab, setActiveFormTab] = useState<FormTab>("rider");
   const [selectedEventName, setSelectedEventName] = useState<string>("Extreme Moto Enduro Cross 2027");
@@ -72,7 +115,7 @@ export default function App() {
 
   return (
     <LogoProvider>
-      {isAdminView ? (
+      {activeView === "admin" ? (
         <AdminDashboard
           onExitAdmin={exitAdminView}
           onOpenRegisterModal={handleOpenRegisterModal}
@@ -80,58 +123,75 @@ export default function App() {
       ) : (
         <div className="min-h-screen bg-[#EAE8E3] text-zinc-900 selection:bg-[#D60A19] selection:text-white font-sans">
           {/* Clean Minimal Sticky Navigation */}
-          <Navbar onOpenRegisterModal={handleOpenRegisterModal} />
-
-        <main>
-          {/* Hero Section */}
-          <Hero
+          <Navbar
             onOpenRegisterModal={handleOpenRegisterModal}
-            onOpenProposalModal={handleOpenProposalModal}
+            activeView={activeView}
+            onNavigateHome={navigateHome}
+            onNavigateProposal={openProposalPage}
           />
 
-          {/* Official Organizers & Sanctioning Partner Strip */}
-          <PartnerStrip />
+          {activeView === "proposal" ? (
+            <main>
+              <ProposalPage
+                onBackToHome={() => navigateHome()}
+                onOpenRegisterModal={handleOpenRegisterModal}
+                onOpenProposalModal={handleOpenProposalModal}
+              />
+            </main>
+          ) : (
+            <main>
+              {/* Hero Section */}
+              <Hero
+                onOpenRegisterModal={handleOpenRegisterModal}
+                onOpenProposalModal={handleOpenProposalModal}
+              />
 
-          {/* Information & Benchmarks Card */}
-          <StatsCounter />
+              {/* Official Organizers & Sanctioning Partner Strip */}
+              <PartnerStrip />
 
-          {/* Event Experiences Showcase Grid */}
-          <EventExperiences />
+              {/* Information & Benchmarks Card */}
+              <StatsCounter />
 
-          {/* Upcoming Events 2027: Himalayan Enduro Pokhara & Everest */}
-          <HimalayanEnduroSection onOpenRegisterModal={handleOpenRegisterModal} />
+              {/* Event Experiences Showcase Grid */}
+              <EventExperiences />
 
-          {/* Past Event Archive: Moto Enduro 2026 */}
-          <PastEvent2026Section />
+              {/* Upcoming Events 2027: Himalayan Enduro Pokhara & Everest */}
+              <HimalayanEnduroSection onOpenRegisterModal={handleOpenRegisterModal} />
 
-          {/* Past Event Archive: Moto Enduro 2024 */}
-          <PastEvent2024Section />
+              {/* Past Event Archive: Moto Enduro 2026 */}
+              <PastEvent2026Section />
 
-          {/* Official Pokhara Circuit Map & Telemetry */}
-          <TrackArenaMap />
+              {/* Past Event Archive: Moto Enduro 2024 */}
+              <PastEvent2024Section />
 
-          {/* Non-Clickable Championship Photo Gallery */}
-          <GallerySection />
+              {/* Official Pokhara Circuit Map & Telemetry */}
+              <TrackArenaMap />
 
-          {/* Influencers & Digital Media Reach */}
-          <InfluencersSection />
+              {/* Non-Clickable Championship Photo Gallery */}
+              <GallerySection />
 
-          {/* FIM Safety & Event Management Standards */}
-          <SafetySection />
+              {/* Influencers & Digital Media Reach */}
+              <InfluencersSection />
 
-          {/* Contact & Rapid Registration Portals */}
-          <ContactSection onOpenRegisterModal={handleOpenRegisterModal} />
+              {/* FIM Safety & Event Management Standards */}
+              <SafetySection />
 
-          {/* Floating Pre-Footer Registration Banner overlapping Footer */}
-          <PreFooterCta onOpenRegisterModal={handleOpenRegisterModal} />
-        </main>
+              {/* Contact & Rapid Registration Portals */}
+              <ContactSection onOpenRegisterModal={handleOpenRegisterModal} />
 
-        {/* Matte Charcoal Footer */}
-        <Footer
-          onOpenRegisterModal={handleOpenRegisterModal}
-          onOpenProposalModal={handleOpenProposalModal}
-          onOpenAdminConsole={openAdminView}
-        />
+              {/* Floating Pre-Footer Registration Banner overlapping Footer */}
+              <PreFooterCta onOpenRegisterModal={handleOpenRegisterModal} />
+            </main>
+          )}
+
+          {/* Matte Charcoal Footer */}
+          <Footer
+            onOpenRegisterModal={handleOpenRegisterModal}
+            onOpenProposalModal={handleOpenProposalModal}
+            onOpenAdminConsole={openAdminView}
+            onNavigateHome={navigateHome}
+            onNavigateProposal={openProposalPage}
+          />
         </div>
       )}
 
