@@ -34,7 +34,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { name: "2026 Edition", href: "#moto-enduro-2026", isPage: false },
     { name: "2024 Edition", href: "#moto-enduro-2024", isPage: false },
     { name: "Race Map", href: "#arena-layout", isPage: false },
-    { name: "Proposal", href: "#proposal", isPage: true },
+    { name: "Sponsorships", href: "#proposal", isPage: true },
     { name: "Gallery", href: "#gallery", isPage: false },
     { name: "Contact", href: "#contact", isPage: false }
   ];
