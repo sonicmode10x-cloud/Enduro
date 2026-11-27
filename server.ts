@@ -8,8 +8,29 @@ import express from "express";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PORT = Number(process.env.PORT || 3000);
 const IS_PROD = process.env.NODE_ENV === "production";
+
+function resolvePort(): number {
+  for (let i = 0; i < process.argv.length; i++) {
+    const arg = process.argv[i];
+    if (arg === "--port" && process.argv[i + 1]) {
+      const cliPort = Number(process.argv[i + 1]);
+      if (Number.isFinite(cliPort) && cliPort > 0) return cliPort;
+    } else if (arg.startsWith("--port=")) {
+      const cliPort = Number(arg.slice("--port=".length));
+      if (Number.isFinite(cliPort) && cliPort > 0) return cliPort;
+    }
+  }
+  // In dev mode, always bind to port 3000 so we never collide with the platform proxy's PORT=8080
+  if (!IS_PROD) {
+    return 3000;
+  }
+  const envPort = Number(process.env.PORT);
+  if (Number.isFinite(envPort) && envPort > 0) return envPort;
+  return 3000;
+}
+
+const PORT = resolvePort();
 const BOOTSTRAPPED_ADMIN_EMAIL = "motoenduronp@gmail.com";
 
 // Ephemeral in-memory HMAC signing secret fallback when SESSION_SECRET is unset
@@ -978,8 +999,11 @@ function clearFailedAttempts(ip: string): void {
 }
 
 function verifyPasscode(candidate: string): boolean {
-  const configured = process.env.XTREME_PROPOSAL_PASSWORD;
-  if (typeof configured === "string" && configured.length > 0) {
+  const configured =
+    typeof process.env.XTREME_PROPOSAL_PASSWORD === "string"
+      ? process.env.XTREME_PROPOSAL_PASSWORD.trim()
+      : "";
+  if (configured.length > 0) {
     const expectedDigest = crypto.createHash("sha256").update(configured).digest();
     const candidateDigest = crypto.createHash("sha256").update(candidate).digest();
     return crypto.timingSafeEqual(expectedDigest, candidateDigest);
@@ -1128,6 +1152,7 @@ const VALID_INDUSTRIES = new Set<CompanyProposalIndustry>([
 async function startServer() {
   const app = express();
   app.disable("x-powered-by");
+  app.set("trust proxy", 1);
   app.use(express.json({ limit: "16kb" }));
 
   // Baseline security headers (omit X-Frame-Options for AI Studio iframe compatibility)
@@ -1135,6 +1160,12 @@ async function startServer() {
     res.setHeader("X-Content-Type-Options", "nosniff");
     res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
     next();
+  });
+
+  // Liveness endpoint
+  app.get("/api/health", (_req, res) => {
+    res.setHeader("Cache-Control", "no-store");
+    res.status(200).json({ ok: true });
   });
 
   // Unlock Private Proposals Vault via password
@@ -1294,24 +1325,89 @@ async function startServer() {
     });
   });
 
+  // Ensure API routes always return JSON (never fall through to HTML)
+  app.use("/api", (_req, res) => {
+    res.setHeader("Cache-Control", "no-store");
+    res.status(404).json({ error: "API route not found." });
+  });
+
+  // JSON error handler (e.g. malformed request payloads)
+  app.use(
+    (
+      err: unknown,
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction
+    ) => {
+      if (req.path.startsWith("/api/")) {
+        res.setHeader("Cache-Control", "no-store");
+        res.status(400).json({ error: "Invalid request payload." });
+        return;
+      }
+      next(err);
+    }
+  );
+
   // Frontend mounting: Vite middleware in dev, pre-built dist/ in production
-  if (!IS_PROD) {
-    const { createServer: createViteServer } = await import("vite");
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa"
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distDir = path.resolve(__dirname, "dist");
+  const distDir = path.resolve(__dirname, "dist");
+  const hasDistIndex = fs.existsSync(path.join(distDir, "index.html"));
+  const isTsxRuntime =
+    process.argv.some((arg) => arg.includes("tsx")) ||
+    process.execArgv.some((arg) => arg.includes("tsx"));
+  const shouldServeDist =
+    IS_PROD || (hasDistIndex && !isTsxRuntime && process.env.NODE_ENV !== "development");
+
+  const mountStaticDist = () => {
     app.use(express.static(distDir));
-    app.get("/{*path}", (req, res, next) => {
+    app.get("*", (req, res, next) => {
       if (req.path.startsWith("/api/")) {
         next();
         return;
       }
       res.sendFile(path.join(distDir, "index.html"));
     });
+  };
+
+  if (!shouldServeDist) {
+    // Initialize Vite middleware concurrently so Express binds port 3000 immediately for health checks
+    const viteMiddlewarePromise = import("vite")
+      .then(({ createServer: createViteServer }) =>
+        createViteServer({
+          server: {
+            middlewareMode: true,
+            hmr: false,
+            watch: process.env.DISABLE_HMR === "true" ? null : undefined
+          },
+          appType: "spa"
+        })
+      )
+      .then((vite) => vite.middlewares)
+      .catch((viteErr) => {
+        if (hasDistIndex) {
+          return null;
+        }
+        console.error("Failed to initialize Vite dev middleware:", viteErr);
+        throw viteErr;
+      });
+
+    app.use(async (req, res, next) => {
+      try {
+        const middlewares = await viteMiddlewarePromise;
+        if (middlewares) {
+          middlewares(req, res, next);
+          return;
+        }
+        next();
+      } catch (err) {
+        next(err);
+      }
+    });
+
+    if (hasDistIndex) {
+      mountStaticDist();
+    }
+  } else {
+    mountStaticDist();
   }
 
   app.listen(PORT, "0.0.0.0", () => {

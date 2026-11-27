@@ -50,6 +50,7 @@ import {
 } from "./RiderTrackerSection";
 import { FormTab } from "./RegistrationModal";
 import { CompanyProposalRecord, PrivateRateCard } from "../types/xtremeProposal";
+import { fetchPrivateJson } from "../lib/privateApi";
 import { PrivateProposalsWorkspace } from "./PrivateProposalsWorkspace";
 
 interface AdminUserDoc {
@@ -180,23 +181,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     currentUser
       .getIdToken()
       .then((idToken) =>
-        fetch("/api/xtreme-proposal/content", {
+        fetchPrivateJson<{
+          companies?: CompanyProposalRecord[];
+          rateCard?: PrivateRateCard;
+          error?: string;
+        }>("/api/xtreme-proposal/content", {
           headers: { Authorization: `Bearer ${idToken}` }
         })
       )
-      .then(async (res) => {
-        if (!res.ok) {
-          throw new Error("Unable to load private company proposals.");
-        }
-        return (await res.json()) as {
-          companies: CompanyProposalRecord[];
-          rateCard?: PrivateRateCard;
-        };
-      })
-      .then((data) => {
+      .then((result) => {
         if (!active) return;
-        setPrivateCompanies(data.companies);
-        setPrivateRateCard(data.rateCard || null);
+        if (!result.ok || !result.data?.companies) {
+          throw new Error(
+            result.errorMessage || "Unable to load private company proposals."
+          );
+        }
+        setPrivateCompanies(result.data.companies);
+        setPrivateRateCard(result.data.rateCard || null);
       })
       .catch((err) => {
         if (!active) return;

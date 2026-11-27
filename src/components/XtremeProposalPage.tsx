@@ -11,6 +11,7 @@ import {
   ShieldCheck
 } from "lucide-react";
 import { auth, BOOTSTRAPPED_ADMIN_EMAIL, signInWithGoogle } from "../lib/firebase";
+import { fetchPrivateJson } from "../lib/privateApi";
 import { CompanyProposalRecord, PrivateRateCard } from "../types/xtremeProposal";
 import { PrivateProposalsWorkspace } from "./PrivateProposalsWorkspace";
 
@@ -69,18 +70,22 @@ export const XtremeProposalPage: React.FC<XtremeProposalPageProps> = ({
       setCheckingAdmin(true);
       try {
         const idToken = await user.getIdToken();
-        const res = await fetch("/api/xtreme-proposal/content", {
+        const result = await fetchPrivateJson<{
+          companies?: CompanyProposalRecord[];
+          rateCard?: PrivateRateCard;
+          accessMethod?: "admin" | "passcode";
+          error?: string;
+        }>("/api/xtreme-proposal/content", {
           headers: { Authorization: `Bearer ${idToken}` }
         });
         if (!active) return;
 
-        if (res.ok) {
-          const data = (await res.json()) as {
-            companies: CompanyProposalRecord[];
-            rateCard?: PrivateRateCard;
-            accessMethod: "admin" | "passcode";
-          };
-          onUnlockSuccess(data.companies, data.rateCard || null, data.accessMethod);
+        if (result.ok && result.data?.companies) {
+          onUnlockSuccess(
+            result.data.companies,
+            result.data.rateCard || null,
+            result.data.accessMethod || "admin"
+          );
           setErrorMessage(null);
         }
       } catch {
@@ -109,34 +114,36 @@ export const XtremeProposalPage: React.FC<XtremeProposalPageProps> = ({
 
     setSubmitting(true);
     try {
-      const res = await fetch("/api/xtreme-proposal/unlock", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password: trimmed })
-      });
-
-      const data = (await res.json()) as {
+      const result = await fetchPrivateJson<{
         token?: string;
         companies?: CompanyProposalRecord[];
         rateCard?: PrivateRateCard;
         accessMethod?: "admin" | "passcode";
         error?: string;
-      };
+      }>("/api/xtreme-proposal/unlock", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: trimmed })
+      });
 
-      if (!res.ok || !data.companies) {
-        setErrorMessage(data.error || "Incorrect password. Access denied.");
+      if (!result.ok || !result.data?.companies) {
+        setErrorMessage(
+          result.errorMessage || "Incorrect password. Access denied."
+        );
         return;
       }
 
       setPassword("");
       onUnlockSuccess(
-        data.companies,
-        data.rateCard || null,
-        data.accessMethod || "passcode",
-        data.token
+        result.data.companies,
+        result.data.rateCard || null,
+        result.data.accessMethod || "passcode",
+        result.data.token
       );
     } catch {
-      setErrorMessage("Unable to verify access right now. Please try again.");
+      setErrorMessage(
+        "Unable to reach the verification server right now. Please refresh the page and try again."
+      );
     } finally {
       setSubmitting(false);
     }
@@ -149,23 +156,29 @@ export const XtremeProposalPage: React.FC<XtremeProposalPageProps> = ({
     try {
       const cred = await signInWithGoogle();
       const idToken = await cred.user.getIdToken(true);
-      const res = await fetch("/api/xtreme-proposal/content", {
+      const result = await fetchPrivateJson<{
+        companies?: CompanyProposalRecord[];
+        rateCard?: PrivateRateCard;
+        accessMethod?: "admin" | "passcode";
+        error?: string;
+      }>("/api/xtreme-proposal/content", {
         headers: { Authorization: `Bearer ${idToken}` }
       });
 
-      if (!res.ok) {
+      if (!result.ok || !result.data?.companies) {
         setErrorMessage(
-          `Signed in as ${cred.user.email || "non-admin account"}. Organizer admin authorization (${BOOTSTRAPPED_ADMIN_EMAIL}) or the access password is required.`
+          result.isTransientError
+            ? result.errorMessage || "Unable to verify admin access right now. Please refresh and try again."
+            : `Signed in as ${cred.user.email || "non-admin account"}. Organizer admin authorization (${BOOTSTRAPPED_ADMIN_EMAIL}) or the access password is required.`
         );
         return;
       }
 
-      const data = (await res.json()) as {
-        companies: CompanyProposalRecord[];
-        rateCard?: PrivateRateCard;
-        accessMethod: "admin" | "passcode";
-      };
-      onUnlockSuccess(data.companies, data.rateCard || null, data.accessMethod);
+      onUnlockSuccess(
+        result.data.companies,
+        result.data.rateCard || null,
+        result.data.accessMethod || "admin"
+      );
     } catch (err) {
       setErrorMessage(
         err instanceof Error ? err.message : "Admin Google Sign-In failed."

@@ -30,6 +30,7 @@ import {
 } from "./BrochureViewer";
 import { downloadXtremeTitleSponsorBrochurePdf } from "../lib/xtremeBrochurePdf";
 import { downloadHimalayanBrochurePdf } from "../lib/brochurePdf";
+import { fetchPrivateJson } from "../lib/privateApi";
 
 interface PrivateProposalsWorkspaceProps {
   companies: CompanyProposalRecord[];
@@ -194,7 +195,11 @@ export const PrivateProposalsWorkspace: React.FC<PrivateProposalsWorkspaceProps>
         return;
       }
 
-      const res = await fetch("/api/private-proposals/companies", {
+      const result = await fetchPrivateJson<{
+        company?: CompanyProposalRecord;
+        companies?: CompanyProposalRecord[];
+        error?: string;
+      }>("/api/private-proposals/companies", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -209,19 +214,13 @@ export const PrivateProposalsWorkspace: React.FC<PrivateProposalsWorkspaceProps>
         })
       });
 
-      const data = (await res.json()) as {
-        company?: CompanyProposalRecord;
-        companies?: CompanyProposalRecord[];
-        error?: string;
-      };
-
-      if (!res.ok || !data.company || !data.companies) {
-        setFormError(data.error || "Unable to create company proposal.");
+      if (!result.ok || !result.data?.company || !result.data?.companies) {
+        setFormError(result.errorMessage || "Unable to create company proposal.");
         return;
       }
 
-      onCompaniesChange(data.companies);
-      setSelectedId(data.company.id);
+      onCompaniesChange(result.data.companies);
+      setSelectedId(result.data.company.id);
       setActivePage(1);
       setCompanyName("");
       setCustomNote("");
@@ -246,25 +245,23 @@ export const PrivateProposalsWorkspace: React.FC<PrivateProposalsWorkspaceProps>
         return;
       }
 
-      const res = await fetch(`/api/private-proposals/companies/${encodeURIComponent(id)}`, {
+      const result = await fetchPrivateJson<{
+        companies?: CompanyProposalRecord[];
+        error?: string;
+      }>(`/api/private-proposals/companies/${encodeURIComponent(id)}`, {
         method: "DELETE",
         headers: { Authorization: authHeader }
       });
 
-      const data = (await res.json()) as {
-        companies?: CompanyProposalRecord[];
-        error?: string;
-      };
-
-      if (!res.ok || !data.companies) {
-        setFormError(data.error || "Unable to remove company proposal.");
+      if (!result.ok || !result.data?.companies) {
+        setFormError(result.errorMessage || "Unable to remove company proposal.");
         return;
       }
 
-      onCompaniesChange(data.companies);
+      onCompaniesChange(result.data.companies);
       setConfirmDeleteId(null);
       if (selectedId === id) {
-        setSelectedId(data.companies[0]?.id || GENERAL_DECK_ID);
+        setSelectedId(result.data.companies[0]?.id || GENERAL_DECK_ID);
         setActivePage(1);
       }
     } catch {
