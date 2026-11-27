@@ -645,7 +645,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                       onChange={(e) => setRiderForm({ ...riderForm, raceCategory: e.target.value })}
                       className="w-full bg-zinc-900 border border-zinc-700 p-2.5 text-xs text-white focus:outline-none focus:border-[#E50920]"
                     >
-                      <option value="Pro Open">Pro Open (International & Top National)</option>
+                      <option value="Pro Open">Pro Open (International &amp; Top National)</option>
                       <option value="National Expert">National Expert</option>
                       <option value="Novice Grassroots">Novice / Grassroots</option>
                       <option value="Veterans (40+)">Veterans (Over 40)</option>
@@ -792,12 +792,11 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                       onChange={(e) => setSponsorForm({ ...sponsorForm, tierInterest: e.target.value })}
                       className="w-full bg-zinc-900 border border-zinc-700 p-2.5 text-xs text-white focus:outline-none focus:border-[#E50920]"
                     >
-                      <option value="Title Sponsor">Title Sponsor (Championship Naming Rights)</option>
-                      <option value="Presenting Sponsor">Presenting Sponsor (Co-Branded)</option>
-                      <option value="Official Partner">Official Category Partner</option>
-                      <option value="Motorcycle & Automotive">Motorcycle & Automotive Partner</option>
-                      <option value="Digital & Media">Digital & Broadcast Partner</option>
-                      <option value="Food & Lifestyle">Food & Lifestyle Partner</option>
+                      <option value="Title Sponsor">Title Sponsor (1 Slot · Naming Rights)</option>
+                      <option value="Gold Sponsor">Gold Sponsor (2 Slots · High Visibility)</option>
+                      <option value="Silver Sponsor">Silver Sponsor (3 Slots · Core Supporter)</option>
+                      <option value="Supporting Partner">Supporting Partner (10 Slots · Community)</option>
+                      <option value="EV / Vehicle Showcase">EV, Bikes &amp; Gear Showcase Arena</option>
                     </select>
                   </div>
 
@@ -880,10 +879,10 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                       onChange={(e) => setVendorForm({ ...vendorForm, vendorCategory: e.target.value })}
                       className="w-full bg-zinc-900 border border-zinc-700 p-2.5 text-xs text-white focus:outline-none focus:border-[#E50920]"
                     >
-                      <option value="EV Cars, Motorbikes & Riding Gear">EV Cars, Motorbikes & Riding Gear</option>
-                      <option value="Food & Beverage Vendors">Food & Beverage Vendors</option>
-                      <option value="Retail & Lifestyle Shops">Retail & Lifestyle Shops</option>
-                      <option value="Technology & Mobility">Technology & Mobility</option>
+                      <option value="EV Cars, Motorbikes & Riding Gear">EV Cars, Motorbikes &amp; Riding Gear</option>
+                      <option value="Technology & Mobility">Technology &amp; Mobility Pavilion</option>
+                      <option value="Food & Beverage Vendors">Food &amp; Beverage Vendors</option>
+                      <option value="Retail & Lifestyle Shops">Retail &amp; Lifestyle Shops</option>
                     </select>
                   </div>
 

@@ -344,59 +344,6 @@ export const GALLERY_SHOWCASE_PHOTOS: BrochureGalleryPhoto[] = [
   }
 ];
 
-export const XTREME_TITLE_PILLARS = [
-  {
-    heading: "A. Dominant Naming & Trackside Visibility",
-    items: [
-      "Largest logo across all digital & physical championship assets",
-      "Primary Start Gate, Finish Truss Arch & Main Podium backdrop",
-      "Co-branded official T-shirts, rider bibs, trophies & medals",
-      "Perimeter hoardings on MX jumps, river crossing & bridge"
-    ]
-  },
-  {
-    heading: "B. Press, Broadcast & Creator Ownership",
-    items: [
-      "Title mention in every press release & national media report",
-      "Co-branded Creator Zone interview wall for 50+ vloggers",
-      "Dedicated interviews with Nepal's top moto & travel creators",
-      "Title mic shout-outs across heats, stunts & trophy finals"
-    ]
-  },
-  {
-    heading: "C. Flagship Brand Expo & Chilled Sampling",
-    items: [
-      "Prime flagship Xtreme Energy Drink pavilion in Brand Expo",
-      "Exclusive chilled can sampling, giveaways & merchandise",
-      "Branded rider hydration & recovery zone in Rider Paddock",
-      "Fan challenges integrated with Live Music & DJ stage"
-    ]
-  },
-  {
-    heading: "D. Category Lock & VIP Leadership Access",
-    items: [
-      "100% energy drink & beverage exclusivity across the arena",
-      "VIP Sky Lounge hospitality passes for brand executives",
-      "Main stage champion trophy presentation at closing ceremony",
-      "First right to extend Title Rights to Everest stage (Nov 2027)"
-    ]
-  }
-];
-
-export const COMMERCIAL_ECOSYSTEM_ITEMS = [
-  "Title Sponsor (1 Slot — Reserved for Xtreme Energy Drink): Face of the Championship, naming rights & 100% category lock.",
-  "Gold Sponsors (2 Slots): High-visibility race zone branding & Brand Expo pavilion (non-competing categories only).",
-  "Silver Sponsors (3 Slots) & Supporting Partners (10 Slots): Event banners, lifestyle zone visibility & community sampling.",
-  "Vendor Marketplace: EV Cars, Motorbikes & Gear Display Arena, Food Court Stalls, Retail Shops & Clean Tech Pavilion."
-];
-
-export const XTREME_DIGITAL_DELIVERABLES = [
-  "Official title credit & visual lockup on pre-event hype trailers, daily race recaps, and 4K drone aftermovies.",
-  "Creator Zone media backdrop wall co-branded with Xtreme Energy Drink for all post-heat rider & vlogger interviews.",
-  "Coordinated reels, stories, and TikTok walkthroughs featuring the Xtreme sampling pavilion and chilled drink drops.",
-  "Full press release inclusion across national Nepali sports desks, automotive portals, and tourism publications."
-];
-
 export const GENERAL_DIGITAL_DELIVERABLES = [
   "50+ partnered moto, adventure, and travel vloggers delivering continuous pre-event hype and live race-day coverage.",
   "Dedicated Creator Zone backdrop wall and infield media corridor capturing 4K slow-motion passes and interviews.",

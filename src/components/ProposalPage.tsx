@@ -281,14 +281,6 @@ export const ProposalPage: React.FC<ProposalPageProps> = ({
                 <span className="text-xs text-zinc-400">
                   Become the official face of Pokhara Motocross Enduro Championship 2027.
                 </span>
-                <button
-                  type="button"
-                  onClick={() => onOpenRegisterModal("sponsor", "Title Sponsor")}
-                  className="cursor-pointer inline-flex items-center justify-center gap-2 bg-[#D60A19] hover:bg-[#b80815] text-white font-semibold text-xs sm:text-sm px-6 py-3 rounded-full transition-colors whitespace-nowrap shrink-0"
-                >
-                  <span>Claim Title Sponsorship</span>
-                  <ArrowRight size={14} />
-                </button>
               </div>
             </div>
 
@@ -362,7 +354,7 @@ export const ProposalPage: React.FC<ProposalPageProps> = ({
                 <div>
                   <div className="pb-4 border-b border-white/20">
                     <span className="text-xs font-semibold text-red-100">
-                      Vehicle Display Arena
+                      Vehicle Display Arena · 20x20 / 30x30 ft
                     </span>
                   </div>
 
@@ -370,7 +362,7 @@ export const ProposalPage: React.FC<ProposalPageProps> = ({
                     EV CARS, MOTORBIKES &amp; GEAR SHOWCASE
                   </h3>
                   <p className="text-xs sm:text-sm text-red-50/90 leading-relaxed mt-2">
-                    Dedicated space for vehicle displays and live demonstrations.
+                    Dedicated 2-day space for vehicle displays, live test rides, and demonstrations.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
@@ -423,109 +415,143 @@ export const ProposalPage: React.FC<ProposalPageProps> = ({
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <div className="pt-6 mt-6 border-t border-white/20">
+              {/* Clean Tech & Mobility Pavilion */}
+              <div className="lg:col-span-6 bg-[#F5F4F0] rounded-2xl p-6 sm:p-8 border border-stone-200/70 flex flex-col justify-between">
+                <div>
+                  <div className="pb-4 border-b border-stone-300/70">
+                    <span className="text-xs font-semibold text-[#D60A19]">
+                      Clean Tech &amp; EV · 10x20 ft Pavilion
+                    </span>
+                  </div>
+                  <h3 className="font-heading font-black text-2xl sm:text-3xl uppercase tracking-tight text-zinc-900 leading-tight mt-4">
+                    TECHNOLOGY &amp; MOBILITY PAVILION
+                  </h3>
+                  <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed mt-2 mb-5">
+                    Covered 2-day tech pavilion ideal for portable solar power, EV chargers, GPS telemetry, drones, and smart adventure hardware.
+                  </p>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-zinc-700">
+                    <li className="flex items-start gap-2">
+                      <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
+                      <span>200 sq.ft. covered Brand Expo pavilion</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
+                      <span>Dedicated power hookups for live demos</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
+                      <span>Direct access to 10,000+ tech-forward fans</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
+                      <span>Creator &amp; vlogger tech walkthroughs</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="pt-4 mt-6 border-t border-stone-300/70">
                   <button
                     type="button"
                     onClick={() =>
-                      onOpenRegisterModal("vendor", "EV Cars, Motorbikes & Gear Showcase")
+                      onOpenRegisterModal("vendor", "Technology & Mobility Pavilion")
                     }
-                    className="cursor-pointer w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-stone-100 text-zinc-900 font-semibold text-xs sm:text-sm px-6 py-3 rounded-full transition-colors whitespace-nowrap"
+                    className="cursor-pointer inline-flex items-center gap-2 text-xs font-semibold text-zinc-900 hover:text-[#D60A19] transition-colors whitespace-nowrap"
                   >
-                    <span>Reserve Showcase Space</span>
-                    <ArrowRight size={14} />
+                    <span>Reserve Tech Pavilion</span>
+                    <ArrowRight size={13} />
                   </button>
                 </div>
               </div>
 
-              {/* Right Column: Food & Beverage + Retail & Lifestyle */}
-              <div className="lg:col-span-6 flex flex-col gap-5">
-                <div className="bg-[#F5F4F0] rounded-2xl p-6 border border-stone-200/70 flex-1 flex flex-col justify-between">
-                  <div>
-                    <div className="pb-3 border-b border-stone-300/70">
-                      <h3 className="font-heading font-black text-2xl uppercase tracking-tight text-zinc-900">
-                        FOOD &amp; BEVERAGE VENDORS
-                      </h3>
-                    </div>
-                    <p className="text-xs text-zinc-600 leading-relaxed mt-3 mb-3">
-                      Ideal for momo stalls, BBQ, cafés, beverage brands, and fast-food outlets.
-                    </p>
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-zinc-700">
-                      <li className="flex items-start gap-2">
-                        <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
-                        <span>Placement in the Food Court Zone</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
-                        <span>High footfall throughout the day</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
-                        <span>Strong sales potential</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
-                        <span>Visibility in influencer walk-throughs</span>
-                      </li>
-                    </ul>
+              {/* Food & Beverage Vendors */}
+              <div className="lg:col-span-6 bg-[#F5F4F0] rounded-2xl p-6 border border-stone-200/70 flex flex-col justify-between">
+                <div>
+                  <div className="pb-3 border-b border-stone-300/70">
+                    <h3 className="font-heading font-black text-2xl uppercase tracking-tight text-zinc-900">
+                      FOOD &amp; BEVERAGE VENDORS
+                    </h3>
                   </div>
-
-                  <div className="pt-4 mt-5 border-t border-stone-300/70">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        onOpenRegisterModal("vendor", "Food & Beverage Vendor Stall")
-                      }
-                      className="cursor-pointer inline-flex items-center gap-2 text-xs font-semibold text-zinc-900 hover:text-[#D60A19] transition-colors whitespace-nowrap"
-                    >
-                      <span>Book Food Court Stall</span>
-                      <ArrowRight size={13} />
-                    </button>
-                  </div>
+                  <p className="text-xs text-zinc-600 leading-relaxed mt-3 mb-3">
+                    2-Day Food Court Stall (10x10 ft or Food Truck) — ideal for momo stalls, BBQ, cafés, beverage brands, and fast-food outlets.
+                  </p>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-zinc-700">
+                    <li className="flex items-start gap-2">
+                      <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
+                      <span>Placement in the Food Court Zone</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
+                      <span>High footfall throughout the day</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
+                      <span>Strong sales potential</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
+                      <span>Visibility in influencer walk-throughs</span>
+                    </li>
+                  </ul>
                 </div>
 
-                <div className="bg-[#F5F4F0] rounded-2xl p-6 border border-stone-200/70 flex-1 flex flex-col justify-between">
-                  <div>
-                    <div className="pb-3 border-b border-stone-300/70">
-                      <h3 className="font-heading font-black text-2xl uppercase tracking-tight text-zinc-900">
-                        RETAIL &amp; LIFESTYLE SHOPS
-                      </h3>
-                    </div>
-                    <p className="text-xs text-zinc-600 leading-relaxed mt-3 mb-3">
-                      Perfect for clothing, accessories, gadgets, beauty products, and riding gear.
-                    </p>
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-zinc-700">
-                      <li className="flex items-start gap-2">
-                        <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
-                        <span>Lifestyle Market Zone placement</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
-                        <span>Direct product sales</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
-                        <span>Exposure in social media content</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
-                        <span>Great for new product launches</span>
-                      </li>
-                    </ul>
-                  </div>
+                <div className="pt-4 mt-5 border-t border-stone-300/70">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onOpenRegisterModal("vendor", "Food & Beverage Vendor Stall")
+                    }
+                    className="cursor-pointer inline-flex items-center gap-2 text-xs font-semibold text-zinc-900 hover:text-[#D60A19] transition-colors whitespace-nowrap"
+                  >
+                    <span>Book Food Court Stall</span>
+                    <ArrowRight size={13} />
+                  </button>
+                </div>
+              </div>
 
-                  <div className="pt-4 mt-5 border-t border-stone-300/70">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        onOpenRegisterModal("vendor", "Retail & Lifestyle Shop Stall")
-                      }
-                      className="cursor-pointer inline-flex items-center gap-2 text-xs font-semibold text-zinc-900 hover:text-[#D60A19] transition-colors whitespace-nowrap"
-                    >
-                      <span>Book Lifestyle Shop Stall</span>
-                      <ArrowRight size={13} />
-                    </button>
+              {/* Retail & Lifestyle Shops */}
+              <div className="lg:col-span-6 bg-[#F5F4F0] rounded-2xl p-6 border border-stone-200/70 flex flex-col justify-between">
+                <div>
+                  <div className="pb-3 border-b border-stone-300/70">
+                    <h3 className="font-heading font-black text-2xl uppercase tracking-tight text-zinc-900">
+                      RETAIL &amp; LIFESTYLE SHOPS
+                    </h3>
                   </div>
+                  <p className="text-xs text-zinc-600 leading-relaxed mt-3 mb-3">
+                    2-Day Lifestyle Stall (10x10 / 10x15 ft) — perfect for clothing, accessories, gadgets, beauty products, and riding gear.
+                  </p>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-zinc-700">
+                    <li className="flex items-start gap-2">
+                      <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
+                      <span>Lifestyle Market Zone placement</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
+                      <span>Direct product sales</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
+                      <span>Exposure in social media content</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check size={13} className="text-[#D60A19] shrink-0 mt-0.5" />
+                      <span>Great for new product launches</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="pt-4 mt-5 border-t border-stone-300/70">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onOpenRegisterModal("vendor", "Retail & Lifestyle Shop Stall")
+                    }
+                    className="cursor-pointer inline-flex items-center gap-2 text-xs font-semibold text-zinc-900 hover:text-[#D60A19] transition-colors whitespace-nowrap"
+                  >
+                    <span>Book Lifestyle Shop Stall</span>
+                    <ArrowRight size={13} />
+                  </button>
                 </div>
               </div>
             </div>

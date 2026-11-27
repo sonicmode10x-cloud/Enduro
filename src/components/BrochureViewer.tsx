@@ -12,15 +12,12 @@ import {
   ARCHIVE_2026_PHOTOS,
   CHAMPIONSHIP_EXPERIENCES,
   CIRCUIT_SECTORS,
-  COMMERCIAL_ECOSYSTEM_ITEMS,
   ENTRY_PORTALS,
   GALLERY_SHOWCASE_PHOTOS,
   GENERAL_DIGITAL_DELIVERABLES,
-  STRICT_TRACK_RULE,
-  SURFACE_MIX_SUMMARY,
-  XTREME_DIGITAL_DELIVERABLES,
-  XTREME_TITLE_PILLARS
+  SURFACE_MIX_SUMMARY
 } from "../data/brochureData";
+import { PrivateRateCard, XtremeProposalContent } from "../types/xtremeProposal";
 
 export type BrochureEdition = "xtreme" | "general";
 
@@ -94,18 +91,23 @@ const SheetChrome: React.FC<SheetChromeProps> = ({
 interface BrochurePageRendererProps {
   edition: BrochureEdition;
   pageNumber: number;
+  xtremeContent?: XtremeProposalContent | null;
+  privateRateCard?: PrivateRateCard | null;
 }
 
 export const BrochurePageSheet: React.FC<BrochurePageRendererProps> = ({
   edition,
-  pageNumber
+  pageNumber,
+  xtremeContent,
+  privateRateCard
 }) => {
-  const isXtreme = edition === "xtreme";
+  const isXtreme = edition === "xtreme" && Boolean(xtremeContent);
   const totalPages = 10;
   const { championship, previousAchievements } = EVENT_CONFIG;
-  const footerLabel = isXtreme
-    ? "Himalayan Moto Enduro 2027 · Xtreme Energy Drink Title Proposal · www.sporthubnepal.com"
-    : "Himalayan Moto Enduro 2027 · Official General Event & Sponsorship Proposal · www.sporthubnepal.com";
+  const footerLabel =
+    isXtreme && xtremeContent
+      ? xtremeContent.footerLabel
+      : "Himalayan Moto Enduro 2027 · Official General Event & Sponsorship Proposal · www.sporthubnepal.com";
 
   const metrics = [
     {
@@ -141,13 +143,13 @@ export const BrochurePageSheet: React.FC<BrochurePageRendererProps> = ({
               />
               <div className="sm:text-right">
                 <p className="text-[11px] font-bold tracking-wide text-[#F03845] uppercase">
-                  {isXtreme
-                    ? "Complete Championship & Title Proposal"
+                  {isXtreme && xtremeContent
+                    ? xtremeContent.coverEyebrow
                     : "Official Event & Sponsorship Proposal"}
                 </p>
                 <p className="text-xs text-zinc-400 mt-0.5">
-                  {isXtreme
-                    ? "Prepared Exclusively for Xtreme Energy Drink · 2027"
+                  {isXtreme && xtremeContent
+                    ? xtremeContent.coverSubtitle
                     : "10-Page Master Edition · Pokhara & Everest, Nepal"}
                 </p>
               </div>
@@ -164,21 +166,21 @@ export const BrochurePageSheet: React.FC<BrochurePageRendererProps> = ({
 
             <div className="space-y-3">
               <p className="text-xs font-bold tracking-wide text-[#F03845] uppercase">
-                The Himalayan Moto Series of Adventures · Pokhara &amp; Everest, Nepal
+                The Himalayan Series of Moto Adventures · Pokhara &amp; Everest, Nepal
               </p>
               <h3 className="font-heading font-black text-3xl sm:text-5xl uppercase tracking-tight text-white leading-[0.95]">
                 EXTREME MOTO ENDURO CROSS CHAMPIONSHIP 2027
               </h3>
               <div className="bg-[#D60A19] rounded-lg px-4 py-3 text-center">
                 <span className="font-heading font-black text-lg sm:text-2xl tracking-wide uppercase text-white">
-                  {isXtreme
-                    ? "POWERED BY XTREME ENERGY DRINK"
+                  {isXtreme && xtremeContent
+                    ? xtremeContent.coverBanner
                     : "OFFICIAL CHAMPIONSHIP & COMMERCIAL PROSPECTUS"}
                 </span>
               </div>
               <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
-                {isXtreme
-                  ? "Complete 10-page master proposal uniting every section of Himalayan Moto Enduro 2027 — Pokhara & Everest stages, all 8 motorsport & festival experiences, 2026 & 2024 archives, 2KM circuit map, 8 track sectors, 8 arena zones, official photo gallery, 50+ creators, FIM safety standards, and exclusive Title Sponsor deliverables for Xtreme Energy Drink."
+                {isXtreme && xtremeContent
+                  ? xtremeContent.coverDescription
                   : "Complete 10-page master brochure & sponsorship proposal covering every section of Himalayan Moto Enduro 2027 — Pokhara & Everest calendar, all 8 event experiences, 2026 & 2024 archives, 2KM circuit map, 8 track sectors, 8 arena zones, official gallery, sponsorship & vendor tiers, 50+ creators, and FIM safety governance."}
               </p>
             </div>
@@ -296,8 +298,8 @@ export const BrochurePageSheet: React.FC<BrochurePageRendererProps> = ({
               HIMALAYAN ENDURO 2027 EVEREST
             </h4>
             <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed">
-              {isXtreme
-                ? "An all-new hard enduro expedition and high-altitude championship stage heading into the iconic Everest Himalayan corridor. Early rider entries are open now, with GPS track files and stage maps to be confirmed ahead of race week — creating an unmatched international media storyline for Xtreme Energy Drink."
+              {isXtreme && xtremeContent
+                ? xtremeContent.everestDescription
                 : "An all-new hard enduro expedition and high-altitude championship stage heading into the iconic Everest Himalayan corridor. Early rider entries are open now, with final GPS track files and stage maps to be confirmed ahead of race week."}
             </p>
             <p className="text-xs font-semibold text-zinc-800 pt-1">
@@ -307,13 +309,13 @@ export const BrochurePageSheet: React.FC<BrochurePageRendererProps> = ({
 
           <div className="bg-[#121214] text-white rounded-xl p-5 space-y-1.5">
             <p className="text-[11px] font-bold text-[#F03845] uppercase">
-              {isXtreme
-                ? "Why Xtreme Energy Drink + Himalayan Moto Enduro"
+              {isXtreme && xtremeContent
+                ? xtremeContent.whyHeading
                 : "Official Sanctioning, Tourism & Audience Value"}
             </p>
             <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
-              {isXtreme
-                ? "Peak youth & adventure audience (18–35), extreme physical endurance creating natural demand for chilled energy drinks, proven 2026 podium brand equity, and year-round viral replay across 20M+ views on YouTube, Instagram, Facebook, and TikTok."
+              {isXtreme && xtremeContent
+                ? xtremeContent.whyDescription
                 : "Backed by Adventure Sport Hub, Pokhara Riders Club, local tourism & municipal authorities, and FIM-aligned safety protocols — uniting 80+ national & international racers, 10,000+ live spectators, and 20M+ proven digital views."}
             </p>
           </div>
@@ -381,8 +383,8 @@ export const BrochurePageSheet: React.FC<BrochurePageRendererProps> = ({
                 Recent Edition · Pokhara, Nepal
               </p>
               <h4 className="font-heading font-black text-lg sm:text-xl uppercase tracking-tight text-zinc-900 mt-0.5">
-                {isXtreme
-                  ? "MOTO ENDURO 2026 — XTREME ENERGY DRINK PODIUM LEGACY"
+                {isXtreme && xtremeContent
+                  ? xtremeContent.archive2026Title
                   : "MOTO ENDURO 2026 — PODIUM CHAMPIONS & FOREST STAGES"}
               </h4>
             </div>
@@ -598,28 +600,43 @@ export const BrochurePageSheet: React.FC<BrochurePageRendererProps> = ({
     // PAGE 8: XTREME TITLE DELIVERABLES OR GENERAL SPONSORSHIP + VENDOR ZONES
     // =========================================================================
     case 8:
-      return isXtreme ? (
+      return isXtreme && xtremeContent ? (
         <SheetChrome
-          eyebrow="07. Exclusive Title Sponsorship Ownership · 1 Slot Only"
-          title="XTREME ENERGY DRINK TITLE DELIVERABLES"
+          eyebrow={
+            xtremeContent.page8Eyebrow ||
+            "07. Exclusive Title Sponsorship Ownership · 1 Slot Only"
+          }
+          title={xtremeContent.page8Title || "TITLE SPONSORSHIP DELIVERABLES"}
           pageNum={8}
           totalPages={totalPages}
           footerLabel={footerLabel}
         >
-          <div className="bg-[#121214] text-white rounded-xl p-5 space-y-1.5">
-            <p className="text-[11px] font-bold text-[#F03845] uppercase">
-              Official &ldquo;Powered By&rdquo; Naming Rights &amp; 100% Category Exclusivity
-            </p>
-            <h4 className="font-heading font-black text-lg sm:text-2xl leading-tight text-white">
-              &ldquo;Pokhara Motocross Enduro Championship 2027 — Powered by Xtreme Energy Drink&rdquo;
-            </h4>
-            <p className="text-xs text-zinc-300 leading-relaxed">
-              Exclusive energy drink &amp; functional beverage lock — zero competing brands permitted across track, expo, or media.
-            </p>
+          <div className="bg-[#121214] text-white rounded-xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1.5 min-w-0">
+              <p className="text-[11px] font-bold text-[#F03845] uppercase">
+                {xtremeContent.titleLockupEyebrow}
+              </p>
+              <h4 className="font-heading font-black text-lg sm:text-2xl leading-tight text-white">
+                {xtremeContent.titleLockupHeadline}
+              </h4>
+              <p className="text-xs text-zinc-300 leading-relaxed">
+                {xtremeContent.titleLockupSubtext}
+              </p>
+            </div>
+            {xtremeContent.investmentAmount && (
+              <div className="bg-white/10 border border-white/15 rounded-xl px-4 py-3 sm:text-right shrink-0">
+                <div className="text-[10px] font-bold uppercase tracking-wide text-[#F03845]">
+                  {xtremeContent.investmentLabel || "Package Investment"}
+                </div>
+                <div className="font-heading font-black text-xl sm:text-2xl text-white tabular-nums leading-none mt-1 whitespace-nowrap">
+                  {xtremeContent.investmentAmount}
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {XTREME_TITLE_PILLARS.map((pillar) => (
+            {xtremeContent.titlePillars.map((pillar) => (
               <div
                 key={pillar.heading}
                 className="bg-white rounded-xl border border-stone-200 p-4 space-y-2.5"
@@ -641,10 +658,10 @@ export const BrochurePageSheet: React.FC<BrochurePageRendererProps> = ({
 
           <div className="bg-white rounded-xl border border-stone-200 p-5 space-y-2.5">
             <h4 className="text-xs sm:text-sm font-bold text-zinc-900 uppercase">
-              Championship Commercial Ecosystem (Xtreme at the Pinnacle)
+              {xtremeContent.commercialEcosystemHeading}
             </h4>
             <ul className="space-y-2 text-xs text-zinc-700 leading-relaxed">
-              {COMMERCIAL_ECOSYSTEM_ITEMS.map((line) => (
+              {xtremeContent.commercialEcosystemItems.map((line) => (
                 <li key={line} className="flex items-start gap-2">
                   <span className="text-[#D60A19] font-bold">•</span>
                   <span>{line}</span>
@@ -655,7 +672,11 @@ export const BrochurePageSheet: React.FC<BrochurePageRendererProps> = ({
         </SheetChrome>
       ) : (
         <SheetChrome
-          eyebrow="07. Commercial Partnerships & Vendor Marketplace (Price-Free)"
+          eyebrow={
+            privateRateCard
+              ? "07. Commercial Partnerships & Official 2027 Rate Card"
+              : "07. Commercial Partnerships & Vendor Marketplace"
+          }
           title="SPONSORSHIP TIERS & VENDOR ZONES"
           pageNum={8}
           totalPages={totalPages}
@@ -664,6 +685,7 @@ export const BrochurePageSheet: React.FC<BrochurePageRendererProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             {SPONSOR_PACKAGES.map((pkg, idx) => {
               const isTitle = idx === 0;
+              const privatePrice = privateRateCard?.sponsorPrices[pkg.id];
               return (
                 <div
                   key={pkg.id}
@@ -673,13 +695,26 @@ export const BrochurePageSheet: React.FC<BrochurePageRendererProps> = ({
                       : "bg-white text-zinc-900 border-stone-200"
                   }`}
                 >
-                  <div className="pb-2 border-b border-current/15">
-                    <div className="text-[10px] font-bold uppercase tracking-wide text-[#D60A19]">
-                      {pkg.badge} · Proposal Upon Request
+                  <div className="pb-2 border-b border-current/15 flex items-end justify-between gap-2">
+                    <div>
+                      <div className="text-[10px] font-bold uppercase tracking-wide text-[#D60A19]">
+                        {privatePrice
+                          ? `${pkg.badge} · ${privatePrice.period}`
+                          : `${pkg.badge} · Proposal Upon Request`}
+                      </div>
+                      <h4 className="font-heading font-black text-lg uppercase mt-0.5 leading-none">
+                        {pkg.tier}
+                      </h4>
                     </div>
-                    <h4 className="font-heading font-black text-lg uppercase mt-0.5">
-                      {pkg.tier}
-                    </h4>
+                    {privatePrice && (
+                      <div
+                        className={`font-heading font-black text-lg tabular-nums leading-none whitespace-nowrap ${
+                          isTitle ? "text-[#F03845]" : "text-zinc-900"
+                        }`}
+                      >
+                        {privatePrice.price}
+                      </div>
+                    )}
                   </div>
                   <ul
                     className={`space-y-1.5 text-xs leading-relaxed ${
@@ -699,25 +734,37 @@ export const BrochurePageSheet: React.FC<BrochurePageRendererProps> = ({
           </div>
 
           <div className="text-xs font-bold uppercase tracking-wide text-zinc-900 pt-1">
-            Vendor &amp; Product Showcase Marketplace Zones
+            {privateRateCard
+              ? "Vendor & Product Showcase Marketplace Zones (2-Day Rates)"
+              : "Vendor & Product Showcase Marketplace Zones"}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-            {VENDOR_OPPORTUNITIES.map((v) => (
-              <div
-                key={v.id}
-                className="bg-white rounded-xl border border-stone-200 p-4 space-y-1.5"
-              >
-                <div className="text-[10px] font-bold uppercase tracking-wide text-[#D60A19]">
-                  {v.category} · {v.footfallTarget}
+            {VENDOR_OPPORTUNITIES.map((v) => {
+              const privateVendorPrice = privateRateCard?.vendorPrices[v.id];
+              return (
+                <div
+                  key={v.id}
+                  className="bg-white rounded-xl border border-stone-200 p-4 space-y-1.5"
+                >
+                  <div className="flex items-baseline justify-between gap-2">
+                    <div className="text-[10px] font-bold uppercase tracking-wide text-[#D60A19]">
+                      {v.category} · {v.footfallTarget}
+                    </div>
+                    {privateVendorPrice && (
+                      <div className="font-heading font-black text-sm text-zinc-900 tabular-nums whitespace-nowrap">
+                        {privateVendorPrice.price}
+                      </div>
+                    )}
+                  </div>
+                  <h4 className="text-sm font-bold text-zinc-900">{v.title}</h4>
+                  <p className="text-xs text-zinc-600 leading-relaxed">{v.description}</p>
+                  <div className="text-[11px] font-semibold text-zinc-700 pt-1">
+                    Spaces: {v.stallSizes} · Ideal for: {v.suitableFor}
+                  </div>
                 </div>
-                <h4 className="text-sm font-bold text-zinc-900">{v.title}</h4>
-                <p className="text-xs text-zinc-600 leading-relaxed">{v.description}</p>
-                <div className="text-[11px] font-semibold text-zinc-700 pt-1">
-                  Spaces: {v.stallSizes} · Ideal for: {v.suitableFor}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </SheetChrome>
       );
@@ -781,12 +828,15 @@ export const BrochurePageSheet: React.FC<BrochurePageRendererProps> = ({
 
           <div className="bg-white rounded-xl border border-stone-200 p-5 space-y-2.5">
             <h4 className="text-xs sm:text-sm font-bold text-[#D60A19] uppercase">
-              {isXtreme
-                ? "Xtreme Energy Drink Digital & Content Integration"
+              {isXtreme && xtremeContent
+                ? xtremeContent.digitalHeading
                 : "Championship Digital Coverage & Creator Deliverables"}
             </h4>
             <ul className="space-y-2 text-xs text-zinc-700 leading-relaxed">
-              {(isXtreme ? XTREME_DIGITAL_DELIVERABLES : GENERAL_DIGITAL_DELIVERABLES).map((d) => (
+              {(isXtreme && xtremeContent
+                ? xtremeContent.digitalDeliverables
+                : GENERAL_DIGITAL_DELIVERABLES
+              ).map((d) => (
                 <li key={d} className="flex items-start gap-2">
                   <span className="text-[#D60A19] font-bold">•</span>
                   <span>{d}</span>
@@ -853,16 +903,18 @@ export const BrochurePageSheet: React.FC<BrochurePageRendererProps> = ({
             <div className="p-5 sm:p-6 space-y-4">
               <div>
                 <p className="text-[11px] font-bold text-[#F03845] uppercase">
-                  {isXtreme
-                    ? "Official Organizing Secretariat · Executive Partnership Desk"
+                  {isXtreme && xtremeContent
+                    ? xtremeContent.secretariatEyebrow
                     : "Official Organizing Secretariat · Pokhara, Nepal"}
                 </p>
                 <h4 className="font-heading font-black text-2xl uppercase tracking-tight text-white mt-1">
-                  {isXtreme ? "PARTNER AS 2027 TITLE SPONSOR" : "CONNECT WITH ADVENTURE SPORT HUB"}
+                  {isXtreme && xtremeContent
+                    ? xtremeContent.secretariatTitle
+                    : "CONNECT WITH ADVENTURE SPORT HUB"}
                 </h4>
                 <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed mt-2">
-                  {isXtreme
-                    ? "Commercial partnership terms, custom Xtreme Energy Drink arena branding blueprints, chilled distribution logistics, and multi-event Pokhara + Everest bundle options are finalized directly in an executive briefing with our organizing committee."
+                  {isXtreme && xtremeContent
+                    ? xtremeContent.secretariatDescription
                     : "Inquire directly for 2027 rider entries, sponsorship packages, vendor showcase spaces, or official press & creator passes across Pokhara and Everest."}
                 </p>
               </div>

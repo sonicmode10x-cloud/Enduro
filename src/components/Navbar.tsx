@@ -5,7 +5,7 @@ import { useBrandLogo } from "../context/LogoContext";
 
 interface NavbarProps {
   onOpenRegisterModal: (defaultTab?: "rider" | "sponsor" | "vendor" | "media" | "general") => void;
-  activeView?: "home" | "proposal";
+  activeView?: "home" | "proposal" | "xtreme-proposal";
   onNavigateHome?: (sectionHash?: string) => void;
   onNavigateProposal?: () => void;
 }

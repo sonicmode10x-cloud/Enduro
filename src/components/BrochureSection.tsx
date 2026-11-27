@@ -11,13 +11,10 @@ import {
   Layers
 } from "lucide-react";
 import { downloadHimalayanBrochurePdf } from "../lib/brochurePdf";
-import { downloadXtremeTitleSponsorBrochurePdf } from "../lib/xtremeBrochurePdf";
 import { FormTab } from "./RegistrationModal";
 import {
-  BrochureEdition,
   BrochurePageSheet,
-  GENERAL_PAGE_LABELS,
-  XTREME_PAGE_LABELS
+  GENERAL_PAGE_LABELS
 } from "./BrochureViewer";
 
 interface BrochureSectionProps {
@@ -29,24 +26,15 @@ export const BrochureSection: React.FC<BrochureSectionProps> = ({
   onNavigateProposal,
   onOpenRegisterModal
 }) => {
-  const [activeEdition, setActiveEdition] = useState<BrochureEdition>("xtreme");
   const [viewMode, setViewMode] = useState<"single" | "all">("single");
   const [activePage, setActivePage] = useState<number>(1);
 
   const [downloadingPdf, setDownloadingPdf] = useState(false);
   const [downloadedPdf, setDownloadedPdf] = useState(false);
-  const [downloadingXtremePdf, setDownloadingXtremePdf] = useState(false);
-  const [downloadedXtremePdf, setDownloadedXtremePdf] = useState(false);
   const [downloadingMap, setDownloadingMap] = useState(false);
 
-  const pageLabels =
-    activeEdition === "xtreme" ? XTREME_PAGE_LABELS : GENERAL_PAGE_LABELS;
+  const pageLabels = GENERAL_PAGE_LABELS;
   const totalPages = pageLabels.length;
-
-  const handleSelectEdition = (edition: BrochureEdition) => {
-    setActiveEdition(edition);
-    setActivePage(1);
-  };
 
   const handleDownloadBrochure = async () => {
     if (downloadingPdf) return;
@@ -58,19 +46,6 @@ export const BrochureSection: React.FC<BrochureSectionProps> = ({
       window.setTimeout(() => setDownloadedPdf(false), 3500);
     } finally {
       setDownloadingPdf(false);
-    }
-  };
-
-  const handleDownloadXtremeBrochure = async () => {
-    if (downloadingXtremePdf) return;
-    setDownloadingXtremePdf(true);
-    setDownloadedXtremePdf(false);
-    try {
-      await downloadXtremeTitleSponsorBrochurePdf();
-      setDownloadedXtremePdf(true);
-      window.setTimeout(() => setDownloadedXtremePdf(false), 3500);
-    } finally {
-      setDownloadingXtremePdf(false);
     }
   };
 
@@ -95,50 +70,37 @@ export const BrochureSection: React.FC<BrochureSectionProps> = ({
     }
   };
 
-  const isDownloadingActive =
-    activeEdition === "xtreme" ? downloadingXtremePdf : downloadingPdf;
-  const isDownloadedActive =
-    activeEdition === "xtreme" ? downloadedXtremePdf : downloadedPdf;
-
   return (
     <section id="brochure" className="py-6 sm:py-10 px-4 sm:px-6 lg:px-8 scroll-mt-24">
       <div className="max-w-5xl mx-auto">
         <div className="bg-white rounded-[28px] border border-stone-200/80 shadow-sm p-5 sm:p-8 lg:p-10 space-y-6">
-          {/* Header & Edition Controls */}
+          {/* Header & Download Controls */}
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-stone-200">
             <div className="max-w-2xl">
               <p className="text-xs font-semibold text-[#D60A19] mb-1">
-                03. Complete 10-Page Proposals <span aria-hidden="true">·</span> Read Online or Download PDF
+                03. Complete 10-Page Proposal <span aria-hidden="true">·</span> Read Online or Download PDF
               </p>
               <h2 className="font-heading font-black text-3xl sm:text-5xl uppercase tracking-tight text-zinc-900 leading-none text-balance">
-                {activeEdition === "xtreme"
-                  ? "XTREME ENERGY DRINK TITLE PROPOSAL"
-                  : "GENERAL CHAMPIONSHIP PROPOSAL"}
+                GENERAL CHAMPIONSHIP PROPOSAL
               </h2>
               <p className="text-sm text-zinc-600 leading-relaxed mt-2.5">
-                {activeEdition === "xtreme"
-                  ? "Complete 10-page master proposal prepared exclusively for Xtreme Energy Drink — including all homepage championship sections, 2027 Pokhara & Everest calendar, 2026 & 2024 archives, 2KM circuit map, 8 track sectors, 8 arena zones, photo gallery, 50+ creators, FIM safety standards, and Title Sponsor deliverables."
-                  : "Complete 10-page general proposal & brochure featuring every section from the homepage — 2027 Pokhara & Everest events, all 8 experiences, 2026 & 2024 archives, 2KM circuit map, 8 track sectors, photo gallery, sponsorship & vendor tiers, 50+ creators, and FIM safety standards."}
+                Complete 10-page general proposal &amp; brochure featuring every section from the homepage — 2027 Pokhara &amp; Everest events, all 8 experiences, 2026 &amp; 2024 archives, 2KM circuit map, 8 track sectors, photo gallery, sponsorship &amp; vendor tiers, 50+ creators, and FIM safety standards.
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-2.5 shrink-0">
               <button
                 type="button"
-                onClick={
-                  activeEdition === "xtreme"
-                    ? handleDownloadXtremeBrochure
-                    : handleDownloadBrochure
-                }
-                disabled={isDownloadingActive}
+                onClick={handleDownloadBrochure}
+                disabled={downloadingPdf}
                 className="cursor-pointer inline-flex items-center justify-center gap-2 bg-[#D60A19] hover:bg-[#b80815] disabled:opacity-70 text-white font-semibold text-xs sm:text-sm px-5 py-3 rounded-full transition-colors whitespace-nowrap shrink-0"
               >
-                {isDownloadingActive ? (
+                {downloadingPdf ? (
                   <>
                     <Loader2 size={15} className="animate-spin" />
                     <span>Preparing PDF...</span>
                   </>
-                ) : isDownloadedActive ? (
+                ) : downloadedPdf ? (
                   <>
                     <CheckCircle2 size={15} />
                     <span>Proposal Downloaded</span>
@@ -146,11 +108,7 @@ export const BrochureSection: React.FC<BrochureSectionProps> = ({
                 ) : (
                   <>
                     <Download size={15} />
-                    <span>
-                      {activeEdition === "xtreme"
-                        ? "Download Xtreme PDF (10 Pages)"
-                        : "Download General PDF (10 Pages)"}
-                    </span>
+                    <span>Download General PDF (10 Pages)</span>
                   </>
                 )}
               </button>
@@ -167,31 +125,10 @@ export const BrochureSection: React.FC<BrochureSectionProps> = ({
             </div>
           </div>
 
-          {/* Interactive Reader Toolbar: Edition Switcher + View Mode */}
+          {/* Interactive Reader Toolbar: View Mode */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="inline-flex items-center gap-1 p-1 bg-[#F2F0EB] rounded-xl self-start">
-              <button
-                type="button"
-                onClick={() => handleSelectEdition("xtreme")}
-                className={`cursor-pointer px-3.5 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shrink-0 ${
-                  activeEdition === "xtreme"
-                    ? "bg-[#121214] text-white shadow-sm"
-                    : "text-zinc-600 hover:text-zinc-900"
-                }`}
-              >
-                Xtreme Energy Drink (10 Pages)
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSelectEdition("general")}
-                className={`cursor-pointer px-3.5 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shrink-0 ${
-                  activeEdition === "general"
-                    ? "bg-[#121214] text-white shadow-sm"
-                    : "text-zinc-600 hover:text-zinc-900"
-                }`}
-              >
-                General Proposal (10 Pages)
-              </button>
+            <div className="text-xs font-semibold text-zinc-700">
+              Official General Event &amp; Sponsorship Prospectus · 10 Pages
             </div>
 
             <div className="flex items-center gap-3 self-start md:self-auto">
@@ -274,7 +211,7 @@ export const BrochureSection: React.FC<BrochureSectionProps> = ({
           <div className="bg-[#EAE8E3] rounded-2xl p-3 sm:p-5 lg:p-6 border border-stone-200/90">
             {viewMode === "single" ? (
               <div className="max-w-4xl mx-auto space-y-4">
-                <BrochurePageSheet edition={activeEdition} pageNumber={activePage} />
+                <BrochurePageSheet edition="general" pageNumber={activePage} />
 
                 <div className="flex items-center justify-between pt-2">
                   <button
@@ -310,8 +247,8 @@ export const BrochureSection: React.FC<BrochureSectionProps> = ({
               <div className="max-w-4xl mx-auto space-y-6">
                 {pageLabels.map((p) => (
                   <BrochurePageSheet
-                    key={`${activeEdition}-page-${p.page}`}
-                    edition={activeEdition}
+                    key={`general-page-${p.page}`}
+                    edition="general"
                     pageNumber={p.page}
                   />
                 ))}
@@ -321,39 +258,25 @@ export const BrochureSection: React.FC<BrochureSectionProps> = ({
 
           {/* Bottom Secondary Actions */}
           <div className="pt-2 flex flex-wrap items-center justify-between gap-4">
-            <div className="flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                onClick={handleDownloadXtremeBrochure}
-                disabled={downloadingXtremePdf}
-                className="cursor-pointer inline-flex items-center gap-1.5 text-xs font-semibold text-[#D60A19] hover:text-[#a80814] transition-colors whitespace-nowrap"
-              >
-                <Download size={13} />
-                <span>Download Xtreme Energy Drink PDF (10 Pages)</span>
-              </button>
-              <span aria-hidden="true" className="text-stone-300">
-                ·
-              </span>
-              <button
-                type="button"
-                onClick={handleDownloadBrochure}
-                disabled={downloadingPdf}
-                className="cursor-pointer inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-700 hover:text-zinc-950 transition-colors whitespace-nowrap"
-              >
-                <Download size={13} />
-                <span>Download General Proposal PDF (10 Pages)</span>
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={handleDownloadBrochure}
+              disabled={downloadingPdf}
+              className="cursor-pointer inline-flex items-center gap-1.5 text-xs font-semibold text-[#D60A19] hover:text-[#a80814] transition-colors whitespace-nowrap"
+            >
+              <Download size={13} />
+              <span>Download General Proposal PDF (10 Pages)</span>
+            </button>
 
             {onOpenRegisterModal ? (
               <button
                 type="button"
                 onClick={() =>
-                  onOpenRegisterModal("sponsor", "Xtreme Energy Drink — Title Sponsor 2027")
+                  onOpenRegisterModal("sponsor", "2027 Championship Sponsorship Inquiry")
                 }
                 className="cursor-pointer inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-900 hover:text-[#D60A19] transition-colors whitespace-nowrap"
               >
-                <span>Schedule Executive Review</span>
+                <span>Schedule Partnership Briefing</span>
                 <ArrowRight size={13} />
               </button>
             ) : onNavigateProposal ? (

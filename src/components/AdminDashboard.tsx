@@ -40,13 +40,17 @@ import {
   Save,
   X,
   Plus,
-  UserPlus
+  UserPlus,
+  Lock,
+  Loader2
 } from "lucide-react";
 import {
   RiderRegistrationDoc,
   PartnerRegistrationDoc
 } from "./RiderTrackerSection";
 import { FormTab } from "./RegistrationModal";
+import { CompanyProposalRecord, PrivateRateCard } from "../types/xtremeProposal";
+import { PrivateProposalsWorkspace } from "./PrivateProposalsWorkspace";
 
 interface AdminUserDoc {
   uid: string;
@@ -73,7 +77,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [authReady, setAuthReady] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
 
-  const [activeTab, setActiveTab] = useState<"riders" | "partners" | "admins">("riders");
+  const [activeTab, setActiveTab] = useState<"riders" | "partners" | "admins" | "xtreme">("riders");
+
+  const [privateCompanies, setPrivateCompanies] = useState<CompanyProposalRecord[] | null>(null);
+  const [privateRateCard, setPrivateRateCard] = useState<PrivateRateCard | null>(null);
+  const [xtremeLoading, setXtremeLoading] = useState(false);
+  const [xtremeError, setXtremeError] = useState<string | null>(null);
 
   const [riders, setRiders] = useState<RiderRegistrationDoc[]>([]);
   const [partners, setPartners] = useState<PartnerRegistrationDoc[]>([]);
@@ -161,12 +170,55 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     };
   }, [authReady, currentUser, isBootstrappedAdmin]);
 
+  // Load confidential company proposals when Admin opens the Private Proposals tab
+  useEffect(() => {
+    if (activeTab !== "xtreme" || !currentUser || !isBootstrappedAdmin || privateCompanies) return;
+    let active = true;
+    setXtremeLoading(true);
+    setXtremeError(null);
+
+    currentUser
+      .getIdToken()
+      .then((idToken) =>
+        fetch("/api/xtreme-proposal/content", {
+          headers: { Authorization: `Bearer ${idToken}` }
+        })
+      )
+      .then(async (res) => {
+        if (!res.ok) {
+          throw new Error("Unable to load private company proposals.");
+        }
+        return (await res.json()) as {
+          companies: CompanyProposalRecord[];
+          rateCard?: PrivateRateCard;
+        };
+      })
+      .then((data) => {
+        if (!active) return;
+        setPrivateCompanies(data.companies);
+        setPrivateRateCard(data.rateCard || null);
+      })
+      .catch((err) => {
+        if (!active) return;
+        setXtremeError(err instanceof Error ? err.message : "Failed to load private proposals.");
+      })
+      .finally(() => {
+        if (active) setXtremeLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [activeTab, currentUser, isBootstrappedAdmin, privateCompanies]);
+
   // Subscribe to all collections when signed in as Bootstrapped Admin
   useEffect(() => {
     if (!authReady || !currentUser || !isBootstrappedAdmin) {
       setRiders([]);
       setPartners([]);
       setAdmins([]);
+      setPrivateCompanies(null);
+      setPrivateRateCard(null);
       setLoading(false);
       return;
     }
@@ -278,11 +330,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
   const handleSignOut = async () => {
     setAuthError(null);
+    setPrivateCompanies(null);
     try {
       await logOutUser();
     } catch (err) {
       setAuthError(err instanceof Error ? err.message : "Sign-out failed.");
     }
+  };
+
+  const getAdminAuthHeader = async (): Promise<string | null> => {
+    if (!auth.currentUser) return null;
+    const idToken = await auth.currentUser.getIdToken();
+    return `Bearer ${idToken}`;
   };
 
   const handleQuickRiderStatus = async (
@@ -767,6 +826,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   >
                     <Users size={13} className="text-[#C80815]" />
                     <span>Admin Accounts ({admins.length})</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab("xtreme")}
+                    className={`cursor-pointer inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap ${
+                      activeTab === "xtreme"
+                        ? "bg-white text-zinc-900 shadow-xs"
+                        : "text-zinc-600 hover:text-zinc-900"
+                    }`}
+                  >
+                    <Lock size={13} className="text-[#C80815]" />
+                    <span>Private Proposals</span>
                   </button>
                 </div>
 
@@ -1457,6 +1528,30 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         </div>
                       ))}
                   </div>
+                </div>
+              )}
+
+              {/* TAB 4: PRIVATE COMPANY PROPOSALS VAULT */}
+              {activeTab === "xtreme" && (
+                <div>
+                  {xtremeLoading ? (
+                    <div className="py-16 flex flex-col items-center justify-center gap-2 text-xs text-zinc-500">
+                      <Loader2 size={20} className="animate-spin text-[#C80815]" />
+                      <span>Loading private company proposals...</span>
+                    </div>
+                  ) : xtremeError ? (
+                    <div className="p-4 rounded-2xl bg-red-50 border border-red-200 text-xs text-red-700">
+                      {xtremeError}
+                    </div>
+                  ) : privateCompanies ? (
+                    <PrivateProposalsWorkspace
+                      companies={privateCompanies}
+                      rateCard={privateRateCard}
+                      onCompaniesChange={setPrivateCompanies}
+                      getAuthHeader={getAdminAuthHeader}
+                      compact
+                    />
+                  ) : null}
                 </div>
               )}
             </div>

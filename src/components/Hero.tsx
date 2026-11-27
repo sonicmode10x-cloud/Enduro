@@ -43,18 +43,12 @@ export const Hero: React.FC<HeroProps> = ({
         <img
           src="/assets/aistudio/Moto_Enduro_Master_Proposal__2__b75a4b04.png"
           alt="Extreme Moto Enduro Cross Championship Rider and Spectators in Pokhara"
-          className="w-full h-full object-cover object-[center_28%] scale-[1.03] opacity-90"
+          className="w-full h-full object-cover object-[center_24%] scale-[1.02] opacity-100 brightness-105 contrast-[1.03]"
         />
-        {/* Measured Dark & Crimson Scrims for High Text Contrast */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(circle at 60% 35%, rgba(200, 8, 21, 0.22) 0%, rgba(8, 8, 10, 0.65) 55%, rgba(8, 8, 10, 0.92) 95%)"
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#08080A]/85 via-[#08080A]/45 to-[#08080A]/70 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-[#08080A] pointer-events-none" />
+        {/* Light Localized Scrims: Keep Photo Bright & Clear While Preserving Bottom Text Contrast */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-[#08080A]/90 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#08080A]/85 via-[#08080A]/25 via-40% to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#08080A]/45 via-transparent to-transparent pointer-events-none" />
       </div>
 
       {/* Balanced Editorial Hero Content */}
@@ -67,7 +61,7 @@ export const Hero: React.FC<HeroProps> = ({
             </p>
 
             <h1 className="font-heading font-black text-5xl sm:text-6xl lg:text-7xl uppercase tracking-tight text-white leading-[0.92] mb-4 text-balance">
-              THE HIMALAYAN MOTO SERIES OF ADVENTURES
+              THE HIMALAYAN SERIES OF MOTO ADVENTURES
             </h1>
 
             <p className="text-sm sm:text-base text-zinc-300 leading-relaxed max-w-md mb-7">

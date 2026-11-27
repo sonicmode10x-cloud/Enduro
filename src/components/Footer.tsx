@@ -1,6 +1,6 @@
 import React from "react";
 import { EVENT_CONFIG } from "../data/eventConfig";
-import { Youtube, Instagram, MessageCircle, ArrowUp } from "lucide-react";
+import { Youtube, Instagram, MessageCircle, ArrowUp, Lock } from "lucide-react";
 import { FormTab } from "./RegistrationModal";
 import { useBrandLogo } from "../context/LogoContext";
 
@@ -8,6 +8,7 @@ interface FooterProps {
   onOpenRegisterModal: (defaultTab?: FormTab) => void;
   onOpenProposalModal: () => void;
   onOpenAdminConsole?: () => void;
+  onOpenXtremeProposal?: () => void;
   onNavigateHome?: (sectionHash?: string) => void;
   onNavigateProposal?: (sectionId?: string) => void;
 }
@@ -16,6 +17,7 @@ export const Footer: React.FC<FooterProps> = ({
   onOpenRegisterModal,
   onOpenProposalModal,
   onOpenAdminConsole,
+  onOpenXtremeProposal,
   onNavigateHome,
   onNavigateProposal
 }) => {
@@ -122,7 +124,7 @@ export const Footer: React.FC<FooterProps> = ({
               <br />
               {championship.organizer.phoneDisplay}
             </p>
-            <div className="flex flex-wrap items-center gap-4 mt-3">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3">
               <button
                 type="button"
                 onClick={onOpenProposalModal}
@@ -130,13 +132,14 @@ export const Footer: React.FC<FooterProps> = ({
               >
                 Event Proposal
               </button>
-              {onOpenAdminConsole && (
+              {onOpenXtremeProposal && (
                 <button
                   type="button"
-                  onClick={onOpenAdminConsole}
-                  className="cursor-pointer text-white underline decoration-zinc-500 hover:decoration-white inline-block"
+                  onClick={onOpenXtremeProposal}
+                  className="cursor-pointer text-zinc-300 hover:text-white underline decoration-zinc-500 hover:decoration-white inline-flex items-center gap-1"
                 >
-                  Admin Console
+                  <Lock size={11} className="text-[#F03845]" />
+                  <span>Proposals</span>
                 </button>
               )}
             </div>
@@ -174,13 +177,6 @@ export const Footer: React.FC<FooterProps> = ({
                 <MessageCircle size={14} />
               </a>
             </div>
-            <button
-              type="button"
-              onClick={() => onOpenRegisterModal("rider")}
-              className="cursor-pointer text-xs font-semibold text-white bg-white/10 hover:bg-white/20 px-4 py-1.5 rounded-full transition-colors"
-            >
-              Rider Portal
-            </button>
           </div>
         </div>
 

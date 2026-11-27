@@ -12,15 +12,13 @@ import {
   ARCHIVE_2026_PHOTOS,
   CHAMPIONSHIP_EXPERIENCES,
   CIRCUIT_SECTORS,
-  COMMERCIAL_ECOSYSTEM_ITEMS,
   ENTRY_PORTALS,
   GALLERY_SHOWCASE_PHOTOS,
   GENERAL_DIGITAL_DELIVERABLES,
   STRICT_TRACK_RULE,
-  SURFACE_MIX_SUMMARY,
-  XTREME_DIGITAL_DELIVERABLES,
-  XTREME_TITLE_PILLARS
+  SURFACE_MIX_SUMMARY
 } from "../data/brochureData";
+import { PrivateRateCard, XtremeProposalContent } from "../types/xtremeProposal";
 import {
   cropImageCover,
   drawWrappedText,
@@ -36,7 +34,7 @@ function drawPageChrome(
   title: string,
   pageNum: number,
   totalPages: number,
-  edition: MasterPdfEdition
+  footerText: string
 ) {
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
@@ -53,7 +51,13 @@ function drawPageChrome(
   doc.text(eyebrow, 15, 15.5);
 
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(17.5);
+  let titleSize = 17.5;
+  doc.setFontSize(titleSize);
+  const maxTitleWidth = pageWidth - 30;
+  while (titleSize > 11 && doc.getTextWidth(title) > maxTitleWidth) {
+    titleSize -= 0.5;
+    doc.setFontSize(titleSize);
+  }
   doc.setTextColor(20, 20, 22);
   doc.text(title, 15, 23.5);
 
@@ -67,17 +71,21 @@ function drawPageChrome(
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
   doc.setTextColor(115, 115, 120);
-  const footerText =
-    edition === "xtreme"
-      ? "Himalayan Moto Enduro 2027 · Xtreme Energy Drink Title Proposal · www.sporthubnepal.com"
-      : "Himalayan Moto Enduro 2027 · Official General Event & Sponsorship Proposal · www.sporthubnepal.com";
   doc.text(footerText, 15, pageHeight - 8.2);
   doc.text(`Page ${pageNum} of ${totalPages}`, pageWidth - 15, pageHeight - 8.2, {
     align: "right"
   });
 }
 
-export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Promise<void> {
+export async function generateMasterBrochurePdf(
+  edition: MasterPdfEdition,
+  xtremeContent?: XtremeProposalContent,
+  privateRateCard?: PrivateRateCard | null
+): Promise<void> {
+  if (edition === "xtreme" && !xtremeContent) {
+    throw new Error("Authorized proposal content is required.");
+  }
+
   const doc = new jsPDF({
     orientation: "portrait",
     unit: "mm",
@@ -87,7 +95,11 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
   const pageWidth = doc.internal.pageSize.getWidth(); // 210mm
   const pageHeight = doc.internal.pageSize.getHeight(); // 297mm
   const totalPages = 10;
-  const isXtreme = edition === "xtreme";
+  const isXtreme = edition === "xtreme" && Boolean(xtremeContent);
+  const footerText =
+    isXtreme && xtremeContent
+      ? xtremeContent.footerLabel
+      : "Himalayan Moto Enduro 2027 · Official General Event & Sponsorship Proposal · www.sporthubnepal.com";
   const { championship, previousAchievements } = EVENT_CONFIG;
 
   // Load core + archive + gallery images in parallel
@@ -147,8 +159,8 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
   doc.setFontSize(8.2);
   doc.setTextColor(240, 56, 69);
   doc.text(
-    isXtreme
-      ? "COMPLETE CHAMPIONSHIP & TITLE PROPOSAL"
+    isXtreme && xtremeContent
+      ? xtremeContent.coverEyebrow.toUpperCase()
       : "OFFICIAL EVENT & SPONSORSHIP PROPOSAL",
     pageWidth - 15,
     21,
@@ -159,8 +171,8 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
   doc.setFontSize(8);
   doc.setTextColor(185, 185, 195);
   doc.text(
-    isXtreme
-      ? "PREPARED EXCLUSIVELY FOR XTREME ENERGY DRINK · 2027"
+    isXtreme && xtremeContent
+      ? xtremeContent.coverSubtitle.toUpperCase()
       : "10-PAGE MASTER EDITION · POKHARA & EVEREST, NEPAL",
     pageWidth - 15,
     26.5,
@@ -174,7 +186,7 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8.8);
   doc.setTextColor(240, 56, 69);
-  doc.text("THE HIMALAYAN MOTO SERIES OF ADVENTURES  ·  POKHARA & EVEREST, NEPAL", 15, 138);
+  doc.text("THE HIMALAYAN SERIES OF MOTO ADVENTURES  ·  POKHARA & EVEREST, NEPAL", 15, 138);
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(22);
@@ -188,8 +200,8 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
   doc.setFontSize(12);
   doc.setTextColor(255, 255, 255);
   doc.text(
-    isXtreme
-      ? "POWERED BY XTREME ENERGY DRINK"
+    isXtreme && xtremeContent
+      ? xtremeContent.coverBanner
       : "OFFICIAL CHAMPIONSHIP & COMMERCIAL PROSPECTUS",
     pageWidth / 2,
     174.2,
@@ -200,8 +212,8 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
   doc.setTextColor(205, 205, 214);
   drawWrappedText(
     doc,
-    isXtreme
-      ? "Complete 10-page master proposal uniting every detail of Himalayan Moto Enduro 2027 — Pokhara & Everest stages, all 8 motorsport & festival experiences, 2026 & 2024 archives, 2KM circuit map, 8 track sectors, 8 arena zones, official gallery, 50+ creators, FIM safety standards, and exclusive Title Sponsor deliverables for Xtreme Energy Drink."
+    isXtreme && xtremeContent
+      ? xtremeContent.coverDescription
       : "Complete 10-page master brochure & sponsorship proposal covering every section of Himalayan Moto Enduro 2027 — Pokhara & Everest calendar, all 8 event experiences, 2026 & 2024 archives, 2KM circuit map, 8 track sectors, 8 arena zones, photo gallery, sponsorship & vendor tiers, 50+ creators, and FIM safety standards.",
     15,
     188,
@@ -262,7 +274,7 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
     "ABOUT HIMALAYAN MOTO ENDURO",
     2,
     totalPages,
-    edition
+    footerText
   );
 
   doc.setFillColor(255, 255, 255);
@@ -371,8 +383,8 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
   doc.setTextColor(75, 75, 82);
   const afterEverest = drawWrappedText(
     doc,
-    isXtreme
-      ? "An all-new hard enduro expedition and high-altitude championship stage heading into the iconic Everest Himalayan corridor. Early rider entries are open now, with GPS track files and stage maps to be confirmed ahead of race week — creating an unmatched international media storyline for Xtreme Energy Drink."
+    isXtreme && xtremeContent
+      ? xtremeContent.everestDescription
       : "An all-new hard enduro expedition and high-altitude championship stage heading into the iconic Everest Himalayan corridor. Early rider entries are open now, with final GPS track files and stage maps to be confirmed ahead of race week.",
     22,
     200.5,
@@ -401,8 +413,8 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
   doc.setFontSize(8.6);
   doc.setTextColor(240, 56, 69);
   doc.text(
-    isXtreme
-      ? "WHY XTREME ENERGY DRINK + HIMALAYAN MOTO ENDURO"
+    isXtreme && xtremeContent
+      ? xtremeContent.whyHeading.toUpperCase()
       : "OFFICIAL SANCTIONING, TOURISM & AUDIENCE VALUE",
     22,
     243.5
@@ -412,8 +424,8 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
   doc.setTextColor(218, 218, 225);
   drawWrappedText(
     doc,
-    isXtreme
-      ? "Peak youth & adventure audience (18-35), extreme physical endurance creating natural demand for chilled energy drinks, proven 2026 podium brand equity, and year-round viral replay across 20M+ views on YouTube, Instagram, Facebook, and TikTok."
+    isXtreme && xtremeContent
+      ? xtremeContent.whyDescription
       : "Backed by Adventure Sport Hub, Pokhara Riders Club, local tourism & municipal authorities, and FIM-aligned safety protocols — uniting 80+ national & international racers, 10,000+ live spectators, and 20M+ proven digital views.",
     22,
     251.5,
@@ -432,7 +444,7 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
     "CHAMPIONSHIP SECTIONS & EXPERIENCES",
     3,
     totalPages,
-    edition
+    footerText
   );
 
   doc.setFont("helvetica", "normal");
@@ -499,7 +511,7 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
     "MOTO ENDURO 2026 & 2024 ARCHIVES",
     4,
     totalPages,
-    edition
+    footerText
   );
 
   // 2026 Edition Block (4 photos row)
@@ -516,8 +528,8 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
   doc.setFontSize(12.2);
   doc.setTextColor(20, 20, 22);
   doc.text(
-    isXtreme
-      ? "MOTO ENDURO 2026 — XTREME ENERGY DRINK PODIUM LEGACY"
+    isXtreme && xtremeContent
+      ? xtremeContent.archive2026Title
       : "MOTO ENDURO 2026 — PODIUM CHAMPIONS & FOREST STAGES",
     21,
     49
@@ -622,7 +634,7 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
     "2KM CIRCUIT MAP & 8 ARENA ZONES",
     5,
     totalPages,
-    edition
+    footerText
   );
 
   doc.setFillColor(14, 14, 16);
@@ -717,7 +729,7 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
     "TECHNICAL TRACK SECTORS & OBSTACLES",
     6,
     totalPages,
-    edition
+    footerText
   );
 
   doc.setFont("helvetica", "normal");
@@ -800,7 +812,7 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
     "CHAMPIONSHIP PHOTO GALLERY",
     7,
     totalPages,
-    edition
+    footerText
   );
 
   doc.setFont("helvetica", "normal");
@@ -839,54 +851,93 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
   });
 
   // =========================================================================
-  // PAGE 8: COMMERCIAL SPONSORSHIP & VENDOR OPPORTUNITIES (ZERO PRICES!)
+  // PAGE 8: COMMERCIAL SPONSORSHIP & VENDOR OPPORTUNITIES (WITH 2027 PRICING)
   // =========================================================================
   doc.addPage();
-  if (isXtreme) {
+  if (isXtreme && xtremeContent) {
     drawPageChrome(
       doc,
-      "07. EXCLUSIVE TITLE SPONSORSHIP OWNERSHIP  ·  1 SLOT ONLY",
-      "XTREME ENERGY DRINK TITLE DELIVERABLES",
+      (
+        xtremeContent.page8Eyebrow ||
+        "07. EXCLUSIVE TITLE SPONSORSHIP OWNERSHIP  ·  1 SLOT ONLY"
+      ).toUpperCase(),
+      (xtremeContent.page8Title || "TITLE SPONSORSHIP DELIVERABLES").toUpperCase(),
       8,
       totalPages,
-      edition
+      footerText
     );
 
     // Title Lockup Banner
     doc.setFillColor(18, 18, 20);
     doc.roundedRect(15, 33, pageWidth - 30, 36, 4, 4, "F");
 
+    const hasPrice = Boolean(xtremeContent.investmentAmount);
+    const leftTextWidth = hasPrice ? pageWidth - 96 : pageWidth - 44;
+
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(7.8);
+    doc.setFontSize(7.6);
     doc.setTextColor(240, 56, 69);
-    doc.text('OFFICIAL "POWERED BY" NAMING RIGHTS & 100% CATEGORY EXCLUSIVITY', 22, 41.5);
+    doc.text(xtremeContent.titleLockupEyebrow.toUpperCase(), 21, 41.2, {
+      maxWidth: leftTextWidth
+    });
 
     doc.setFont("helvetica", "bold");
     doc.setTextColor(255, 255, 255);
     const afterLockup = drawWrappedText(
       doc,
-      '"Pokhara Motocross Enduro Championship 2027 — Powered by Xtreme Energy Drink"',
-      22,
-      48.5,
-      pageWidth - 44,
-      11,
-      { lineHeightFactor: 1.28 }
+      xtremeContent.titleLockupHeadline,
+      21,
+      48.2,
+      leftTextWidth,
+      10.4,
+      { lineHeightFactor: 1.24, maxLines: 2 }
     );
 
     doc.setFont("helvetica", "normal");
     doc.setTextColor(195, 195, 205);
     drawWrappedText(
       doc,
-      "Exclusive energy drink & functional beverage lock — zero competing brands permitted across track, expo, or media.",
-      22,
-      Math.max(afterLockup + 1.5, 62),
-      pageWidth - 44,
-      8,
-      { lineHeightFactor: 1.25 }
+      xtremeContent.titleLockupSubtext,
+      21,
+      Math.max(afterLockup + 1.2, 60.5),
+      leftTextWidth,
+      7.7,
+      { lineHeightFactor: 1.22, maxLines: 2 }
     );
 
+    if (hasPrice && xtremeContent.investmentAmount) {
+      doc.setFillColor(34, 34, 40);
+      doc.setDrawColor(72, 72, 82);
+      doc.roundedRect(pageWidth - 69, 39, 49, 24, 3, 3, "FD");
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(6.6);
+      doc.setTextColor(240, 56, 69);
+      doc.text(
+        (xtremeContent.investmentLabel || "PACKAGE INVESTMENT").toUpperCase(),
+        pageWidth - 44.5,
+        46.5,
+        { align: "center", maxWidth: 44 }
+      );
+
+      let priceFontSize = 11.5;
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(priceFontSize);
+      while (
+        doc.getTextWidth(xtremeContent.investmentAmount) > 43 &&
+        priceFontSize > 7.5
+      ) {
+        priceFontSize -= 0.5;
+        doc.setFontSize(priceFontSize);
+      }
+      doc.setTextColor(255, 255, 255);
+      doc.text(xtremeContent.investmentAmount, pageWidth - 44.5, 56.5, {
+        align: "center"
+      });
+    }
+
     // 4 Title Deliverable Pillars
-    XTREME_TITLE_PILLARS.forEach((pillar, idx) => {
+    xtremeContent.titlePillars.forEach((pillar, idx) => {
       const col = idx % 2;
       const row = Math.floor(idx / 2);
       const x = 15 + col * 92;
@@ -923,12 +974,12 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
     doc.setFont("helvetica", "bold");
     doc.setFontSize(9.2);
     doc.setTextColor(20, 20, 22);
-    doc.text("CHAMPIONSHIP COMMERCIAL ECOSYSTEM (XTREME AT THE PINNACLE)", 21, 216.5);
+    doc.text(xtremeContent.commercialEcosystemHeading.toUpperCase(), 21, 216.5);
 
     doc.setFont("helvetica", "normal");
     doc.setTextColor(70, 70, 78);
     let ecoY = 224.5;
-    COMMERCIAL_ECOSYSTEM_ITEMS.forEach((l) => {
+    xtremeContent.commercialEcosystemItems.forEach((l) => {
       ecoY =
         drawWrappedText(doc, `•  ${l}`, 21, ecoY, pageWidth - 42, 8.1, {
           lineHeightFactor: 1.32
@@ -937,19 +988,22 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
   } else {
     drawPageChrome(
       doc,
-      "07. COMMERCIAL PARTNERSHIPS & VENDOR MARKETPLACE",
+      privateRateCard
+        ? "07. COMMERCIAL PARTNERSHIPS & OFFICIAL 2027 RATE CARD"
+        : "07. COMMERCIAL PARTNERSHIPS & VENDOR MARKETPLACE",
       "SPONSORSHIP TIERS & VENDOR ZONES",
       8,
       totalPages,
-      edition
+      footerText
     );
 
-    // 4 Sponsorship Tiers Grid (Price-Free)
+    // 4 Sponsorship Tiers Grid (Price-Free on Public PDF; Priced only with Private Rate Card)
     SPONSOR_PACKAGES.forEach((pkg, idx) => {
       const col = idx % 2;
       const row = Math.floor(idx / 2);
       const x = 15 + col * 92;
       const y = 33 + row * 68;
+      const privatePrice = privateRateCard?.sponsorPrices[pkg.id];
 
       const isTitle = idx === 0;
       doc.setFillColor(isTitle ? 18 : 255, isTitle ? 18 : 255, isTitle ? 20 : 255);
@@ -957,14 +1011,27 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
       doc.roundedRect(x, y, 88, 64, 3.5, 3.5, "FD");
 
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(7.2);
+      doc.setFontSize(7);
       doc.setTextColor(isTitle ? 240 : 214, isTitle ? 56 : 10, isTitle ? 69 : 25);
-      doc.text(`${pkg.badge.toUpperCase()}  ·  PROPOSAL UPON REQUEST`, x + 4.5, y + 7.5);
+      doc.text(
+        privatePrice
+          ? `${pkg.badge.toUpperCase()}  ·  ${privatePrice.period.toUpperCase()}`
+          : `${pkg.badge.toUpperCase()}  ·  PROPOSAL UPON REQUEST`,
+        x + 4.5,
+        y + 7.2
+      );
 
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(10.5);
+      doc.setFontSize(9.8);
       doc.setTextColor(isTitle ? 255 : 20, isTitle ? 255 : 20, isTitle ? 255 : 22);
-      doc.text(pkg.tier, x + 4.5, y + 14);
+      doc.text(pkg.tier, x + 4.5, y + 13.8);
+
+      if (privatePrice) {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(9.8);
+        doc.setTextColor(isTitle ? 240 : 214, isTitle ? 56 : 10, isTitle ? 69 : 25);
+        doc.text(privatePrice.price, x + 83.5, y + 13.8, { align: "right" });
+      }
 
       doc.setDrawColor(isTitle ? 55 : 235, isTitle ? 55 : 232, isTitle ? 62 : 226);
       doc.line(x + 4.5, y + 17, x + 83.5, y + 17);
@@ -985,27 +1052,47 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
     doc.setFont("helvetica", "bold");
     doc.setFontSize(9.8);
     doc.setTextColor(20, 20, 22);
-    doc.text("VENDOR & PRODUCT SHOWCASE MARKETPLACE ZONES", 15, 173);
+    doc.text(
+      privateRateCard
+        ? "VENDOR & PRODUCT SHOWCASE MARKETPLACE ZONES (2-DAY RATES)"
+        : "VENDOR & PRODUCT SHOWCASE MARKETPLACE ZONES",
+      15,
+      173
+    );
 
     VENDOR_OPPORTUNITIES.forEach((v, idx) => {
       const col = idx % 2;
       const row = Math.floor(idx / 2);
       const x = 15 + col * 92;
       const y = 178 + row * 50;
+      const privateVendorPrice = privateRateCard?.vendorPrices[v.id];
 
       doc.setFillColor(255, 255, 255);
       doc.setDrawColor(225, 222, 215);
       doc.roundedRect(x, y, 88, 46, 3, 3, "FD");
 
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(7);
+      doc.setFontSize(6.8);
       doc.setTextColor(214, 10, 25);
-      doc.text(`${v.category.toUpperCase()}  ·  ${v.footfallTarget.toUpperCase()}`, x + 4.5, y + 7);
+      doc.text(
+        privateVendorPrice
+          ? v.category.toUpperCase()
+          : `${v.category.toUpperCase()}  ·  ${v.footfallTarget.toUpperCase()}`,
+        x + 4.5,
+        y + 7
+      );
+
+      if (privateVendorPrice) {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(8.8);
+        doc.setTextColor(214, 10, 25);
+        doc.text(privateVendorPrice.price, x + 83.5, y + 7.4, { align: "right" });
+      }
 
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(9.5);
+      doc.setFontSize(9.2);
       doc.setTextColor(20, 20, 22);
-      doc.text(v.title, x + 4.5, y + 13);
+      doc.text(v.title, x + 4.5, y + 13.2);
 
       doc.setFont("helvetica", "normal");
       doc.setTextColor(75, 75, 82);
@@ -1018,7 +1105,9 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
       doc.setTextColor(95, 95, 102);
       drawWrappedText(
         doc,
-        `Spaces: ${v.stallSizes}  ·  Ideal for: ${v.suitableFor}`,
+        privateVendorPrice
+          ? `Spaces: ${v.stallSizes}  ·  ${privateVendorPrice.period}`
+          : `Spaces: ${v.stallSizes}  ·  Ideal for: ${v.suitableFor}`,
         x + 4.5,
         Math.max(afterVDesc + 1.5, y + 31.5),
         79,
@@ -1038,7 +1127,7 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
     "50+ INFLUENCERS & 20M+ PROVEN VIEWS",
     9,
     totalPages,
-    edition
+    footerText
   );
 
   doc.setFillColor(18, 18, 20);
@@ -1110,8 +1199,8 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
   doc.setFontSize(9.5);
   doc.setTextColor(214, 10, 25);
   doc.text(
-    isXtreme
-      ? "XTREME ENERGY DRINK DIGITAL & CONTENT INTEGRATION"
+    isXtreme && xtremeContent
+      ? xtremeContent.digitalHeading.toUpperCase()
       : "CHAMPIONSHIP DIGITAL COVERAGE & CREATOR DELIVERABLES",
     22,
     226
@@ -1120,7 +1209,8 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
   doc.setFont("helvetica", "normal");
   doc.setTextColor(65, 65, 72);
   let digY = 233.5;
-  const digitalItems = isXtreme ? XTREME_DIGITAL_DELIVERABLES : GENERAL_DIGITAL_DELIVERABLES;
+  const digitalItems =
+    isXtreme && xtremeContent ? xtremeContent.digitalDeliverables : GENERAL_DIGITAL_DELIVERABLES;
   digitalItems.forEach((d) => {
     digY =
       drawWrappedText(doc, `•  ${d}`, 22, digY, pageWidth - 44, 8, {
@@ -1138,7 +1228,7 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
     "FIM SAFETY STANDARDS & CONTACT",
     10,
     totalPages,
-    edition
+    footerText
   );
 
   // All 6 FIM Safety Protocols
@@ -1228,8 +1318,8 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
   doc.setFontSize(8.2);
   doc.setTextColor(240, 56, 69);
   doc.text(
-    isXtreme
-      ? "OFFICIAL ORGANIZING SECRETARIAT  ·  EXECUTIVE PARTNERSHIP DESK"
+    isXtreme && xtremeContent
+      ? xtremeContent.secretariatEyebrow.toUpperCase()
       : "OFFICIAL ORGANIZING SECRETARIAT  ·  POKHARA, NEPAL",
     22,
     212
@@ -1239,7 +1329,9 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
   doc.setFontSize(14.5);
   doc.setTextColor(255, 255, 255);
   doc.text(
-    isXtreme ? "PARTNER AS 2027 TITLE SPONSOR" : "CONNECT WITH ADVENTURE SPORT HUB",
+    isXtreme && xtremeContent
+      ? xtremeContent.secretariatTitle
+      : "CONNECT WITH ADVENTURE SPORT HUB",
     22,
     221.5
   );
@@ -1248,8 +1340,8 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
   doc.setTextColor(208, 208, 218);
   const afterCloseNote = drawWrappedText(
     doc,
-    isXtreme
-      ? "Commercial partnership terms, custom Xtreme Energy Drink arena branding blueprints, chilled distribution logistics, and multi-event Pokhara + Everest bundle options are finalized directly with our organizing committee."
+    isXtreme && xtremeContent
+      ? xtremeContent.secretariatDescription
       : "Inquire directly for 2027 rider entries, sponsorship packages, vendor showcase spaces, or official press & creator passes across Pokhara and Everest.",
     22,
     228.5,
@@ -1302,8 +1394,10 @@ export async function generateMasterBrochurePdf(edition: MasterPdfEdition): Prom
   );
 
   doc.save(
-    isXtreme
-      ? "Xtreme-Energy-Drink-Himalayan-Moto-Enduro-2027-Proposal.pdf"
+    isXtreme && xtremeContent
+      ? xtremeContent.pdfFilename
+      : privateRateCard
+      ? "Himalayan-Moto-Enduro-2027-Private-Rate-Card-Proposal.pdf"
       : "Himalayan-Moto-Enduro-2027-Complete-Proposal.pdf"
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { PartnerStrip } from "./components/PartnerStrip";
@@ -11,6 +11,7 @@ import { TrackArenaMap } from "./components/TrackArenaMap";
 import { GallerySection } from "./components/GallerySection";
 import { InfluencersSection } from "./components/InfluencersSection";
 import { ProposalPage } from "./components/ProposalPage";
+import { XtremeProposalPage } from "./components/XtremeProposalPage";
 import { SafetySection } from "./components/SafetySection";
 import { PreFooterCta } from "./components/PreFooterCta";
 import { ContactSection } from "./components/ContactSection";
@@ -20,14 +21,23 @@ import { ProposalModal } from "./components/ProposalModal";
 import { LogoProvider } from "./context/LogoContext";
 import { LogoUploadModal } from "./components/LogoUploadModal";
 import { AdminDashboard } from "./components/AdminDashboard";
+import { CompanyProposalRecord, PrivateRateCard } from "./types/xtremeProposal";
 
-type AppView = "home" | "proposal" | "admin";
+type AppView = "home" | "proposal" | "admin" | "xtreme-proposal";
 
 function resolveAppView(): AppView {
   if (typeof window === "undefined") return "home";
   const hash = window.location.hash.toLowerCase();
   const params = new URLSearchParams(window.location.search);
   if (hash === "#admin" || params.has("admin")) return "admin";
+  if (
+    hash === "#xtreme-proposal" ||
+    hash === "#private-proposals" ||
+    params.has("xtreme-proposal") ||
+    params.has("private-proposals")
+  ) {
+    return "xtreme-proposal";
+  }
   if (hash === "#proposal" || hash === "#sponsorship-proposal" || params.has("proposal")) {
     return "proposal";
   }
@@ -36,6 +46,12 @@ function resolveAppView(): AppView {
 
 export default function App() {
   const [activeView, setActiveView] = useState<AppView>(resolveAppView);
+
+  // Keep private proposals unlock, rate card & Bearer token strictly in React memory (never localStorage/sessionStorage)
+  const [privateCompanies, setPrivateCompanies] = useState<CompanyProposalRecord[] | null>(null);
+  const [privateRateCard, setPrivateRateCard] = useState<PrivateRateCard | null>(null);
+  const [privateAccessMethod, setPrivateAccessMethod] = useState<"admin" | "passcode" | null>(null);
+  const [privateSessionToken, setPrivateSessionToken] = useState<string | null>(null);
 
   React.useEffect(() => {
     const syncView = () => {
@@ -48,6 +64,12 @@ export default function App() {
   const openAdminView = () => {
     window.location.hash = "admin";
     setActiveView("admin");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const openPrivateProposals = () => {
+    window.location.hash = "private-proposals";
+    setActiveView("xtreme-proposal");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -95,6 +117,28 @@ export default function App() {
     navigateHome();
   };
 
+  const handlePrivateUnlocked = useCallback(
+    (
+      companies: CompanyProposalRecord[],
+      rateCard: PrivateRateCard | null,
+      method: "admin" | "passcode",
+      token?: string
+    ) => {
+      setPrivateCompanies(companies);
+      setPrivateRateCard(rateCard);
+      setPrivateAccessMethod(method);
+      setPrivateSessionToken(token || null);
+    },
+    []
+  );
+
+  const handleLockPrivate = useCallback(() => {
+    setPrivateCompanies(null);
+    setPrivateRateCard(null);
+    setPrivateAccessMethod(null);
+    setPrivateSessionToken(null);
+  }, []);
+
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const [activeFormTab, setActiveFormTab] = useState<FormTab>("rider");
   const [selectedEventName, setSelectedEventName] = useState<string>("Extreme Moto Enduro Cross 2027");
@@ -130,7 +174,20 @@ export default function App() {
             onNavigateProposal={openProposalPage}
           />
 
-          {activeView === "proposal" ? (
+          {activeView === "xtreme-proposal" ? (
+            <main>
+              <XtremeProposalPage
+                onBackToHome={() => navigateHome()}
+                companies={privateCompanies}
+                rateCard={privateRateCard}
+                accessMethod={privateAccessMethod}
+                sessionToken={privateSessionToken}
+                onUnlockSuccess={handlePrivateUnlocked}
+                onCompaniesChange={setPrivateCompanies}
+                onLock={handleLockPrivate}
+              />
+            </main>
+          ) : activeView === "proposal" ? (
             <main>
               <ProposalPage
                 onBackToHome={() => navigateHome()}
@@ -189,6 +246,7 @@ export default function App() {
             onOpenRegisterModal={handleOpenRegisterModal}
             onOpenProposalModal={handleOpenProposalModal}
             onOpenAdminConsole={openAdminView}
+            onOpenXtremeProposal={openPrivateProposals}
             onNavigateHome={navigateHome}
             onNavigateProposal={openProposalPage}
           />

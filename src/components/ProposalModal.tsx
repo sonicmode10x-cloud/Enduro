@@ -99,7 +99,7 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
                   OFFICIAL SPONSORSHIP &amp; PARTNERSHIP PROPOSAL
                 </span>
                 <h1 className="font-heading font-black text-4xl sm:text-5xl uppercase tracking-tight text-white leading-none">
-                  THE HIMALAYAN MOTO SERIES
+                  THE HIMALAYAN SERIES OF MOTO ADVENTURES
                 </h1>
                 <h2 className="font-heading font-black text-2xl sm:text-3xl uppercase tracking-tight text-[#E50920] mt-1">
                   EXTREME MOTO ENDURO CROSS 2027 · POKHARA &amp; EVEREST
@@ -212,7 +212,7 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
             </div>
           </div>
 
-          {/* Section 4: Sponsorship Tiers & Vendor Marketplace (Zero Prices) */}
+          {/* Section 4: Sponsorship Tiers & Vendor Marketplace (Price-Free Public View) */}
           <div className="space-y-4">
             <h3 className="font-heading font-bold text-xl uppercase text-white flex items-center gap-2">
               <span className="w-2 h-2 bg-[#E50920]" />

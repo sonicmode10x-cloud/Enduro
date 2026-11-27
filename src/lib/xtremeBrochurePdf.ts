@@ -1,12 +1,8 @@
 import { generateMasterBrochurePdf } from "./masterBrochurePdf";
+import { XtremeProposalContent } from "../types/xtremeProposal";
 
-export {
-  CHAMPIONSHIP_EXPERIENCES,
-  COMMERCIAL_ECOSYSTEM_ITEMS,
-  XTREME_DIGITAL_DELIVERABLES,
-  XTREME_TITLE_PILLARS
-} from "../data/brochureData";
-
-export async function downloadXtremeTitleSponsorBrochurePdf(): Promise<void> {
-  await generateMasterBrochurePdf("xtreme");
+export async function downloadXtremeTitleSponsorBrochurePdf(
+  xtremeContent: XtremeProposalContent
+): Promise<void> {
+  await generateMasterBrochurePdf("xtreme", xtremeContent);
 }
